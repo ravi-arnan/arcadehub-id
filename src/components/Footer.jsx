@@ -24,6 +24,7 @@ export default function Footer() {
           {NAV.map(({ path, label }) => (
             <NavLink key={path} to={path} className="flink">{label}</NavLink>
           ))}
+          <NavLink to="/roadmap" className="flink">Roadmap</NavLink>
         </div>
         <div className="fcol">
           <h4>Program</h4>
