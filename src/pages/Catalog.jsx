@@ -14,7 +14,7 @@ function GameCard({ g }) {
     } catch { /* clipboard tak tersedia: kode tetap terlihat untuk disalin manual */ }
   }
   const url = g.game ? gameUrl(g.game) : null
-  const badge = <img src={g.img + '?v=2'} alt={g.name} loading="lazy" />
+  const badge = <img src={g.img + '?v=3'} alt={g.name} loading="lazy" />
   return (
     <div className={'gamecard' + (g.done ? ' done' : '')}>
       {url ? (
