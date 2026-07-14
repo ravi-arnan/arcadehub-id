@@ -64,9 +64,9 @@ export default function Prizes() {
       <div className="card">
         <div className="card-h">Contoh Swag Google Cloud</div>
         <div className="swaggrid">
-          <img src="/img/prize1.png?v=2" alt="Merchandise Google Cloud" loading="lazy" />
-          <img src="/img/prize2.png?v=2" alt="Merchandise Google Cloud" loading="lazy" />
-          <img src="/img/prize3.png?v=2" alt="Merchandise Google Cloud" loading="lazy" />
+          <img src="/img/prize1.webp?v=3" alt="Merchandise Google Cloud" loading="lazy" />
+          <img src="/img/prize2.webp?v=3" alt="Merchandise Google Cloud" loading="lazy" />
+          <img src="/img/prize3.webp?v=3" alt="Merchandise Google Cloud" loading="lazy" />
         </div>
         <div className="card-note">Foto ilustrasi resmi. Item pasti per tier diumumkan Google saat program berjalan.</div>
       </div>

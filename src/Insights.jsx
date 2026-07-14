@@ -82,12 +82,12 @@ export function CategoryTable({ badges }) {
 }
 
 const GAMES = [
-  { name: 'Base Camp', img: '/img/game-basecamp.png', re: /base ?camp/i },
-  { name: 'Adventure', img: '/img/game-adventure.png', re: /adventure/i },
-  { name: 'Voyage', img: '/img/game-voyage.png', re: /voyage/i },
-  { name: 'Trail', img: '/img/game-trail.png', re: /trail/i },
-  { name: 'Special', img: '/img/game-special.png', re: /special|safe space/i },
-  { name: 'New Game', img: '/img/game-new.png', re: /simulator|new game|data mesh/i },
+  { name: 'Base Camp', img: '/img/game-basecamp.webp', re: /base ?camp/i },
+  { name: 'Adventure', img: '/img/game-adventure.webp', re: /adventure/i },
+  { name: 'Voyage', img: '/img/game-voyage.webp', re: /voyage/i },
+  { name: 'Trail', img: '/img/game-trail.webp', re: /trail/i },
+  { name: 'Special', img: '/img/game-special.webp', re: /special|safe space/i },
+  { name: 'New Game', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
 ]
 
 // Game Arcade bulan ini (foto badge asli) + status selesai/belum

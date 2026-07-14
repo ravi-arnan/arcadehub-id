@@ -25,7 +25,10 @@ function MyPoints() {
   if (!score && !loading) {
     return (
       <div className="joincard">
-        <img className="herobanner" src="/img/hero.png?v=2" alt="Google Cloud Arcade" loading="eager" />
+        <picture>
+          <source srcSet="/img/hero.webp" type="image/webp" />
+          <img className="herobanner" src="/img/hero.png" alt="Google Cloud Arcade" width="752" height="547" fetchPriority="high" decoding="async" />
+        </picture>
         <div className="jt">Hitung poin otomatis</div>
         <p className="jp">Tempel link <b>public profile Google Cloud Skills Boost</b> kamu. Poin, milestone, dan tier dihitung otomatis dari badge-mu. Tidak ada input manual.</p>
         <div className="frow">

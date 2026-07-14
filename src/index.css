@@ -1,4 +1,4 @@
-@font-face{font-family:'PS2P';src:url('/PressStart2P.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'PS2P';src:url('/PressStart2P.woff2') format('woff2');font-display:swap}
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --gold:#fcc934;--green:#34c95f;--wa:#25d366;--blue:#5b8bff;--purple:#a06bff;--ink:#fff;--muted:#aebbd6;
@@ -136,7 +136,7 @@ body{
 .card-h{font-weight:800;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
 .card-tag{font-family:'PS2P';font-size:11px;color:var(--gold);background:rgba(252,201,52,.12);padding:4px 8px;border-radius:8px}
 .card-note{font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.5}
-.herobanner{width:100%;border-radius:12px;margin-bottom:16px;display:block}
+.herobanner{width:100%;height:auto;aspect-ratio:752/547;border-radius:12px;margin-bottom:16px;display:block}
 
 /* weekly line chart */
 .lchart{width:100%;height:auto;display:block}

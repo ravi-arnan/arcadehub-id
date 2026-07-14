@@ -55,12 +55,12 @@ export const SKILL_CATALOG = [
 ]
 
 export const GAME_CATALOG = [
-  { name: 'Arcade Base Camp', img: '/img/game-basecamp.png', re: /base ?camp/i },
-  { name: 'Arcade Adventure', img: '/img/game-adventure.png', re: /adventure/i },
-  { name: 'Arcade Voyage', img: '/img/game-voyage.png', re: /voyage/i },
-  { name: 'Arcade Trail', img: '/img/game-trail.png', re: /trail/i },
-  { name: 'Arcade Special', img: '/img/game-special.png', re: /special|safe space/i },
-  { name: 'New Arcade Game', img: '/img/game-new.png', re: /simulator|new game|data mesh/i },
+  { name: 'Arcade Base Camp', img: '/img/game-basecamp.webp', re: /base ?camp/i },
+  { name: 'Arcade Adventure', img: '/img/game-adventure.webp', re: /adventure/i },
+  { name: 'Arcade Voyage', img: '/img/game-voyage.webp', re: /voyage/i },
+  { name: 'Arcade Trail', img: '/img/game-trail.webp', re: /trail/i },
+  { name: 'Arcade Special', img: '/img/game-special.webp', re: /special|safe space/i },
+  { name: 'New Arcade Game', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
 ]
 
 const UTM = '?utm_source=arcade-hub'
