@@ -92,6 +92,26 @@ const SKILL_IMG_IDS = new Set([
 ])
 export const skillImg = (id) => (SKILL_IMG_IDS.has(id) ? `/img/skills/${id}.webp?v=1` : null)
 
+// Google sering ganti nama badge (course id sama). Deteksi "Selesai" cocokkan nama SEKARANG + nama lama/alias,
+// karena profil peserta menyimpan judul badge saat di-earn (bisa nama lama). Key = course id.
+const SKILL_ALIASES = {
+  696: ['Cloud Run Functions: 3 Ways', 'Build Serverless Applications with Cloud Run Functions'],
+  700: ['Implement Speech and Language Solutions with Pre-trained APIs'],
+  725: ['Implement Cloud Storage and Data Protection Solutions'],
+  727: ['Build Event-Driven Applications with Eventarc'],
+  728: ['Implement Event-Driven Messaging and Automation Workflows'],
+  648: ['Implementing Cloud Load Balancing for Compute Engine'],
+  671: ['Deploy and Manage Applications on Google App Engine'],
+  676: ['Implement Cloud Collaboration and Productivity Workflows'],
+  753: ['Enrich Metadata and Discovery of Lakehouse Data', 'Enrich Metadata and Discovery of BigLake Data'],
+  959: ['Explore Generative AI in Agent Platform', 'Explore Generative AI with the Gemini API in Vertex AI'],
+  976: ['Prompt Design in Agent Platform'],
+  1453: ['Google DeepMind: Train A Small Language Model'],
+}
+// true jika peserta sudah earn badge ini (cocok nama sekarang atau alias lama). earnedSet = Set of norm(judul).
+export const skillEarned = (id, name, earnedSet) =>
+  earnedSet.has(norm(name)) || (SKILL_ALIASES[id] || []).some((a) => earnedSet.has(norm(a)))
+
 const UTM = '?utm_source=arcade-hub'
 export const courseUrl = (id) => `https://www.skills.google/course_templates/${id}${UTM}`
 export const gameUrl = (id) => `https://www.skills.google/games/${id}${UTM}`

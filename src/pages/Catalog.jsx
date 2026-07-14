@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
 import { useMyProfile } from '../profile.jsx'
 import { IconGrid, IconList, IconArrowRight, IconAward } from '../icons.jsx'
 
@@ -107,7 +107,7 @@ export default function Catalog() {
       code: null,
       url: courseUrl(s.id),
       points: 0.5,
-      done: earned.has(norm(s.name)),
+      done: skillEarned(s.id, s.name, earned),
     }))
     return [...games, ...skills]
   }, [gameBadges, earned])
