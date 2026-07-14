@@ -1,0 +1,45 @@
+import { Suspense } from 'react'
+import { Outlet, useLocation, Link } from 'react-router-dom'
+import { m, AnimatePresence } from 'framer-motion'
+import { CONFIG } from '../config.js'
+import SpaceFX from '../SpaceFX.jsx'
+import FeedbackBubble from '../FeedbackBubble.jsx'
+import Nav from './Nav.jsx'
+import Footer from './Footer.jsx'
+import Deadline from './Deadline.jsx'
+
+export default function Layout() {
+  const location = useLocation()
+  return (
+    <div className="page">
+      <SpaceFX />
+      <a className="announce" href={CONFIG.whatsappUrl} target="_blank" rel="noreferrer">
+        <span className="ann-dot" />Gabung komunitas WhatsApp fasilitator untuk info &amp; bantuan &nbsp;→
+      </a>
+
+      <header className="topbar">
+        <div className="topbar-inner">
+          <Link to="/points" className="brand"><span className="brand-title">ARCADE HUB</span></Link>
+          <Nav />
+        </div>
+      </header>
+
+      <main className="main">
+        <div className="app">
+          <div className="deadline"><Deadline /></div>
+          <AnimatePresence mode="wait">
+            <m.div key={location.pathname} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22, ease: 'easeOut' }}>
+              <Suspense fallback={<div className="route-loading">Memuat…</div>}>
+                <Outlet />
+              </Suspense>
+            </m.div>
+          </AnimatePresence>
+        </div>
+      </main>
+
+      <Footer />
+      <FeedbackBubble />
+    </div>
+  )
+}

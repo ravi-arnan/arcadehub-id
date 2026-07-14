@@ -1,11 +1,13 @@
-import { TIERS, tierForPoints } from './points.js'
-import { useMyProfile } from './profile.jsx'
-import { IconMedal, IconAward, IconTrophy, IconCrown } from './icons.jsx'
+import { useNavigate } from 'react-router-dom'
+import { TIERS, tierForPoints } from '../points.js'
+import { useMyProfile } from '../profile.jsx'
+import { IconMedal, IconAward, IconTrophy, IconCrown } from '../icons.jsx'
 
 const fmt = (n) => n.toLocaleString('id-ID')
 const TIER_ICONS = [IconMedal, IconAward, IconTrophy, IconCrown]
 
-export default function Prizes({ go }) {
+export default function Prizes() {
+  const navigate = useNavigate()
   const { score } = useMyProfile()
   const pts = score?.total || 0
   const myTier = tierForPoints(pts)
@@ -37,7 +39,7 @@ export default function Prizes({ go }) {
             <div className="li-t">Belum ada poin kamu</div>
             <div className="li-p">Hitung poinmu dulu untuk melihat tier yang kamu capai.</div>
           </div>
-          <button className="joinbtn" onClick={() => go && go('me')}>Hitung Poin Saya</button>
+          <button className="joinbtn" onClick={() => navigate('/points')}>Hitung Poin Saya</button>
         </div>
       )}
 

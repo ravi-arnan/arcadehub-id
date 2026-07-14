@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CONFIG } from './config.js'
+import { CONFIG } from '../config.js'
 
 function CopyCode() {
   const [copied, setCopied] = useState(false)

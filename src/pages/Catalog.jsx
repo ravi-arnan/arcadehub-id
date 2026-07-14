@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react'
-import { SKILL_CATALOG, GAME_CATALOG, courseUrl, norm } from './catalog.js'
-import { useMyProfile } from './profile.jsx'
+import { useNavigate } from 'react-router-dom'
+import { SKILL_CATALOG, GAME_CATALOG, courseUrl, norm } from '../catalog.js'
+import { useMyProfile } from '../profile.jsx'
 
-export default function Catalog({ go }) {
+export default function Catalog() {
+  const navigate = useNavigate()
   const { score } = useMyProfile()
   const [q, setQ] = useState('')
   const [filter, setFilter] = useState('all') // all | done | todo
@@ -30,7 +32,7 @@ export default function Catalog({ go }) {
             <div className="li-t">Pantau progress badge kamu</div>
             <div className="li-p">Hitung poin dulu di tab Poin Saya agar katalog menandai badge yang sudah kamu selesaikan.</div>
           </div>
-          <button className="joinbtn" onClick={() => go && go('me')}>Hitung Poin Saya</button>
+          <button className="joinbtn" onClick={() => navigate('/points')}>Hitung Poin Saya</button>
         </div>
       )}
 

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Analytics } from '@vercel/analytics/react'
 import { LazyMotion, domAnimation, MotionConfig } from 'framer-motion'
 import * as Tooltip from '@radix-ui/react-tooltip'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { ProfileProvider } from './profile.jsx'
@@ -14,9 +15,11 @@ createRoot(document.getElementById('root')).render(
       <LazyMotion features={domAnimation} strict>
         <MotionConfig reducedMotion="user">
           <Tooltip.Provider delayDuration={250} skipDelayDuration={400}>
-            <ProfileProvider>
-              <App />
-            </ProfileProvider>
+            <BrowserRouter>
+              <ProfileProvider>
+                <App />
+              </ProfileProvider>
+            </BrowserRouter>
           </Tooltip.Provider>
         </MotionConfig>
       </LazyMotion>

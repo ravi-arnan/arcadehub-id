@@ -61,17 +61,19 @@ body{
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .topbar-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
   gap:16px;padding:12px 20px}
-.brand{display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand-title{font-family:'PS2P';font-size:15px;color:var(--gold);text-shadow:0 2px 0 rgba(0,0,0,.35)}
 .topnav{display:flex;gap:4px}
-.topnav button{position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--muted);
-  font-size:14px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:color .12s,background .12s;white-space:nowrap}
-.topnav button:hover{background:rgba(255,255,255,.07);color:#fff}
-.topnav button.on{color:#fff}
-.topnav button.on:hover{background:transparent}
+.topnav .navitem{position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--muted);text-decoration:none;
+  font-size:14px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:color .12s,background .12s,transform .12s;white-space:nowrap}
+.topnav .navitem:hover{background:rgba(255,255,255,.07);color:#fff;transform:translateY(-1px)}
+.topnav .navitem:active{transform:scale(.96)}
+.topnav .navitem.on{color:#fff}
+.topnav .navitem.on:hover{background:transparent}
 .topnav .navpill{position:absolute;inset:0;border-radius:10px;background:linear-gradient(180deg,#3ad46a,#2bb457);z-index:0}
-.topnav button>svg,.topnav button>span:not(.navpill){position:relative;z-index:1}
+.topnav .navitem>svg,.topnav .navitem>span:not(.navpill){position:relative;z-index:1}
 .topnav svg{width:18px;height:18px;flex:none}
+.route-loading{padding:60px 0;text-align:center;color:var(--muted);font-size:14px}
 .main{flex:1;display:flex;justify-content:center;padding:28px 18px 56px}
 .app{width:100%;max-width:680px}
 
@@ -214,7 +216,7 @@ body{
   .topbar-inner{flex-direction:column;align-items:stretch;gap:10px;padding:10px 12px}
   .brand{justify-content:center}
   .topnav{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-  .topnav button{flex-direction:column;gap:3px;font-size:10px;padding:8px 2px}
+  .topnav .navitem{flex-direction:column;gap:3px;font-size:10px;padding:8px 2px}
   .topnav svg{width:19px;height:19px}
   .main{padding:20px 14px 48px}
 }
