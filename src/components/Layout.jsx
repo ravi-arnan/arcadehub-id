@@ -1,13 +1,15 @@
-import { Suspense } from 'react'
+import { Suspense, lazy } from 'react'
 import { Outlet, useLocation, Link } from 'react-router-dom'
 import { m, AnimatePresence } from 'framer-motion'
 import { CONFIG } from '../config.js'
 import SpaceFX from '../SpaceFX.jsx'
-import FeedbackBubble from '../FeedbackBubble.jsx'
 import Nav from './Nav.jsx'
 import Footer from './Footer.jsx'
 import Deadline from './Deadline.jsx'
 import RouteSkeleton from './RouteSkeleton.jsx'
+
+// Tombol masukan (pakai Radix Popover) di-defer, tidak kritis untuk render awal.
+const FeedbackBubble = lazy(() => import('../FeedbackBubble.jsx'))
 
 export default function Layout() {
   const location = useLocation()
@@ -40,7 +42,7 @@ export default function Layout() {
       </main>
 
       <Footer />
-      <FeedbackBubble />
+      <Suspense fallback={null}><FeedbackBubble /></Suspense>
     </div>
   )
 }

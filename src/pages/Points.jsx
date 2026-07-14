@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { m } from 'framer-motion'
 import { MS, TIERS, tierForPoints } from '../points.js'
 import { useCountUp } from '../useCountUp.js'
 import { useMyProfile } from '../profile.jsx'
 import { WeeklyChart, CategoryTable, MonthlyGames } from '../Insights.jsx'
-import ShareCard from '../ShareCard.jsx'
 import Medal from '../Medal.jsx'
+
+// Modal share (pakai Radix Dialog) hanya di-load saat tombol Bagikan diklik.
+const ShareCard = lazy(() => import('../ShareCard.jsx'))
 import Bar from '../components/Bar.jsx'
 import { ago } from '../utils/time.js'
 
@@ -73,7 +75,7 @@ function MyPoints() {
         </span>
       </div>
       {err && <div className="ferr">{err}</div>}
-      {showShare && <ShareCard score={score} onClose={() => setShowShare(false)} />}
+      {showShare && <Suspense fallback={null}><ShareCard score={score} onClose={() => setShowShare(false)} /></Suspense>}
 
       {(score?.gameList?.length || score?.skillList?.length) ? (
         <div className="badgebox">
