@@ -57,6 +57,12 @@ body{
   background:linear-gradient(90deg,rgba(37,211,102,.16),rgba(91,155,255,.12));border-bottom:1px solid var(--line);padding:9px 16px}
 .announce:hover{color:#fff}
 .ann-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;vertical-align:middle;box-shadow:0 0 0 3px rgba(52,201,95,.25)}
+.ann-short{display:none}
+@media(max-width:560px){
+  .announce{white-space:nowrap;font-size:12px;padding:8px 12px;overflow:hidden;text-overflow:ellipsis}
+  .ann-full{display:none}
+  .ann-short{display:inline}
+}
 .topbar{position:sticky;top:0;z-index:40;background:rgba(18,21,42,.85);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .topbar-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
@@ -179,6 +185,10 @@ body{
 .catfilter button{background:transparent;border:0;color:var(--muted);font-size:13px;font-weight:700;padding:8px 12px;border-radius:8px;cursor:pointer}
 .catfilter button.on{background:linear-gradient(180deg,#3ad46a,#2bb457);color:#fff}
 /* Badge Saya (mirror akun) */
+.mb-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#dbe6fb;font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:9px;cursor:pointer;transition:.13s}
+.mb-toggle:hover{background:rgba(255,255,255,.12)}
+.mb-chev{transition:transform .18s;font-size:11px}
+.mb-chev.up{transform:rotate(180deg)}
 .mybadges{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 .mybadge{display:flex;align-items:center;gap:11px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-left-width:3px;border-radius:12px;padding:9px 12px;min-width:0}
 .mybadge.game{border-left-color:var(--purple)}

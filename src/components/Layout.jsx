@@ -17,7 +17,10 @@ export default function Layout() {
     <div className="page">
       <SpaceFX />
       <a className="announce" href={CONFIG.whatsappUrl} target="_blank" rel="noreferrer">
-        <span className="ann-dot" />Gabung komunitas WhatsApp fasilitator untuk info &amp; bantuan &nbsp;→
+        <span className="ann-dot" />
+        <span className="ann-full">Gabung komunitas WhatsApp fasilitator untuk info &amp; bantuan</span>
+        <span className="ann-short">Gabung grup WhatsApp fasilitator</span>
+        &nbsp;→
       </a>
 
       <header className="topbar">

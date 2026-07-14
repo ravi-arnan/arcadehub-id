@@ -8,6 +8,7 @@ const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
 const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) } catch { return '' } }
 
 function MyBadges({ score }) {
+  const [open, setOpen] = useState(false)
   const badges = score?.seasonBadges || []
   if (!badges.length) return null
   const sorted = [...badges].sort((a, b) => (b.earned || '').localeCompare(a.earned || ''))
@@ -15,10 +16,16 @@ function MyBadges({ score }) {
   const nSkill = badges.length - nGame
   return (
     <div className="card">
-      <div className="card-h">Badge Saya <span className="card-tag">{badges.length}</span></div>
-      <div className="card-note" style={{ marginTop: 0, marginBottom: 12 }}>
+      <div className="card-h">
+        Badge Saya <span className="card-tag">{badges.length}</span>
+        <button className="mb-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          {open ? 'Sembunyikan' : 'Lihat semua'} <span className={'mb-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
+        </button>
+      </div>
+      <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 12 : 0 }}>
         Semua badge yang sudah kamu selesaikan (dari profilmu): {nGame} game, {nSkill} skill, total <b>{fmtPts(score.total)}</b> poin.
       </div>
+      {open && (
       <div className="mybadges">
         {sorted.map((b, i) => {
           const img = b.cat === 'game' ? null : earnedSkillImg(b.title)
@@ -35,6 +42,7 @@ function MyBadges({ score }) {
           )
         })}
       </div>
+      )}
     </div>
   )
 }
