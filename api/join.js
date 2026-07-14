@@ -10,7 +10,8 @@ export default async function handler(req, res) {
     if (!(await rateLimit(clientIp(req), 12))) return res.status(429).json({ error: 'Terlalu banyak permintaan. Tunggu sebentar.' })
     const { name, profileUrl, code } = req.body || {}
     const raw = code && String(code).trim().slice(0, 24)
-    const guild = raw ? raw.toUpperCase() : DEFAULT_GUILD
+    // guild null = tidak diberikan; saat re-sync jangan timpa guild yang sudah ada.
+    const guild = raw ? raw.toUpperCase() : null
 
     const url = normalizeProfileUrl(profileUrl)
     if (!url) return res.status(400).json({ error: 'Link profil tidak valid. Pakai link public profile Cloud Skills Boost.' })
@@ -22,14 +23,14 @@ export default async function handler(req, res) {
     const id = crypto.randomUUID()
     await sql`
       INSERT INTO members (id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, last_synced)
-      VALUES (${id}, ${guild}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, now())
+      VALUES (${id}, ${guild ?? DEFAULT_GUILD}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, now())
       ON CONFLICT (profile_url) DO UPDATE SET
-        guild = EXCLUDED.guild, name = EXCLUDED.name, games = EXCLUDED.games, skills = EXCLUDED.skills,
+        guild = COALESCE(${guild}, members.guild), name = EXCLUDED.name, games = EXCLUDED.games, skills = EXCLUDED.skills,
         facil_games = EXCLUDED.facil_games, facil_skills = EXCLUDED.facil_skills,
         base = EXCLUDED.base, mbonus = EXCLUDED.mbonus, total = EXCLUDED.total, tier_idx = EXCLUDED.tier_idx, last_synced = now()`
 
-    const rows = await sql`SELECT id FROM members WHERE profile_url = ${url}`
-    res.status(200).json({ ok: true, id: rows[0]?.id, guild, member: { ...s, name: displayName, profileUrl: url, guild } })
+    const rows = await sql`SELECT id, guild FROM members WHERE profile_url = ${url}`
+    res.status(200).json({ ok: true, id: rows[0]?.id, guild: rows[0]?.guild, member: { ...s, name: displayName, profileUrl: url, guild: rows[0]?.guild } })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Gagal memproses.' })
   }

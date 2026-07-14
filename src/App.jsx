@@ -10,11 +10,10 @@ const Prizes = lazy(() => import('./pages/Prizes.jsx'))
 const Info = lazy(() => import('./pages/Info.jsx'))
 const Contribute = lazy(() => import('./pages/Contribute.jsx'))
 
-// "/" -> /points, tapi kalau ada ?guild= arahkan ke leaderboard (jaga link lama fasilitator).
+// "/" -> /points, meneruskan ?guild= supaya guild ikut terpakai saat auto-join dari Poin Saya.
 function IndexRedirect() {
   const { search } = useLocation()
-  const hasGuild = new URLSearchParams(search).has('guild')
-  return <Navigate to={{ pathname: hasGuild ? '/leaderboard' : '/points', search }} replace />
+  return <Navigate to={{ pathname: '/points', search }} replace />
 }
 
 export default function App() {

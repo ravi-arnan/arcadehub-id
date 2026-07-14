@@ -15,33 +15,43 @@ export function useMyProfile() { return useContext(Ctx) }
 export function ProfileProvider({ children }) {
   const [profileUrl, setProfileUrl] = useLocal('gcaf2026_my_profile', '')
   const [score, setScore] = useLocal('gcaf2026_my_score', null)
+  const [memberId, setMemberId] = useLocal('gcaf2026_member_id', null)
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState('')
 
+  // Hitung poin + otomatis daftarkan/perbarui ke leaderboard (via /api/join).
+  // Satu langkah: masuk profil di Poin Saya = otomatis tampil di Leaderboard.
   const fetchScore = useCallback(async (url) => {
     setLoading(true); setErr('')
     try {
-      const r = await fetch('/api/score?url=' + encodeURIComponent(url))
+      let guild = ''
+      try { guild = new URLSearchParams(window.location.search).get('guild') || '' } catch { /* ignore */ }
+      const r = await fetch('/api/join', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profileUrl: url, name: '', code: guild }),
+      })
       const j = await r.json()
       if (!r.ok) throw new Error(j.error || 'Gagal menghitung')
+      const m = j.member || {}
       setScore({
-        name: j.name, total: j.total, games: j.games, skills: j.skills,
-        facilGames: j.facilGames || 0, facilSkills: j.facilSkills || 0,
-        base: j.base, mbonus: j.mbonus, tierIdx: j.tierIdx,
-        gameList: j.gameList || [], skillList: j.skillList || [], seasonBadges: j.seasonBadges || [], syncedAt: Date.now(),
+        name: m.name, total: m.total, games: m.games, skills: m.skills,
+        facilGames: m.facilGames || 0, facilSkills: m.facilSkills || 0,
+        base: m.base, mbonus: m.mbonus, tierIdx: m.tierIdx,
+        gameList: m.gameList || [], skillList: m.skillList || [], seasonBadges: m.seasonBadges || [], syncedAt: Date.now(),
       })
-      setProfileUrl(url)
+      setProfileUrl(m.profileUrl || url)
+      if (j.id) setMemberId(j.id)
       return j
     } catch (e) { setErr(e.message); throw e } finally { setLoading(false) }
-  }, [setScore, setProfileUrl])
+  }, [setScore, setProfileUrl, setMemberId])
 
-  const clear = useCallback(() => { setScore(null); setProfileUrl('') }, [setScore, setProfileUrl])
+  const clear = useCallback(() => { setScore(null); setProfileUrl(''); setMemberId(null) }, [setScore, setProfileUrl, setMemberId])
 
   // auto-refresh sekali saat load kalau profil sudah tersimpan
   useEffect(() => { if (profileUrl) fetchScore(profileUrl).catch(() => {}) }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Ctx.Provider value={{ profileUrl, score, loading, err, setErr, fetchScore, clear }}>
+    <Ctx.Provider value={{ profileUrl, score, memberId, loading, err, setErr, fetchScore, clear }}>
       {children}
     </Ctx.Provider>
   )
