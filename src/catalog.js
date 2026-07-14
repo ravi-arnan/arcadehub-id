@@ -4,8 +4,8 @@ export const SKILL_CATALOG = [
   { id: 1586, name: 'Create Your First Gemini Enterprise Application' },
   { id: 1426, name: 'Develop AI-Powered Prototypes in Google AI Studio' },
   { id: 754, name: 'The Basics of Google Cloud Compute' },
-  { id: 728, name: 'Implement Event-Driven Messaging and Automation Workflows' },
-  { id: 725, name: 'Implement Cloud Storage and Data Protection Solutions' },
+  { id: 728, name: 'Get Started with Pub/Sub' },
+  { id: 725, name: 'Get Started with Cloud Storage' },
   { id: 705, name: 'Create a Streaming Data Lake on Cloud Storage' },
   { id: 671, name: 'Deploy and Manage Applications on Google App Engine' },
   { id: 700, name: 'Implement Speech and Language Solutions with Pre-trained APIs' },
@@ -52,6 +52,19 @@ export const SKILL_CATALOG = [
   { id: 640, name: 'Cloud Architecture: Design, Implement, and Manage' },
   { id: 1558, name: 'Build Global and Regional Load Balancing Solutions' },
   { id: 1453, name: 'Google DeepMind: Train A Small Language Model' },
+  { id: 726, name: 'Get Started with Dataplex' },
+  { id: 761, name: 'Monitor Environments with Google Cloud Managed Service for Prometheus' },
+  { id: 661, name: 'Deploy and Manage Apigee X' },
+  { id: 776, name: 'Use Functions, Formulas and Charts in Google Sheets' },
+  { id: 687, name: 'Build Google Cloud Infrastructure for AWS Professionals' },
+  { id: 784, name: 'Protect Cloud Traffic with Chrome Enterprise Premium Security' },
+  { id: 667, name: 'Analyze Sentiment with Natural Language API' },
+  { id: 636, name: 'Build Infrastructure with Terraform on Google Cloud' },
+  { id: 688, name: 'Build Google Cloud Infrastructure for Azure Professionals' },
+  { id: 691, name: 'Implement CI/CD Pipelines on Google Cloud' },
+  { id: 1412, name: 'Designing Network Security in Google Cloud' },
+  { id: 635, name: 'App Building with AppSheet' },
+  { id: 646, name: 'Classify Images with TensorFlow on Google Cloud' },
 ]
 
 // Access code + game id (skills.google/games/{game}) berubah TIAP BULAN. Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
@@ -63,6 +76,14 @@ export const GAME_CATALOG = [
   { name: 'Arcade Special', sub: 'Safe Spaces', game: 7318, code: '1q-security-19110', img: '/img/game-special.webp', re: /special|safe space/i },
   { name: 'Arcade Simulator', sub: 'Data Mesh Architect', game: 7317, code: '1q-datamesh-16451', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
 ]
+
+// Skill badge yang punya gambar asli di /public/img/skills/{id}.webp (dari screenshot resmi Google Skills).
+// Tambah id di sini saat badge baru dikonversi.
+const SKILL_IMG_IDS = new Set([
+  632, 633, 635, 636, 639, 640, 646, 651, 653, 661, 667, 687, 688, 691,
+  704, 705, 716, 725, 726, 728, 737, 750, 756, 761, 776, 784, 1412,
+])
+export const skillImg = (id) => (SKILL_IMG_IDS.has(id) ? `/img/skills/${id}.webp?v=1` : null)
 
 const UTM = '?utm_source=arcade-hub'
 export const courseUrl = (id) => `https://www.skills.google/course_templates/${id}${UTM}`

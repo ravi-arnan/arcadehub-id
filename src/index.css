@@ -202,6 +202,8 @@ body{
 .bc-badge:hover{transform:scale(1.04)}
 .bc-badge:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .bc-badge img{width:112px;height:112px;object-fit:contain;display:block}
+.bc-badge-skill{width:100%;max-width:210px}
+.bc-badge-skill img{width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.3)}
 .bc-skillthumb{width:112px;height:112px;display:grid;place-items:center;color:var(--gold);background:radial-gradient(circle at 50% 40%,rgba(252,201,52,.14),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:14px}
 .bc-body{display:flex;flex-direction:column;gap:10px;padding:13px 14px 15px;flex:1}
 .bc-title{font-weight:700;font-size:14.5px;line-height:1.32}

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, norm } from '../catalog.js'
 import { useMyProfile } from '../profile.jsx'
 import { IconGrid, IconList, IconArrowRight, IconAward } from '../icons.jsx'
 
@@ -31,9 +31,9 @@ function BadgeThumb({ it, onCopy }) {
   const title = it.type === 'game'
     ? `Buka ${it.name} di Google Skills` + (it.code ? ' (access code otomatis tersalin)' : '')
     : `Buka ${it.name} di Google Skills`
+  const cls = 'bc-badge' + (it.type === 'skill' ? (it.img ? ' bc-badge-skill' : ' bc-skillthumb') : '')
   return (
-    <a className={'bc-badge' + (it.img ? '' : ' bc-skillthumb')} href={it.url}
-      target="_blank" rel="noreferrer" onClick={onCopy} title={title}>
+    <a className={cls} href={it.url} target="_blank" rel="noreferrer" onClick={onCopy} title={title}>
       {it.img ? <img src={it.img} alt={it.name} loading="lazy" /> : <IconAward width="34" height="34" />}
     </a>
   )
@@ -103,7 +103,7 @@ export default function Catalog() {
       type: 'skill',
       name: s.name,
       title: s.name,
-      img: null,
+      img: skillImg(s.id),
       code: null,
       url: courseUrl(s.id),
       points: 0.5,
