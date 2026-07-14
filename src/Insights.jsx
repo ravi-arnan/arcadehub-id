@@ -86,7 +86,7 @@ const GAMES = [
   { name: 'Adventure', img: '/img/game-adventure.webp', re: /adventure/i },
   { name: 'Voyage', img: '/img/game-voyage.webp', re: /voyage/i },
   { name: 'Trail', img: '/img/game-trail.webp', re: /trail/i },
-  { name: 'Special', img: '/img/game-special.webp', re: /special|safe space/i },
+  { name: 'Special', sub: 'Safe Spaces', img: '/img/game-special.webp', re: /special|safe space/i },
   { name: 'Simulator', sub: 'Data Mesh Architect', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
 ]
 

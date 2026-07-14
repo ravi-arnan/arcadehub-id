@@ -54,16 +54,17 @@ export const SKILL_CATALOG = [
   { id: 1453, name: 'Google DeepMind: Train A Small Language Model' },
 ]
 
-// Access code berubah TIAP BULAN (embed tema game). Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
+// Access code + game id (skills.google/games/{game}) berubah TIAP BULAN. Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
 export const GAME_CATALOG = [
-  { name: 'Arcade Base Camp', code: '1q-basecamp-07511', img: '/img/game-basecamp.webp', re: /base ?camp/i },
-  { name: 'Arcade Adventure', code: '1q-lowcode-92316', img: '/img/game-adventure.webp', re: /adventure/i },
-  { name: 'Arcade Voyage', code: '1q-bucket-58231', img: '/img/game-voyage.webp', re: /voyage/i },
-  { name: 'Arcade Trail', code: '1q-workspace-31069', img: '/img/game-trail.webp', re: /trail/i },
-  { name: 'Arcade Special', code: '1q-security-19110', img: '/img/game-special.webp', re: /special|safe space/i },
-  { name: 'Arcade Simulator', sub: 'Data Mesh Architect', code: '1q-datamesh-16451', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
+  { name: 'Arcade Base Camp', game: 7313, code: '1q-basecamp-07511', img: '/img/game-basecamp.webp', re: /base ?camp/i },
+  { name: 'Arcade Adventure', game: 7314, code: '1q-lowcode-92316', img: '/img/game-adventure.webp', re: /adventure/i },
+  { name: 'Arcade Voyage', game: 7315, code: '1q-bucket-58231', img: '/img/game-voyage.webp', re: /voyage/i },
+  { name: 'Arcade Trail', game: 7316, code: '1q-workspace-31069', img: '/img/game-trail.webp', re: /trail/i },
+  { name: 'Arcade Special', sub: 'Safe Spaces', game: 7318, code: '1q-security-19110', img: '/img/game-special.webp', re: /special|safe space/i },
+  { name: 'Arcade Simulator', sub: 'Data Mesh Architect', game: 7317, code: '1q-datamesh-16451', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
 ]
 
 const UTM = '?utm_source=arcade-hub'
 export const courseUrl = (id) => `https://www.skills.google/course_templates/${id}${UTM}`
+export const gameUrl = (id) => `https://www.skills.google/games/${id}${UTM}`
 export const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '')

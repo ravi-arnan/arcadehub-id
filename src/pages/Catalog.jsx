@@ -1,21 +1,37 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, courseUrl, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, norm } from '../catalog.js'
 import { useMyProfile } from '../profile.jsx'
 
-function GameCode({ code }) {
+function GameCard({ g }) {
   const [copied, setCopied] = useState(false)
-  const copy = async () => {
+  const copyCode = async () => {
+    if (!g.code) return
     try {
-      await navigator.clipboard.writeText(code)
+      await navigator.clipboard.writeText(g.code)
       setCopied(true)
-      setTimeout(() => setCopied(false), 1400)
+      setTimeout(() => setCopied(false), 1600)
     } catch { /* clipboard tak tersedia: kode tetap terlihat untuk disalin manual */ }
   }
+  const url = g.game ? gameUrl(g.game) : null
+  const badge = <img src={g.img + '?v=2'} alt={g.name} loading="lazy" />
   return (
-    <button className="gc-code" onClick={copy} title="Salin access code">
-      {copied ? 'Tersalin' : code}
-    </button>
+    <div className={'gamecard' + (g.done ? ' done' : '')}>
+      {url ? (
+        <a className="gc-badge" href={url} target="_blank" rel="noreferrer" onClick={copyCode}
+          title={`Buka ${g.name} di Google Skills` + (g.code ? ' (access code otomatis tersalin)' : '')}>
+          {badge}
+        </a>
+      ) : badge}
+      <div className="gc-name">{g.name}</div>
+      {g.sub && <div className="gc-sub">{g.sub}</div>}
+      <div className={'gc-status' + (g.done ? ' ok' : '')}>{g.done ? '✓ Selesai' : 'Belum'}</div>
+      {g.code && (
+        <button className="gc-code" onClick={copyCode} title="Salin access code">
+          {copied ? 'Tersalin' : g.code}
+        </button>
+      )}
+    </div>
   )
 }
 
@@ -55,17 +71,9 @@ export default function Catalog() {
       <div className="card">
         <div className="card-h">Game Arcade <span className="card-tag">{gameDone}/{games.length}</span></div>
         <div className="games-grid">
-          {games.map((g) => (
-            <div key={g.name} className={'gamecard' + (g.done ? ' done' : '')}>
-              <img src={g.img + '?v=2'} alt={g.name} loading="lazy" />
-              <div className="gc-name">{g.name}</div>
-              {g.sub && <div className="gc-sub">{g.sub}</div>}
-              <div className={'gc-status' + (g.done ? ' ok' : '')}>{g.done ? '✓ Selesai' : 'Belum'}</div>
-              {g.code && <GameCode code={g.code} />}
-            </div>
-          ))}
+          {games.map((g) => <GameCard key={g.name} g={g} />)}
         </div>
-        <div className="card-note">Access code untuk enroll game bulan ini (Jul 2026). Klik kode untuk menyalin. Kode diperbarui tiap bulan.</div>
+        <div className="card-note">Klik badge untuk membuka game di Google Skills (access code otomatis tersalin, tinggal tempel). Atau klik kodenya untuk menyalin manual. Kode game Jul 2026, diperbarui tiap bulan.</div>
       </div>
 
       <div className="card">

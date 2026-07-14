@@ -163,6 +163,9 @@ body{
 .gamecard img{width:100%;border-radius:9px;aspect-ratio:3/2;object-fit:contain;background:transparent;display:block;padding:2px}
 .gc-name{font-weight:700;font-size:13px;margin-top:9px}
 .gc-sub{font-size:10.5px;color:var(--gold);margin-top:2px;line-height:1.3}
+.gc-badge{display:block;cursor:pointer;border-radius:9px;transition:transform .15s}
+.gc-badge:hover{transform:translateY(-2px)}
+.gc-badge:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .gc-code{margin-top:7px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:7px;padding:3px 7px;cursor:pointer;transition:.15s;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .gc-code:hover{color:var(--ink);border-color:var(--gold)}
 .gc-status{font-size:11px;color:var(--muted);margin-top:3px;font-weight:700}
