@@ -87,7 +87,7 @@ const GAMES = [
   { name: 'Voyage', img: '/img/game-voyage.webp', re: /voyage/i },
   { name: 'Trail', img: '/img/game-trail.webp', re: /trail/i },
   { name: 'Special', img: '/img/game-special.webp', re: /special|safe space/i },
-  { name: 'New Game', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
+  { name: 'Simulator', sub: 'Data Mesh Architect', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
 ]
 
 // Game Arcade bulan ini (foto badge asli) + status selesai/belum
@@ -104,6 +104,7 @@ export function MonthlyGames({ badges }) {
             <div key={g.name} className={'gamecard' + (ok ? ' done' : '')}>
               <img src={g.img + '?v=2'} alt={g.name} loading="lazy" />
               <div className="gc-name">{g.name}</div>
+              {g.sub && <div className="gc-sub">{g.sub}</div>}
               <div className={'gc-status' + (ok ? ' ok' : '')}>{ok ? '✓ Selesai' : 'Belum'}</div>
             </div>
           )

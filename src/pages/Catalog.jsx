@@ -3,6 +3,22 @@ import { useNavigate } from 'react-router-dom'
 import { SKILL_CATALOG, GAME_CATALOG, courseUrl, norm } from '../catalog.js'
 import { useMyProfile } from '../profile.jsx'
 
+function GameCode({ code }) {
+  const [copied, setCopied] = useState(false)
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1400)
+    } catch { /* clipboard tak tersedia: kode tetap terlihat untuk disalin manual */ }
+  }
+  return (
+    <button className="gc-code" onClick={copy} title="Salin access code">
+      {copied ? 'Tersalin' : code}
+    </button>
+  )
+}
+
 export default function Catalog() {
   const navigate = useNavigate()
   const { score } = useMyProfile()
@@ -43,10 +59,13 @@ export default function Catalog() {
             <div key={g.name} className={'gamecard' + (g.done ? ' done' : '')}>
               <img src={g.img + '?v=2'} alt={g.name} loading="lazy" />
               <div className="gc-name">{g.name}</div>
+              {g.sub && <div className="gc-sub">{g.sub}</div>}
               <div className={'gc-status' + (g.done ? ' ok' : '')}>{g.done ? '✓ Selesai' : 'Belum'}</div>
+              {g.code && <GameCode code={g.code} />}
             </div>
           ))}
         </div>
+        <div className="card-note">Access code untuk enroll game bulan ini (Jul 2026). Klik kode untuk menyalin. Kode diperbarui tiap bulan.</div>
       </div>
 
       <div className="card">
