@@ -1,0 +1,26 @@
+{
+  "name": "gcaf-arcade-tracker",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node lib/points.test.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@radix-ui/react-dialog": "^1.1.19",
+    "@radix-ui/react-popover": "^1.1.19",
+    "@radix-ui/react-tooltip": "^1.2.12",
+    "@vercel/analytics": "^2.0.1",
+    "framer-motion": "^12.42.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7"
+  }
+}

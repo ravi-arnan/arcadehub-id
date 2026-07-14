@@ -1,0 +1,23 @@
+name: "✨ Usulan Fitur"
+description: Punya ide untuk bikin Arcade Hub lebih oke?
+title: "[Ide]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Ide kamu
+      description: Fitur apa yang kamu mau, dan masalah apa yang diselesaikan?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatif (opsional)
+      description: Cara lain yang sempat kamu pikirkan.
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Mau bantu?
+      options:
+        - label: Aku bersedia bikin PR untuk fitur ini

@@ -1,0 +1,40 @@
+name: "🐛 Laporan Bug"
+description: Laporkan sesuatu yang rusak atau salah hitung
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Apa yang terjadi?
+      description: Jelaskan bug-nya. Kalau soal hitung poin, sebutkan angka yang muncul vs yang seharusnya.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Langkah reproduksi
+      placeholder: |
+        1. Buka tab '...'
+        2. Klik '...'
+        3. Muncul error '...'
+    validations:
+      required: true
+  - type: input
+    id: profile
+    attributes:
+      label: Link profil (opsional)
+      description: Kalau soal perhitungan poin, tempel link public profile Cloud Skills Boost biar gampang ditelusuri.
+  - type: dropdown
+    id: device
+    attributes:
+      label: Perangkat
+      options:
+        - Desktop
+        - Mobile
+        - Keduanya
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: "Chrome 130, Safari 18, dll"

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Grup WhatsApp Komunitas
+    url: https://chat.whatsapp.com/F2nCFAiffFgCjHAVvOXr0d
+    about: Tanya cepat, diskusi, dan bantuan seputar Arcade Fasilitator 2026.
+  - name: 🙋 Tambahkan dirimu sebagai kontributor
+    url: https://github.com/ravi-arnan/arcadehub-id/edit/main/src/contributors.js
+    about: Edit src/contributors.js lewat PR untuk muncul di halaman Kontributor.
