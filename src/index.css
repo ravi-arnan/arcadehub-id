@@ -178,16 +178,58 @@ body{
 .catfilter{display:flex;gap:4px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:11px;padding:4px}
 .catfilter button{background:transparent;border:0;color:var(--muted);font-size:13px;font-weight:700;padding:8px 12px;border-radius:8px;cursor:pointer}
 .catfilter button.on{background:linear-gradient(180deg,#3ad46a,#2bb457);color:#fff}
-.cbadges{display:flex;flex-direction:column;gap:7px}
-.cbadge{display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:11px;padding:12px 14px;text-decoration:none;color:#dbe6fb;transition:.12s}
-.cbadge:hover{background:rgba(255,255,255,.07)}
-.cbadge.done{border-color:rgba(52,201,95,.5);background:rgba(52,201,95,.08)}
-.cb-mark{width:22px;height:22px;flex:none;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff}
-.cbadge.done .cb-mark{background:var(--green);border-color:var(--green)}
-.cb-name{flex:1;font-size:14px;font-weight:600;line-height:1.35}
-.cbadge.done .cb-name{color:#fff}
-.cb-go{color:var(--muted);font-size:15px;flex:none}
-.cbadge:hover .cb-go{color:var(--gold)}
+/* catalog: type tabs + view toggle */
+.catcontrols{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap}
+.cattabs{display:flex;gap:4px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:11px;padding:4px}
+.cattabs button{display:inline-flex;align-items:center;gap:7px;background:transparent;border:0;color:var(--muted);font-size:13px;font-weight:700;padding:8px 13px;border-radius:8px;cursor:pointer;transition:.12s}
+.cattabs button.on{background:linear-gradient(180deg,#6f7bff,#5560e6);color:#fff}
+.cattabs .tabn{font-size:11px;font-weight:800;background:rgba(255,255,255,.14);border-radius:999px;padding:1px 7px;min-width:20px;text-align:center}
+.catview{display:flex;gap:3px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:11px;padding:4px}
+.catview button{display:grid;place-items:center;width:34px;height:34px;background:transparent;border:0;color:var(--muted);border-radius:8px;cursor:pointer;transition:.12s}
+.catview button.on{background:rgba(255,255,255,.1);color:#fff}
+
+/* catalog: grid cards */
+.badgegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.badgecard{display:flex;flex-direction:column;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:.15s}
+.badgecard:hover{border-color:rgba(255,255,255,.22);transform:translateY(-2px)}
+.badgecard.done{border-color:rgba(52,201,95,.5);background:rgba(52,201,95,.05)}
+.bc-top{position:relative;display:grid;place-items:center;padding:18px 12px;min-height:150px;background:rgba(0,0,0,.18)}
+.bc-tag{position:absolute;top:10px;left:10px;font-size:11px;font-weight:800;letter-spacing:.02em;padding:3px 9px;border-radius:7px}
+.bc-tag.game{color:#c7ccff;background:rgba(111,123,255,.2);border:1px solid rgba(111,123,255,.4)}
+.bc-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16);border:1px solid rgba(52,201,95,.4)}
+.bc-check{position:absolute;top:9px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#04240f;display:grid;place-items:center;font-size:13px;font-weight:900}
+.bc-badge{display:block;cursor:pointer;border-radius:9px;transition:transform .15s}
+.bc-badge:hover{transform:scale(1.04)}
+.bc-badge:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.bc-badge img{width:112px;height:112px;object-fit:contain;display:block}
+.bc-skillthumb{width:112px;height:112px;display:grid;place-items:center;color:var(--gold);background:radial-gradient(circle at 50% 40%,rgba(252,201,52,.14),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:14px}
+.bc-body{display:flex;flex-direction:column;gap:10px;padding:13px 14px 15px;flex:1}
+.bc-title{font-weight:700;font-size:14.5px;line-height:1.32}
+.bc-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.bc-meta .gc-code{margin-top:0}
+.bc-pts{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap}
+.bc-start{display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(111,123,255,.14);border:1px solid rgba(111,123,255,.4);color:#c7ccff;font-size:13px;font-weight:700;padding:10px;border-radius:10px;text-decoration:none;transition:.13s}
+.bc-start:hover{background:rgba(111,123,255,.26);color:#fff}
+.badgecard.done .bc-start{background:rgba(52,201,95,.12);border-color:rgba(52,201,95,.4);color:#8fe6b6}
+.badgecard.done .bc-start:hover{background:rgba(52,201,95,.22);color:#fff}
+
+/* catalog: list rows */
+.badgelist{display:flex;flex-direction:column;gap:7px}
+.badgerow{display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:11px;padding:10px 14px;transition:.12s}
+.badgerow:hover{background:rgba(255,255,255,.06)}
+.badgerow.done{border-color:rgba(52,201,95,.5);background:rgba(52,201,95,.07)}
+.br-tag{flex:none;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:6px}
+.br-tag.game{color:#c7ccff;background:rgba(111,123,255,.2)}
+.br-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16)}
+.br-title{flex:1;min-width:0;font-size:14px;font-weight:600;color:#dbe6fb;text-decoration:none;line-height:1.35}
+.br-title:hover{color:#fff}
+.badgerow .gc-code{margin-top:0;flex:none}
+.br-pts{flex:none;font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap}
+.br-status{flex:none;font-size:12px;font-weight:700;color:var(--muted);min-width:64px;text-align:right}
+.br-status.ok{color:var(--green)}
+@media(max-width:560px){
+  .badgerow .gc-code,.br-status{display:none}
+}
 
 /* feedback bubble */
 .fab{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;align-items:center;gap:8px;
