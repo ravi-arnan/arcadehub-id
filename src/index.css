@@ -377,6 +377,48 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .gtag{display:inline-block;margin-right:7px;font-size:11px;font-weight:700;color:#cfe0ff;background:rgba(91,155,255,.18);border:1px solid rgba(91,155,255,.4);padding:1px 8px;border-radius:999px;vertical-align:middle;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .prefill{font-size:12px;color:#7fe6a5;margin:-4px 0 10px}
 .lbsummary{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+
+/* Kahoot-style podium (top 3) */
+.podium{display:flex;align-items:flex-end;gap:12px;margin-top:18px}
+.pod{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;
+  border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 10px 0;position:relative}
+.pod-1{order:2}.pod-2{order:1}.pod-3{order:3}
+.pod-1{background:linear-gradient(180deg,rgba(252,201,52,.20),rgba(252,201,52,.03));border-color:rgba(252,201,52,.55)}
+.pod-2{background:linear-gradient(180deg,rgba(160,107,255,.18),rgba(160,107,255,.03));border-color:rgba(160,107,255,.5)}
+.pod-3{background:linear-gradient(180deg,rgba(52,201,95,.18),rgba(52,201,95,.03));border-color:rgba(52,201,95,.5)}
+.pod-1{transform:translateY(-14px)}
+.pod.me{box-shadow:0 0 0 2px var(--gold) inset}
+.pod-medal{width:34px;height:34px}
+.pod-1 .pod-medal{width:42px;height:42px}
+.pod-name{font-weight:800;font-size:15px;line-height:1.25;margin-top:8px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod-1 .pod-name{font-size:17px}
+.pod-guild{margin:6px 0 0}
+.pod-score{font-family:'PS2P';font-size:22px;color:var(--gold);margin-top:10px;line-height:1}
+.pod-1 .pod-score{font-size:28px}
+.pod-score span{display:block;font-family:'Segoe UI',system-ui,sans-serif;font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.06em;margin-top:5px}
+.pod-stats{display:flex;gap:10px;justify-content:center;font-size:12px;color:var(--muted);margin-top:8px}
+.pod-stats .pstat{display:inline-flex;align-items:center;gap:4px}
+.pod-stats .mini{width:13px;height:13px;opacity:.85}
+.pod-acts{display:flex;gap:6px;margin-top:10px}
+.pod-plinth{width:100%;margin-top:12px;display:grid;place-items:center;font-family:'PS2P';font-size:24px;color:#10132a;
+  border-radius:12px 12px 0 0;box-shadow:inset 0 3px 0 rgba(255,255,255,.35)}
+.pod-1 .pod-plinth{height:76px;font-size:30px;background:linear-gradient(180deg,#fcd452,#f0a92a)}
+.pod-2 .pod-plinth{height:54px;background:linear-gradient(180deg,#bb9cff,#8a5cf0)}
+.pod-3 .pod-plinth{height:40px;background:linear-gradient(180deg,#5fe08f,#2fb45f)}
+@media(max-width:560px){
+  .podium{flex-direction:column;align-items:stretch;gap:10px}
+  .pod{order:0 !important;border-radius:16px;flex-direction:row;flex-wrap:wrap;align-items:center;text-align:left;padding:12px 14px;gap:4px 12px}
+  .pod-1{transform:none}
+  .pod-medal,.pod-1 .pod-medal{width:30px;height:30px}
+  .pod-name{margin-top:0;font-size:16px;flex:1}
+  .pod-guild{order:5;margin:0}
+  .pod-score{margin:0 0 0 auto;font-size:22px}
+  .pod-1 .pod-score{font-size:22px}
+  .pod-stats{margin-top:0}
+  .pod-acts{margin-top:0}
+  .pod-plinth{display:none}
+}
+
 .lblist{margin-top:14px;display:flex;flex-direction:column;gap:10px}
 .lbrow{display:grid;grid-template-columns:auto 1fr auto auto;
   grid-template-areas:'rank info score del' 'ctrl ctrl ctrl ctrl';align-items:center;gap:6px 12px;
