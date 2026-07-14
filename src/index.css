@@ -229,9 +229,10 @@ body{
 @media(max-width:620px){
   .topbar-inner{flex-direction:column;align-items:stretch;gap:10px;padding:10px 12px}
   .brand{justify-content:center}
-  .topnav{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-  .topnav .navitem{flex-direction:column;gap:3px;font-size:10px;padding:8px 2px}
-  .topnav svg{width:19px;height:19px}
+  .topnav{display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
+  .topnav .navitem{justify-content:center;padding:11px 0}
+  .topnav .navitem>span:not(.navpill){display:none}
+  .topnav svg{width:22px;height:22px}
   .main{padding:20px 14px 48px}
 }
 button{font-family:inherit;cursor:pointer}

@@ -7,7 +7,7 @@ export default function Nav() {
   return (
     <nav className="topnav">
       {NAV.map(({ path, label, icon }) => (
-        <NavLink key={path} to={path} className={({ isActive }) => 'navitem' + (isActive ? ' on' : '')}>
+        <NavLink key={path} to={path} aria-label={label} className={({ isActive }) => 'navitem' + (isActive ? ' on' : '')}>
           {({ isActive }) => (
             <>
               {isActive && <m.span className="navpill" layoutId="navpill" transition={{ type: 'spring', stiffness: 500, damping: 34 }} />}
