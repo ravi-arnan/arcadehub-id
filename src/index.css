@@ -215,7 +215,7 @@ body{
 .brandcol p{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:10px}
 .brandcol .disc{color:#8496b8;font-size:11.5px;margin-top:8px}
 .fcol h4{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.flink{display:block;width:100%;background:transparent;border:0;padding:0 0 9px;color:#dbe6fb;font-size:13.5px;font-weight:600;text-decoration:none;text-align:left;cursor:pointer}
+.flink{display:block;width:100%;background:transparent;border:0;padding:0 0 9px;color:#dbe6fb;font-size:13.5px;font-weight:600;text-decoration:none;text-align:left;cursor:pointer;white-space:nowrap}
 .flink:hover{color:var(--gold)}
 .fcode{margin-top:8px;font-size:10.5px;color:var(--muted)}
 .fcode span{display:block;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
