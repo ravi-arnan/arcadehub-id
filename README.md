@@ -23,8 +23,8 @@ leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 
 ## Stack
 
-Vite + React · Framer Motion · Radix UI · Vercel Serverless Functions ·
-Neon Postgres · Vercel Cron.
+Vite + React · React Router v6 · Framer Motion · Radix UI ·
+Vercel Serverless Functions · Neon Postgres · Vercel Cron.
 
 ## Mulai
 
@@ -42,12 +42,21 @@ project). Lihat daftar env di [`.env.example`](.env.example).
 ## Struktur
 
 ```
-src/            komponen React (App, tab, insights, share card, kontribusi, ikon)
-  contributors.js   daftar kontributor, tambahkan dirimu di sini!
-lib/            logika poin + parser profil + DB + rate limit
-api/            serverless functions (score, join, leaderboard, refresh, feedback, cron)
-public/img/     aset gambar (hero, badge game, hadiah)
+src/
+  App.jsx         definisi rute (react-router, tiap halaman lazy-load)
+  routes.jsx      metadata nav (path + label + ikon)
+  pages/          satu file per halaman: Points, Leaderboard, Catalog, Prizes, Info, Contribute
+  components/     Layout, Nav, Footer, Deadline, Bar
+  utils/          util kecil (time)
+  contributors.js daftar kontributor, tambahkan dirimu di sini!
+  (Insights, ShareCard, Medal, icons, Tip, SpaceFX, profile, points, config, catalog)
+lib/              logika poin + parser profil + DB + rate limit (backend)
+api/              serverless functions (score, join, leaderboard, refresh, feedback, cron)
+public/img/       aset gambar (hero, badge game, hadiah)
 ```
+
+Rute: `/points` (home) `/leaderboard` `/catalog` `/prizes` `/info` `/contribute`.
+`/` diarahkan ke `/points` (atau `/leaderboard` bila ada `?guild=`).
 
 Cara poin dihitung, dua window (season vs periode fasilitator), dan hardening
 (SSRF, rate limit, security headers) dijelaskan di komentar `lib/points.js`,
