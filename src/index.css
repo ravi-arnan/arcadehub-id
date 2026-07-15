@@ -234,6 +234,33 @@ body{
 .mb-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16)}
 .mb-date{font-size:11px;color:var(--muted)}
 
+/* catalog: roadmap "Mulai dari Sini" untuk pemula */
+.starthere{position:relative;overflow:hidden;border-color:rgba(252,201,52,.28);background:linear-gradient(180deg,rgba(252,201,52,.07),rgba(255,255,255,.03))}
+.starthere::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.sh-badge{font-family:'PS2P';font-size:9px;letter-spacing:-.5px;color:#1a1400;background:var(--gold);padding:5px 8px;border-radius:7px}
+.sh-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.sh-step{position:relative;display:flex;gap:13px;align-items:flex-start}
+.sh-step:first-child::after{content:'';position:absolute;left:15px;top:34px;bottom:-14px;width:2px;background:linear-gradient(var(--line),transparent);z-index:0}
+.sh-num{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:'PS2P';font-size:12px;color:var(--gold);background:rgba(252,201,52,.12);border:1px solid rgba(252,201,52,.4);z-index:1}
+.sh-main{flex:1;min-width:0}
+.sh-title{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;line-height:1.3}
+.sh-title svg{flex:none;color:var(--gold)}
+.sh-count{margin-left:auto;font-family:'PS2P';font-size:10px;color:var(--gold);background:rgba(252,201,52,.12);padding:4px 8px;border-radius:8px;white-space:nowrap}
+.sh-desc{font-size:12.5px;color:var(--muted);line-height:1.55;margin:6px 0 10px}
+.sh-desc b{color:#e7edfb}
+.sh-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:11px}
+.sh-cta{display:inline-flex;align-items:center;gap:7px;background:rgba(252,201,52,.14);border:1px solid rgba(252,201,52,.4);color:var(--gold);font-size:13px;font-weight:800;padding:8px 14px;border-radius:10px;cursor:pointer;transition:.14s}
+.sh-cta:hover{background:rgba(252,201,52,.24)}
+.sh-ladder{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.sh-rung{display:inline-flex;align-items:center;gap:7px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px}
+.sh-dot{width:20px;height:20px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:900;color:var(--muted);background:rgba(255,255,255,.06)}
+.sh-rlabel{font-size:12px;font-weight:700;color:var(--muted)}
+.sh-rung.now{border-color:rgba(252,201,52,.45);background:rgba(252,201,52,.1)}
+.sh-rung.now .sh-dot{color:#1a1400;background:var(--gold)}
+.sh-rung.now .sh-rlabel{color:var(--gold)}
+.sh-rung.done .sh-dot{color:#04240f;background:var(--green)}
+.sh-rung.done .sh-rlabel{color:#cfe9d8}
+
 /* catalog: type tabs + view toggle */
 .catcontrols{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap}
 .cattabs{display:flex;gap:4px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:11px;padding:4px}

@@ -1,11 +1,78 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, skillEarned, earnedSkillImg, norm } from '../catalog.js'
+import { MS, DEADLINE } from '../points.js'
 import { useMyProfile } from '../profile.jsx'
-import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad } from '../icons.jsx'
+import Bar from '../components/Bar.jsx'
+import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
 const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) } catch { return '' } }
+
+// Roadmap prioritas untuk pemula: urutan resmi silabus (Game dulu, lalu kejar milestone via badge).
+function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) {
+  const [open, setOpen] = useState(true)
+  const fg = score?.facilGames || 0
+  const fs = score?.facilSkills || 0
+  const target = MS.find((m) => !(fg >= m.g && fs >= m.s)) || MS[MS.length - 1]
+  const daysLeft = Math.max(0, Math.floor((DEADLINE.getTime() - Date.now()) / 864e5))
+
+  return (
+    <div className="card starthere">
+      <div className="card-h">
+        <span className="sh-badge">Panduan Pemula</span> Mulai dari Sini
+        <button className="mb-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          {open ? 'Sembunyikan' : 'Lihat'} <span className={'mb-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
+        </button>
+      </div>
+      <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
+        Bingung mulai dari mana? Ikuti urutan ini biar poinmu naik paling cepat.
+      </div>
+      {open && (
+        <ol className="sh-steps">
+          <li className="sh-step">
+            <span className="sh-num">1</span>
+            <div className="sh-main">
+              <div className="sh-title"><IconGamepad width="17" height="17" /> Kerjakan Game dulu <span className="sh-count">{gamesDone}/{gamesTotal}</span></div>
+              <p className="sh-desc">
+                Prioritas #1. Game rilis tiap bulan dengan <b>kuota terbatas</b> dan game lama <b>kedaluwarsa</b>, jadi amankan dulu selagi ada. Sisa {daysLeft} hari menuju penutupan.
+              </p>
+              <button className="sh-cta" onClick={onShowGames}>Lihat {gamesTotal} Game <IconArrowRight width="14" height="14" /></button>
+            </div>
+          </li>
+          <li className="sh-step">
+            <span className="sh-num">2</span>
+            <div className="sh-main">
+              <div className="sh-title"><IconTarget width="17" height="17" /> Kumpulkan badge keahlian <span className="sh-count">target {target.short}</span></div>
+              <p className="sh-desc">
+                Setiap <b>2 badge skill = 1 poin</b>. Kejar target terdekatmu: <b>{target.n}</b> ({target.g} game + {target.s} badge). Belum tahu badge mana? Buka daftar di bawah dan mulai dari topik yang paling kamu minati.
+              </p>
+              <div className="sh-bars">
+                <Bar label="Game" cur={fg} req={target.g} />
+                <Bar label="Badge" cur={fs} req={target.s} />
+              </div>
+              <button className="sh-cta" onClick={onShowSkills}>Lihat badge yang belum <IconArrowRight width="14" height="14" /></button>
+            </div>
+          </li>
+        </ol>
+      )}
+      {open && (
+        <div className="sh-ladder" role="list" aria-label="Tahap milestone">
+          {MS.map((m) => {
+            const done = fg >= m.g && fs >= m.s
+            const isTarget = m.short === target.short && !done
+            return (
+              <div key={m.short} role="listitem" className={'sh-rung' + (done ? ' done' : '') + (isTarget ? ' now' : '')}>
+                <span className="sh-dot" aria-hidden>{done ? '✓' : m.short}</span>
+                <span className="sh-rlabel">{m.n}</span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function MyBadges({ score }) {
   const [open, setOpen] = useState(false)
@@ -156,6 +223,11 @@ export default function Catalog() {
   const gameCount = GAME_CATALOG.length
   const skillCount = SKILL_CATALOG.length
   const doneCount = items.filter((it) => it.done).length
+  const gamesDone = items.filter((it) => it.type === 'game' && it.done).length
+
+  const scrollToCatalog = () => document.getElementById('katalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const showGames = () => { setType('game'); setStatus('all'); setQ(''); scrollToCatalog() }
+  const showSkills = () => { setType('skill'); setStatus('todo'); setQ(''); scrollToCatalog() }
 
   const shown = items.filter((it) => {
     if (type !== 'all' && it.type !== type) return false
@@ -167,6 +239,8 @@ export default function Catalog() {
 
   return (
     <div>
+      <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} onShowGames={showGames} onShowSkills={showSkills} />
+
       {!score && (
         <div className="lb-invite" style={{ marginBottom: 4 }}>
           <div>
@@ -179,7 +253,7 @@ export default function Catalog() {
 
       {score && <MyBadges score={score} />}
 
-      <div className="card">
+      <div className="card" id="katalog">
         <div className="card-h">Katalog Badge <span className="card-tag">{doneCount}/{items.length}</span></div>
 
         <div className="catcontrols">
