@@ -458,7 +458,6 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .gfilter button:hover{background:rgba(255,255,255,.09)}
 .gfilter button.on{background:linear-gradient(180deg,#3ad46a,#2bb457);border-color:transparent;color:#fff}
 .gtag{display:inline-block;margin-right:7px;font-size:11px;font-weight:700;color:#cfe0ff;background:rgba(91,155,255,.18);border:1px solid rgba(91,155,255,.4);padding:1px 8px;border-radius:999px;vertical-align:middle;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.prefill{font-size:12px;color:#7fe6a5;margin:-4px 0 10px}
 .lbsummary{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 
 /* Kahoot-style podium (top 3) */
@@ -531,13 +530,6 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .ghost.danger:hover{color:#ff9b9b;border-color:rgba(255,120,120,.5)}
 
 /* guild board */
-.joinToggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  background:var(--card);border:1px solid var(--line);color:#eaf1ff;border-radius:14px;padding:15px 18px;
-  font-size:15px;font-weight:700;cursor:pointer;transition:.12s}
-.joinToggle:hover{background:rgba(255,255,255,.08)}
-.joinToggle.open{background:linear-gradient(180deg,#3ad46a,#2bb457);border-color:transparent;color:#fff}
-.jt-caret{color:var(--muted)}
-.joinToggle.open .jt-caret{color:#fff}
 .joincard{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
 .joincard .jt{font-weight:800;font-size:17px}
 .joincard .jp{font-size:13.5px;color:var(--muted);line-height:1.5;margin:6px 0 14px}
@@ -545,6 +537,9 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .fin::placeholder{color:#8a99ba}
 .frow{display:flex;gap:10px}
 .frow .fin{margin-bottom:0}
+.guildin{font-size:13.5px;padding:10px 13px}
+.guildrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px}
+.guildrow .guildin{margin-bottom:0;flex:1;min-width:150px}
 .joinbtn{background:linear-gradient(180deg,#3ad46a,#2bb457);border:0;color:#fff;font-weight:800;font-size:15px;padding:0 20px;border-radius:11px;white-space:nowrap;box-shadow:0 8px 20px rgba(20,120,55,.35)}
 .joinbtn:disabled{opacity:.6}
 .ferr{margin-top:12px;background:rgba(255,80,80,.12);border:1px solid rgba(255,120,120,.4);color:#ffbcbc;border-radius:10px;padding:10px 13px;font-size:13.5px}

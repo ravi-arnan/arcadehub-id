@@ -12,13 +12,38 @@ const ShareCard = lazy(() => import('../ShareCard.jsx'))
 import Bar from '../components/Bar.jsx'
 import { ago } from '../utils/time.js'
 
+// Guild tampil/ubah di tampilan tersinkron. Kosongkan lalu simpan tidak menghapus guild lama (backend COALESCE).
+function GuildRow() {
+  const { profileUrl, guild, loading, fetchScore } = useMyProfile()
+  const [edit, setEdit] = useState(false)
+  const [val, setVal] = useState(guild || '')
+  const save = () => { fetchScore(profileUrl, val).catch(() => {}); setEdit(false) }
+  if (!edit) {
+    return (
+      <div className="guildrow">
+        <span className="pmeta">Guild: <b>{guild || 'belum diatur'}</b></span>
+        <button className="miniref" onClick={() => { setVal(guild || ''); setEdit(true) }}>{guild ? 'Ubah' : 'Atur guild'}</button>
+      </div>
+    )
+  }
+  return (
+    <div className="guildrow">
+      <input className="fin guildin" placeholder="Kode guild" value={val} autoFocus
+        onChange={(e) => setVal(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && save()} />
+      <button className="miniref accent" disabled={loading} onClick={save}>Simpan</button>
+      <button className="miniref" onClick={() => setEdit(false)}>Batal</button>
+    </div>
+  )
+}
+
 // Poin Saya: otomatis dari public profile Cloud Skills Boost (bukan input manual)
 function MyPoints() {
-  const { profileUrl, score, loading, err, fetchScore, clear } = useMyProfile()
+  const { profileUrl, score, guild, loading, err, fetchScore, clear } = useMyProfile()
   const [input, setInput] = useState(profileUrl || '')
+  const [guildInput, setGuildInput] = useState(guild || '')
   const [showBadges, setShowBadges] = useState(false)
   const [showShare, setShowShare] = useState(false)
-  const submit = () => { if (input.trim()) fetchScore(input.trim()).catch(() => {}) }
+  const submit = () => { if (input.trim()) fetchScore(input.trim(), guildInput).catch(() => {}) }
 
   const total = score?.total || 0
   const shownTotal = useCountUp(total)
@@ -38,6 +63,8 @@ function MyPoints() {
             onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} />
           <button className="joinbtn" onClick={submit}>Hitung</button>
         </div>
+        <input className="fin guildin" placeholder="Kode guild (opsional, mis. dari fasilitatormu)" value={guildInput}
+          onChange={(e) => setGuildInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} />
         {err && <div className="ferr">{err}</div>}
         <p className="jp" style={{ marginTop: 12, marginBottom: 0 }}>Profil harus di-set <b>PUBLIC</b> dulu di Cloud Skills Boost. Bingung cari link-nya? Lihat tab <b>Info</b>.</p>
       </div>
@@ -71,9 +98,10 @@ function MyPoints() {
           <a className="miniref" href={profileUrl} target="_blank" rel="noreferrer">Profil ↗</a>
           <button className="miniref" disabled={loading} onClick={() => fetchScore(profileUrl).catch(() => {})}>{loading ? '…' : '↻ Refresh'}</button>
           <button className="miniref accent" onClick={() => setShowShare(true)}>Bagikan</button>
-          <button className="miniref" onClick={() => { clear(); setInput('') }}>Ganti</button>
+          <button className="miniref" onClick={() => { clear(); setInput(''); setGuildInput('') }}>Ganti</button>
         </span>
       </div>
+      <GuildRow />
       {err && <div className="ferr">{err}</div>}
       {showShare && <Suspense fallback={null}><ShareCard score={score} onClose={() => setShowShare(false)} /></Suspense>}
 

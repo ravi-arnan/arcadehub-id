@@ -16,19 +16,22 @@ export function ProfileProvider({ children }) {
   const [profileUrl, setProfileUrl] = useLocal('gcaf2026_my_profile', '')
   const [score, setScore] = useLocal('gcaf2026_my_score', null)
   const [memberId, setMemberId] = useLocal('gcaf2026_member_id', null)
+  const [guild, setGuild] = useLocal('gcaf2026_my_guild', '')
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState('')
 
   // Hitung poin + otomatis daftarkan/perbarui ke leaderboard (via /api/join).
   // Satu langkah: masuk profil di Poin Saya = otomatis tampil di Leaderboard.
-  const fetchScore = useCallback(async (url) => {
+  // guildArg (opsional) menang atas ?guild= di URL dan guild tersimpan; backend COALESCE jaga guild lama kalau kosong.
+  const fetchScore = useCallback(async (url, guildArg) => {
     setLoading(true); setErr('')
     try {
-      let guild = ''
-      try { guild = new URLSearchParams(window.location.search).get('guild') || '' } catch { /* ignore */ }
+      let urlGuild = ''
+      try { urlGuild = new URLSearchParams(window.location.search).get('guild') || '' } catch { /* ignore */ }
+      const code = (guildArg ?? '').trim() || urlGuild || guild || ''
       const r = await fetch('/api/join', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profileUrl: url, name: '', code: guild }),
+        body: JSON.stringify({ profileUrl: url, name: '', code }),
       })
       const j = await r.json()
       if (!r.ok) throw new Error(j.error || 'Gagal menghitung')
@@ -41,17 +44,18 @@ export function ProfileProvider({ children }) {
       })
       setProfileUrl(m.profileUrl || url)
       if (j.id) setMemberId(j.id)
+      if (code) setGuild(code)
       return j
     } catch (e) { setErr(e.message); throw e } finally { setLoading(false) }
-  }, [setScore, setProfileUrl, setMemberId])
+  }, [setScore, setProfileUrl, setMemberId, setGuild, guild])
 
-  const clear = useCallback(() => { setScore(null); setProfileUrl(''); setMemberId(null) }, [setScore, setProfileUrl, setMemberId])
+  const clear = useCallback(() => { setScore(null); setProfileUrl(''); setMemberId(null); setGuild('') }, [setScore, setProfileUrl, setMemberId, setGuild])
 
   // auto-refresh sekali saat load kalau profil sudah tersimpan
   useEffect(() => { if (profileUrl) fetchScore(profileUrl).catch(() => {}) }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Ctx.Provider value={{ profileUrl, score, memberId, loading, err, setErr, fetchScore, clear }}>
+    <Ctx.Provider value={{ profileUrl, score, memberId, guild, loading, err, setErr, fetchScore, clear }}>
       {children}
     </Ctx.Provider>
   )
