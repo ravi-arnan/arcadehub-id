@@ -9,5 +9,6 @@ export default function Deadline() {
   if (ms <= 0) return <span className="dl closed">Program fasilitator ditutup</span>
   const days = Math.floor(ms / 864e5)
   const hours = Math.floor((ms % 864e5) / 36e5)
-  return <span className="dl"><b>{days}</b> hari <b>{hours}</b> jam menuju penutupan fasilitator (14 Sep 2026)</span>
+  const closeDate = DEADLINE.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+  return <span className="dl"><b>{days}</b> hari <b>{hours}</b> jam menuju penutupan fasilitator ({closeDate})</span>
 }
