@@ -1,7 +1,8 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { Outlet, useLocation, Link } from 'react-router-dom'
 import { m, AnimatePresence } from 'framer-motion'
 import { CONFIG } from '../config.js'
+import { titleFor } from '../routes.jsx'
 import SpaceFX from '../SpaceFX.jsx'
 import Nav from './Nav.jsx'
 import Footer from './Footer.jsx'
@@ -13,6 +14,7 @@ const FeedbackBubble = lazy(() => import('../FeedbackBubble.jsx'))
 
 export default function Layout() {
   const location = useLocation()
+  useEffect(() => { document.title = titleFor(location.pathname) }, [location.pathname])
   return (
     <div className="page">
       <SpaceFX />

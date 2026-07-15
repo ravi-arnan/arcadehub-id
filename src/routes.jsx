@@ -11,3 +11,8 @@ export const NAV = [
 export function NavIcon({ icon }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icon}</svg>
 }
+
+// Judul dokumen per rute (SPA: <title> statis, di-update per navigasi). Fallback ke brand saja.
+const BRAND = 'Arcade Hub'
+const PAGE_TITLES = { ...Object.fromEntries(NAV.map((n) => [n.path, n.label])), '/roadmap': 'Roadmap' }
+export const titleFor = (path) => (PAGE_TITLES[path] ? `${PAGE_TITLES[path]} · ${BRAND}` : BRAND)
