@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { LazyMotion, domAnimation, MotionConfig } from 'framer-motion'
 import * as Tooltip from '@radix-ui/react-tooltip'
 import { BrowserRouter } from 'react-router-dom'
@@ -25,5 +26,6 @@ createRoot(document.getElementById('root')).render(
       </LazyMotion>
     </ErrorBoundary>
     <Analytics />
+    <SpeedInsights />
   </React.StrictMode>
 )

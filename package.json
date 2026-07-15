@@ -15,6 +15,7 @@
     "@radix-ui/react-popover": "^1.1.19",
     "@radix-ui/react-tooltip": "^1.2.12",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "framer-motion": "^12.42.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
