@@ -73,12 +73,12 @@ export const SKILL_CATALOG = [
 
 // Access code + game id (skills.google/games/{game}) berubah TIAP BULAN. Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
 export const GAME_CATALOG = [
-  { name: 'Arcade Base Camp', game: 7313, code: '1q-basecamp-07511', img: '/img/game-basecamp.webp', re: /base ?camp/i },
-  { name: 'Arcade Adventure', sub: 'Low-Code Development', game: 7314, code: '1q-lowcode-92316', img: '/img/game-adventure.webp', re: /adventure/i },
-  { name: 'Arcade Voyage', sub: 'Cloud Storage and Data Governance', game: 7315, code: '1q-bucket-58231', img: '/img/game-voyage.webp', re: /voyage/i },
-  { name: 'Arcade Trail', sub: 'Google Workspace Administration', game: 7316, code: '1q-workspace-31069', img: '/img/game-trail.webp', re: /trail/i },
-  { name: 'Arcade Special', sub: 'Safe Spaces', game: 7318, code: '1q-security-19110', img: '/img/game-special.webp', re: /special|safe space/i },
-  { name: 'Arcade Simulator', sub: 'Data Mesh Architect', game: 7317, code: '1q-datamesh-16451', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
+  { name: 'Arcade Base Camp', short: 'Base Camp', game: 7313, code: '1q-basecamp-07511', img: '/img/game-basecamp.webp', re: /base ?camp/i },
+  { name: 'Arcade Adventure', short: 'Adventure', sub: 'Low-Code Development', game: 7314, code: '1q-lowcode-92316', img: '/img/game-adventure.webp', re: /adventure/i },
+  { name: 'Arcade Voyage', short: 'Voyage', sub: 'Cloud Storage and Data Governance', game: 7315, code: '1q-bucket-58231', img: '/img/game-voyage.webp', re: /voyage/i },
+  { name: 'Arcade Trail', short: 'Trail', sub: 'Google Workspace Administration', game: 7316, code: '1q-workspace-31069', img: '/img/game-trail.webp', re: /trail/i },
+  { name: 'Arcade Special', short: 'Special', sub: 'Safe Spaces', game: 7318, code: '1q-security-19110', img: '/img/game-special.webp', re: /special|safe space/i },
+  { name: 'Arcade Simulator', short: 'Simulator', sub: 'Data Mesh Architect', game: 7317, code: '1q-datamesh-16451', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
 ]
 
 // Skill badge yang punya gambar asli di /public/img/skills/{id}.webp (dari screenshot resmi Google Skills).

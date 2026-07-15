@@ -1,4 +1,5 @@
 import { IconGamepad, IconTent, IconTarget, IconHelp, IconAward } from './icons.jsx'
+import { GAME_CATALOG } from './catalog.js'
 
 const DOW = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
@@ -81,14 +82,8 @@ export function CategoryTable({ badges }) {
   )
 }
 
-const GAMES = [
-  { name: 'Base Camp', img: '/img/game-basecamp.webp', re: /base ?camp/i },
-  { name: 'Adventure', img: '/img/game-adventure.webp', re: /adventure/i },
-  { name: 'Voyage', img: '/img/game-voyage.webp', re: /voyage/i },
-  { name: 'Trail', img: '/img/game-trail.webp', re: /trail/i },
-  { name: 'Special', sub: 'Safe Spaces', img: '/img/game-special.webp', re: /special|safe space/i },
-  { name: 'Simulator', sub: 'Data Mesh Architect', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
-]
+// Satu sumber kebenaran daftar game di catalog.js; di sini pakai nama pendek + sub.
+const GAMES = GAME_CATALOG.map((g) => ({ name: g.short, sub: g.sub, img: g.img, re: g.re }))
 
 // Game Arcade bulan ini (foto badge asli) + status selesai/belum
 export function MonthlyGames({ badges }) {
