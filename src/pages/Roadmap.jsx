@@ -53,11 +53,11 @@ function Group({ group }) {
       <div className="rm-items">
         {group.items.map((it) => (
           <div key={it.title} className={'rmitem ' + group.tone}>
-            <span className="ri-dot" aria-hidden />
-            <div>
+            <div className="ri-head">
+              <span className="ri-dot" aria-hidden />
               <div className="ri-title">{it.title}</div>
-              <div className="ri-desc">{it.desc}</div>
             </div>
+            <div className="ri-desc">{it.desc}</div>
           </div>
         ))}
       </div>
@@ -73,7 +73,9 @@ export default function Roadmap() {
         <p className="rm-lead">Target dan arah pengembangan Arcade Hub. Tools ini open-source dan digerakkan komunitas fasilitator, jadi urutan bisa berubah sesuai kebutuhan dan masukan.</p>
         <p className="rm-lead" style={{ marginTop: 8 }}>Punya ide atau nemu bug? Kirim lewat tombol <b>Masukan</b> di pojok, atau lihat cara ikut kontribusi di halaman <Link to="/contribute">Kontribusi</Link>.</p>
       </div>
-      {GROUPS.map((g) => <Group key={g.key} group={g} />)}
+      <div className="rm-board">
+        {GROUPS.map((g) => <Group key={g.key} group={g} />)}
+      </div>
       <div className="foot" style={{ marginTop: 14 }}>Status best-effort, bukan janji rilis. Diperbarui seiring pengembangan.</div>
     </div>
   )
