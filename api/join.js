@@ -21,16 +21,24 @@ export default async function handler(req, res) {
 
     const sql = await ensureSchema()
     const id = crypto.randomUUID()
-    await sql`
-      INSERT INTO members (id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, last_synced)
-      VALUES (${id}, ${guild ?? DEFAULT_GUILD}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, now())
+    const token = crypto.randomUUID()
+    // xmax=0 hanya pada baris hasil INSERT (bukan UPDATE via ON CONFLICT); dipakai untuk
+    // memutuskan apakah token boleh dikembalikan. Token TIDAK di-set ulang saat re-sync.
+    const rows = await sql`
+      INSERT INTO members (id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, remove_token, last_synced)
+      VALUES (${id}, ${guild ?? DEFAULT_GUILD}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, ${token}, now())
       ON CONFLICT (profile_url) DO UPDATE SET
         guild = COALESCE(${guild}, members.guild), name = EXCLUDED.name, games = EXCLUDED.games, skills = EXCLUDED.skills,
         facil_games = EXCLUDED.facil_games, facil_skills = EXCLUDED.facil_skills,
-        base = EXCLUDED.base, mbonus = EXCLUDED.mbonus, total = EXCLUDED.total, tier_idx = EXCLUDED.tier_idx, last_synced = now()`
-
-    const rows = await sql`SELECT id, guild FROM members WHERE profile_url = ${url}`
-    res.status(200).json({ ok: true, id: rows[0]?.id, guild: rows[0]?.guild, member: { ...s, name: displayName, profileUrl: url, guild: rows[0]?.guild } })
+        base = EXCLUDED.base, mbonus = EXCLUDED.mbonus, total = EXCLUDED.total, tier_idx = EXCLUDED.tier_idx, last_synced = now()
+      RETURNING id, guild, (xmax = 0) AS inserted, remove_token`
+    const row = rows[0] || {}
+    res.status(200).json({
+      ok: true, id: row.id, guild: row.guild,
+      // Hanya kembalikan token pada join pertama; re-sync/join oleh orang lain atas profil publik tidak dapat token.
+      removeToken: row.inserted ? row.remove_token : null,
+      member: { ...s, name: displayName, profileUrl: url, guild: row.guild },
+    })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Gagal memproses.' })
   }
