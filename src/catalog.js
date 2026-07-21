@@ -124,4 +124,17 @@ export const earnedSkillImg = (title) => {
 const UTM = '?utm_source=arcade-hub'
 export const courseUrl = (id) => `https://www.skills.google/course_templates/${id}${UTM}`
 export const gameUrl = (id) => `https://www.skills.google/games/${id}${UTM}`
+
+// Link ke halaman badge di Skills Boost dari judul yang di-earn: game -> halaman game, skill -> course.
+// Cocokkan nama/alias seperti earnedSkillImg. null kalau di luar katalog (tanpa link).
+export const badgeUrl = (title) => {
+  const t = title || ''
+  const g = GAME_CATALOG.find((x) => x.re.test(t))
+  if (g) return gameUrl(g.game)
+  const n = norm(t)
+  for (const s of SKILL_CATALOG) {
+    if (norm(s.name) === n || (SKILL_ALIASES[s.id] || []).some((a) => norm(a) === n)) return courseUrl(s.id)
+  }
+  return null
+}
 export const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '')

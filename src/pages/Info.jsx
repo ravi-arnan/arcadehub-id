@@ -1,5 +1,18 @@
 import { useState } from 'react'
 import { CONFIG } from '../config.js'
+import Collapse from '../components/Collapse.jsx'
+import PointsSystem from '../components/PointsSystem.jsx'
+
+// FAQ terkontrol (bukan <details> native) agar buka/tutupnya beranimasi seperti collapsible lain.
+function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className={'faq-item' + (open ? ' open' : '')}>
+      <button className="faq-q" onClick={() => setOpen((o) => !o)} aria-expanded={open}>{q}</button>
+      <Collapse open={open}><p className="faq-a">{a}</p></Collapse>
+    </div>
+  )
+}
 
 function CopyCode() {
   const [copied, setCopied] = useState(false)
@@ -77,15 +90,12 @@ export default function Info() {
         </div>
       </div>
 
+      <PointsSystem />
+
       <div className="infocard">
         <div className="ic-t">FAQ</div>
         <div className="faq">
-          {FAQ.map(([q, a], i) => (
-            <details key={i}>
-              <summary>{q}</summary>
-              <p>{a}</p>
-            </details>
-          ))}
+          {FAQ.map(([q, a], i) => <FaqItem key={i} q={q} a={a} />)}
         </div>
       </div>
 

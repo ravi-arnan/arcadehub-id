@@ -10,6 +10,9 @@ import Medal from '../Medal.jsx'
 // Modal share (pakai Radix Dialog) hanya di-load saat tombol Bagikan diklik.
 const ShareCard = lazy(() => import('../ShareCard.jsx'))
 import Bar from '../components/Bar.jsx'
+import MyBadges from '../components/MyBadges.jsx'
+import Collapse from '../components/Collapse.jsx'
+import ArcadeHero from '../components/ArcadeHero.jsx'
 import { ago } from '../utils/time.js'
 
 // Guild tampil/ubah di tampilan tersinkron. Kosongkan lalu simpan tidak menghapus guild lama (backend COALESCE).
@@ -38,12 +41,16 @@ function GuildRow() {
 
 // Poin Saya: otomatis dari public profile Cloud Skills Boost (bukan input manual)
 function MyPoints() {
-  const { profileUrl, score, guild, loading, err, fetchScore, clear } = useMyProfile()
+  const { profileUrl, score, guild, loading, err, fetchScore, clear, leave, canLeave } = useMyProfile()
   const [input, setInput] = useState(profileUrl || '')
   const [guildInput, setGuildInput] = useState(guild || '')
   const [showBadges, setShowBadges] = useState(false)
   const [showShare, setShowShare] = useState(false)
   const submit = () => { if (input.trim()) fetchScore(input.trim(), guildInput).catch(() => {}) }
+  const handleLeave = () => {
+    if (!window.confirm('Keluar dari leaderboard? Entrimu dihapus dari papan peringkat publik. Kamu bisa gabung lagi kapan saja dengan menghitung poin.')) return
+    leave().then(() => { setInput(''); setGuildInput('') }).catch(() => {})
+  }
 
   const total = score?.total || 0
   const shownTotal = useCountUp(total)
@@ -52,10 +59,7 @@ function MyPoints() {
   if (!score && !loading) {
     return (
       <div className="joincard">
-        <picture>
-          <source srcSet="/img/hero.webp" type="image/webp" />
-          <img className="herobanner" src="/img/hero.png" alt="Google Cloud Arcade" width="752" height="547" fetchPriority="high" decoding="async" />
-        </picture>
+        <ArcadeHero />
         <div className="jt">Hitung poin otomatis</div>
         <p className="jp">Tempel link <b>public profile Google Cloud Skills Boost</b> kamu. Poin, milestone, dan tier dihitung otomatis dari badge-mu. Tidak ada input manual.</p>
         <div className="frow">
@@ -66,7 +70,8 @@ function MyPoints() {
         <input className="fin guildin" placeholder="Kode guild (opsional, mis. dari fasilitatormu)" value={guildInput}
           onChange={(e) => setGuildInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} />
         {err && <div className="ferr">{err}</div>}
-        <p className="jp" style={{ marginTop: 12, marginBottom: 0 }}>Profil harus di-set <b>PUBLIC</b> dulu di Cloud Skills Boost. Bingung cari link-nya? Lihat tab <b>Info</b>.</p>
+        <p className="jp consent">Dengan menghitung poin, profilmu (nama & badge publik) otomatis tampil di <b>leaderboard komunitas</b>. Kamu bisa <b>keluar kapan saja</b> lewat tombol di halaman ini.</p>
+        <p className="jp" style={{ marginTop: 10, marginBottom: 0 }}>Profil harus di-set <b>PUBLIC</b> dulu di Cloud Skills Boost. Bingung cari link-nya? Lihat tab <b>Info</b>.</p>
       </div>
     )
   }
@@ -102,27 +107,21 @@ function MyPoints() {
         </span>
       </div>
       <GuildRow />
+      {canLeave && (
+        <div className="leaverow">
+          <span className="pmeta">Tampil di leaderboard komunitas.</span>
+          <button className="leavebtn" disabled={loading} onClick={handleLeave}>Keluar dari leaderboard</button>
+        </div>
+      )}
       {err && <div className="ferr">{err}</div>}
       {showShare && <Suspense fallback={null}><ShareCard score={score} onClose={() => setShowShare(false)} /></Suspense>}
 
-      {(score?.gameList?.length || score?.skillList?.length) ? (
+      {score?.seasonBadges?.length ? (
         <div className="badgebox">
-          <button className="badgetoggle" onClick={() => setShowBadges(!showBadges)}>
-            {showBadges ? '▾' : '▸'} Rincian badge yang dihitung ({(score.gameList?.length || 0) + (score.skillList?.length || 0)})
+          <button className={'badgetoggle' + (showBadges ? ' open' : '')} onClick={() => setShowBadges(!showBadges)} aria-expanded={showBadges}>
+            <span className="bt-chev" aria-hidden>▸</span> Badge Saya ({score.seasonBadges.length})
           </button>
-          {showBadges && (
-            <div className="badgelists">
-              <div className="bl">
-                <div className="blh">Arcade Games · {score.gameList?.length || 0} ({score.gameList?.length || 0} poin)</div>
-                {score.gameList?.length ? score.gameList.map((t, i) => <div key={i} className="bi g">{t}</div>) : <div className="bi none">tidak ada</div>}
-              </div>
-              <div className="bl">
-                <div className="blh">Skill Badges · {score.skillList?.length || 0} ({Math.floor((score.skillList?.length || 0) / 2)} poin)</div>
-                {score.skillList?.length ? score.skillList.map((t, i) => <div key={i} className="bi s">{t}</div>) : <div className="bi none">tidak ada</div>}
-              </div>
-              <div className="blnote">Total poin dari badge Arcade Season 2026 (Jan–Des). Klasifikasi game/skill best-effort dari nama badge.</div>
-            </div>
-          )}
+          <Collapse open={showBadges}><MyBadges badges={score.seasonBadges} /></Collapse>
         </div>
       ) : null}
 

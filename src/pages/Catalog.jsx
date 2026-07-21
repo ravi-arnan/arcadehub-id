@@ -1,13 +1,13 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, skillEarned, earnedSkillImg, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
 import { useMyProfile } from '../profile.jsx'
 import Bar from '../components/Bar.jsx'
+import Collapse from '../components/Collapse.jsx'
 import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
-const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) } catch { return '' } }
 
 // Roadmap prioritas untuk pemula: urutan resmi silabus (Game dulu, lalu kejar milestone via badge).
 function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) {
@@ -28,7 +28,7 @@ function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) 
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
         Bingung mulai dari mana? Ikuti urutan ini biar poinmu naik paling cepat.
       </div>
-      {open && (
+      <Collapse open={open}>
         <ol className="sh-steps">
           <li className="sh-step">
             <span className="sh-num">1</span>
@@ -55,8 +55,6 @@ function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) 
             </div>
           </li>
         </ol>
-      )}
-      {open && (
         <div className="sh-ladder" role="list" aria-label="Tahap milestone">
           {MS.map((m) => {
             const done = fg >= m.g && fs >= m.s
@@ -69,47 +67,7 @@ function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) 
             )
           })}
         </div>
-      )}
-    </div>
-  )
-}
-
-function MyBadges({ score }) {
-  const [open, setOpen] = useState(false)
-  const badges = score?.seasonBadges || []
-  if (!badges.length) return null
-  const sorted = [...badges].sort((a, b) => (b.earned || '').localeCompare(a.earned || ''))
-  const nGame = badges.filter((b) => b.cat === 'game').length
-  const nSkill = badges.length - nGame
-  return (
-    <div className="card">
-      <div className="card-h">
-        Badge Saya <span className="card-tag">{badges.length}</span>
-        <button className="mb-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-          {open ? 'Sembunyikan' : 'Lihat semua'} <span className={'mb-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
-        </button>
-      </div>
-      <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 12 : 0 }}>
-        Semua badge yang sudah kamu selesaikan (dari profilmu): {nGame} game, {nSkill} skill, total <b>{fmtPts(score.total)}</b> poin.
-      </div>
-      {open && (
-      <div className="mybadges">
-        {sorted.map((b, i) => {
-          const img = b.cat === 'game' ? null : earnedSkillImg(b.title)
-          return (
-            <div key={i} className={'mybadge ' + b.cat}>
-              <span className="mb-ic">
-                {img ? <img src={img} alt="" loading="lazy" /> : b.cat === 'game' ? <IconGamepad /> : <IconAward />}
-              </span>
-              <div className="mb-body">
-                <div className="mb-name" title={b.title}>{b.title}</div>
-                <div className="mb-meta"><span className={'mb-tag ' + b.cat}>{b.cat === 'game' ? 'Game' : 'Skill'}</span>{b.earned && <span className="mb-date">{fmtDate(b.earned)}</span>}</div>
-              </div>
-            </div>
-          )
-        })}
-      </div>
-      )}
+      </Collapse>
     </div>
   )
 }
@@ -242,7 +200,7 @@ export default function Catalog() {
       <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} onShowGames={showGames} onShowSkills={showSkills} />
 
       {!score && (
-        <div className="lb-invite" style={{ marginBottom: 4 }}>
+        <div className="lb-invite" style={{ marginTop: 16, marginBottom: 4 }}>
           <div>
             <div className="li-t">Pantau progress badge kamu</div>
             <div className="li-p">Hitung poin dulu di tab Poin Saya agar katalog menandai badge yang sudah kamu selesaikan.</div>
@@ -250,8 +208,6 @@ export default function Catalog() {
           <button className="joinbtn" onClick={() => navigate('/points')}>Hitung Poin Saya</button>
         </div>
       )}
-
-      {score && <MyBadges score={score} />}
 
       <div className="card" id="katalog">
         <div className="card-h">Katalog Badge <span className="card-tag">{doneCount}/{items.length}</span></div>

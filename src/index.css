@@ -144,6 +144,44 @@ body{
 .card-note{font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.5}
 .herobanner{width:100%;height:auto;aspect-ratio:752/547;border-radius:12px;margin-bottom:16px;display:block}
 
+/* ===== Hero arcade animasi 8-bit (pengganti hero.png) ===== */
+.ahero{position:relative;container-type:inline-size;width:100%;aspect-ratio:752/547;border-radius:12px;margin-bottom:16px;overflow:hidden;
+  background:radial-gradient(120% 130% at 50% -8%, #1b2b52 0%, #101d3f 30%, #0a1330 55%, #060b1e 78%, #04060f 100%);
+  border:1px solid rgba(255,255,255,.08)}
+.ah-stars{position:absolute;inset:0}
+.ah-star{position:absolute;width:1.5px;height:1.5px;border-radius:50%;background:#fff;opacity:.3;animation:ah-tw 3s ease-in-out infinite}
+.ah-star.big{width:2.5px;height:2.5px;box-shadow:0 0 3px rgba(255,255,255,.6)}
+@keyframes ah-tw{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:.95;transform:scale(1)}}
+.ah-moon{position:absolute;right:9%;top:11%;width:8%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 64% 32%, rgba(0,0,0,.16) 0 8%, transparent 9%),
+    radial-gradient(circle at 42% 58%, rgba(0,0,0,.13) 0 6%, transparent 7%),
+    radial-gradient(circle at 30% 44%, rgba(0,0,0,.1) 0 4%, transparent 5%),
+    radial-gradient(circle at 38% 34%, #e8ecf3, #b7c0d0 60%, #8b95aa);
+  box-shadow:inset -4px -4px 0 rgba(0,0,0,.16), 0 0 12px rgba(150,180,235,.18);animation:ah-float 9s ease-in-out infinite}
+@keyframes ah-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+/* sparkle 4-titik kecil */
+.ah-spark{position:absolute;width:11px;height:11px;
+  clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);animation:ah-blink 2.6s ease-in-out infinite}
+.ah-spark.sp1{left:41%;top:30%;background:var(--gold)}
+.ah-spark.sp2{left:26%;top:63%;background:#6ea0ff;animation-delay:.7s}
+.ah-spark.sp3{left:66%;top:60%;width:8px;height:8px;background:#ff7b7b;animation-delay:1.3s}
+@keyframes ah-blink{0%,100%{opacity:.25;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
+.ah-bracket{position:absolute;width:15%;height:24%;border:2px dotted rgba(255,255,255,.3)}
+.ah-bracket.ah-bl{left:14%;top:34%;border-right:0;border-bottom:0}
+.ah-bracket.ah-br{right:13%;top:42%;border-left:0;border-top:0}
+.ah-title{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);text-align:center;padding:0 6%;z-index:4}
+.ah-arcade{font-family:'PS2P';color:var(--gold);font-size:clamp(14px,5cqw,38px);line-height:1;letter-spacing:1px;
+  text-shadow:0 3px 0 rgba(0,0,0,.5);animation:ah-glow 2.6s ease-in-out infinite}
+@keyframes ah-glow{0%,100%{filter:drop-shadow(0 0 0 rgba(252,201,52,0))}50%{filter:drop-shadow(0 0 9px rgba(252,201,52,.45))}}
+.ah-gc{margin-top:clamp(7px,2.2cqw,16px);font-size:clamp(10px,2.4cqw,19px);font-weight:500;color:#dfe6f4;letter-spacing:.6px}
+.ah-laser{position:absolute;top:0;width:2px;height:14px;background:linear-gradient(#bcd4ff,#5b8bff 60%,transparent);opacity:.9;z-index:1;animation:ah-fall linear infinite}
+@keyframes ah-fall{0%{transform:translateY(-20px);opacity:0}12%{opacity:.9}100%{transform:translateY(700px);opacity:0}}
+.ah-laser.la{left:19%;animation-duration:1.5s}
+.ah-laser.lb{left:21%;animation-duration:1.85s;animation-delay:.6s}
+.ah-laser.lc{left:71%;animation-duration:1.7s;animation-delay:.3s}
+.ah-laser.ld{left:73%;animation-duration:2.05s;animation-delay:1s}
+@media(prefers-reduced-motion:reduce){.ahero *{animation:none!important}}
+
 /* weekly line chart */
 .lchart{width:100%;height:auto;display:block}
 .ldays{display:flex;justify-content:space-between;margin-top:4px;padding:0 6px}
@@ -197,47 +235,29 @@ body{
 .rm-badge.plan{color:#c7ccff;background:rgba(160,107,255,.16);border:1px solid rgba(160,107,255,.4)}
 .rm-count{font-size:12px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.06);border-radius:999px;padding:2px 9px}
 .rm-note{font-size:12px;color:var(--muted);flex-basis:100%}
+/* Grup roadmap collapsible */
+button.rm-head{width:100%;padding:0 0 12px;background:none;border:0;border-bottom:1px solid var(--line);color:inherit;font:inherit;cursor:pointer;text-align:left;position:relative}
+button.rm-head:hover .rm-badge{filter:brightness(1.1)}
+.rmgroup.collapsed .rm-head{margin-bottom:0;padding-bottom:0;border-bottom:0}
+.rm-chev{position:absolute;right:0;top:2px;font-size:13px;color:var(--muted);transition:transform .18s}
+.rm-head[aria-expanded="true"] .rm-chev{transform:rotate(180deg)}
 .rm-items{display:flex;flex-direction:column;gap:10px}
 .rmitem{background:rgba(0,0,0,.18);border:1px solid var(--line);border-left-width:3px;border-radius:12px;padding:12px 14px}
 .rmitem.done{border-left-color:var(--green)}
 .rmitem.now{border-left-color:var(--gold)}
 .rmitem.plan{border-left-color:var(--purple)}
 .rmitem:hover{background:rgba(0,0,0,.28);border-color:rgba(255,255,255,.2)}
-.ri-head{display:flex;align-items:center;gap:9px;margin-bottom:4px}
-.ri-dot{flex:none;width:9px;height:9px;border-radius:50%}
-.rmitem.done .ri-dot{background:var(--green);box-shadow:0 0 0 3px rgba(52,201,95,.18)}
-.rmitem.now .ri-dot{background:var(--gold);box-shadow:0 0 0 3px rgba(252,201,52,.18)}
-.rmitem.plan .ri-dot{background:var(--purple);box-shadow:0 0 0 3px rgba(160,107,255,.18)}
+button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;background:none;border:0;color:inherit;font:inherit;cursor:pointer;text-align:left}
 .ri-title{font-weight:700;font-size:14px}
-.ri-desc{font-size:12.5px;color:var(--muted);line-height:1.5}
+.ri-chev{margin-left:auto;font-size:12px;color:var(--muted);transition:transform .18s}
+.ri-head[aria-expanded="true"] .ri-chev{transform:rotate(180deg)}
+.ri-desc{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:8px}
 @media(max-width:760px){.rm-board{grid-template-columns:1fr}}
-
-/* Badge Saya (mirror akun) */
-.mb-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#dbe6fb;font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:9px;cursor:pointer;transition:.13s}
-.mb-toggle:hover{background:rgba(255,255,255,.12)}
-.mb-chev{transition:transform .18s;font-size:11px}
-.mb-chev.up{transform:rotate(180deg)}
-.mybadges{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-.mybadge{display:flex;align-items:center;gap:11px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-left-width:3px;border-radius:12px;padding:9px 12px;min-width:0}
-.mybadge.game{border-left-color:var(--purple)}
-.mybadge.skill{border-left-color:var(--green)}
-.mb-ic{flex:none;width:38px;height:38px;display:grid;place-items:center;border-radius:9px;background:rgba(255,255,255,.05)}
-.mb-ic svg{width:20px;height:20px}
-.mybadge.game .mb-ic{color:var(--purple)}
-.mybadge.skill .mb-ic{color:var(--green)}
-.mb-ic img{width:100%;height:100%;object-fit:contain;border-radius:7px;background:#fff}
-.mb-body{min-width:0;flex:1}
-.mb-name{font-size:13px;font-weight:600;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mb-meta{display:flex;align-items:center;gap:8px;margin-top:4px}
-.mb-tag{font-size:10px;font-weight:800;padding:1px 7px;border-radius:6px}
-.mb-tag.game{color:#c7ccff;background:rgba(160,107,255,.18)}
-.mb-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16)}
-.mb-date{font-size:11px;color:var(--muted)}
 
 /* catalog: roadmap "Mulai dari Sini" untuk pemula */
 .starthere{position:relative;overflow:hidden;border-color:rgba(252,201,52,.28);background:linear-gradient(180deg,rgba(252,201,52,.07),rgba(255,255,255,.03))}
 .starthere::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
-.sh-badge{font-family:'PS2P';font-size:9px;letter-spacing:-.5px;color:#1a1400;background:var(--gold);padding:5px 8px;border-radius:7px}
+.sh-badge{font-weight:800;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#1a1400;background:var(--gold);padding:5px 10px;border-radius:7px;white-space:nowrap}
 .sh-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
 .sh-step{position:relative;display:flex;gap:13px;align-items:flex-start}
 .sh-step:first-child::after{content:'';position:absolute;left:15px;top:34px;bottom:-14px;width:2px;background:linear-gradient(var(--line),transparent);z-index:0}
@@ -448,6 +468,21 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .addbtn{background:linear-gradient(180deg,#3ad46a,#2bb457);border:0;color:#fff;font-weight:800;font-size:15px;padding:0 20px;border-radius:12px;white-space:nowrap;box-shadow:0 8px 20px rgba(20,120,55,.35)}
 .empty{margin-top:20px;background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:28px 20px;text-align:center;color:var(--muted);font-size:15px;line-height:1.5}
 .empty a{color:var(--gold);font-weight:700}
+
+/* Skeleton leaderboard: reserve tinggi biar tidak layout-shift (CLS) saat data async masuk */
+.lb-skel{margin-top:16px}
+.lb-skel-sum{height:36px;border-radius:12px;margin-bottom:16px;max-width:320px}
+.lb-skel-podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:end;margin-bottom:16px}
+.sk-pod{border-radius:14px}
+.sk-pod.p1{height:280px}
+.sk-pod.p2{height:232px}
+.sk-pod.p3{height:212px}
+.lb-skel-rows{display:flex;flex-direction:column;gap:10px}
+.sk-row{height:66px;border-radius:12px}
+.lb-skel-sum,.sk-pod,.sk-row{background:linear-gradient(100deg,rgba(255,255,255,.04) 30%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 70%);background-size:200% 100%;animation:sk-shimmer 1.3s linear infinite}
+@keyframes sk-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(max-width:560px){.sk-pod.p1{height:210px}.sk-pod.p2{height:176px}.sk-pod.p3{height:166px}.sk-row{height:74px}}
+@media(prefers-reduced-motion:reduce){.lb-skel-sum,.sk-pod,.sk-row{animation:none}}
 .lb-note{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;
   background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 16px;font-size:13px;color:var(--muted);line-height:1.5}
 .lb-note b{color:#dbe6fb}
@@ -457,6 +492,18 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .gfilter button{background:var(--card);border:1px solid var(--line);color:#dbe6fb;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gfilter button:hover{background:rgba(255,255,255,.09)}
 .gfilter button.on{background:linear-gradient(180deg,#3ad46a,#2bb457);border-color:transparent;color:#fff}
+
+/* Filter guild collapsible: tombol icon + panel chip */
+.gf-wrap{margin-top:16px}
+.gf-trig{display:inline-flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);color:#dbe6fb;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer}
+.gf-trig:hover{background:rgba(255,255,255,.09)}
+.gf-trig.active{border-color:rgba(52,201,95,.55);background:rgba(52,201,95,.12)}
+.gf-ico{width:15px;height:15px;flex:none}
+.gf-val{color:#fff;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gf-cnt{font-size:11.5px;font-weight:700;color:var(--muted);background:rgba(255,255,255,.1);border-radius:999px;padding:1px 8px}
+.gf-chev{font-size:11px;opacity:.7;transition:transform .18s}
+.gf-trig[aria-expanded="true"] .gf-chev{transform:rotate(180deg)}
+.gf-panel{margin-top:10px}
 .gtag{display:inline-block;margin-right:7px;font-size:11px;font-weight:700;color:#cfe0ff;background:rgba(91,155,255,.18);border:1px solid rgba(91,155,255,.4);padding:1px 8px;border-radius:999px;vertical-align:middle;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lbsummary{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 
@@ -540,6 +587,14 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .guildin{font-size:13.5px;padding:10px 13px}
 .guildrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px}
 .guildrow .guildin{margin-bottom:0;flex:1;min-width:150px}
+
+/* Consent auto-join + tombol keluar leaderboard */
+.joincard .jp.consent{color:#cdd8ef;background:rgba(91,155,255,.1);border:1px solid rgba(91,155,255,.28);border-radius:10px;padding:10px 13px;margin:12px 0 0}
+.leaverow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px}
+.leaverow .pmeta{font-size:12.5px;color:var(--muted)}
+.leavebtn{background:rgba(255,80,80,.1);border:1px solid rgba(255,120,120,.42);color:#ffb4b4;border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:700;cursor:pointer}
+.leavebtn:hover{background:rgba(255,80,80,.18)}
+.leavebtn:disabled{opacity:.55}
 .joinbtn{background:linear-gradient(180deg,#3ad46a,#2bb457);border:0;color:#fff;font-weight:800;font-size:15px;padding:0 20px;border-radius:11px;white-space:nowrap;box-shadow:0 8px 20px rgba(20,120,55,.35)}
 .joinbtn:disabled{opacity:.6}
 .ferr{margin-top:12px;background:rgba(255,80,80,.12);border:1px solid rgba(255,120,120,.4);color:#ffbcbc;border-radius:10px;padding:10px 13px;font-size:13.5px}
@@ -566,6 +621,29 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .infocard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
 .infocard.hero{background:linear-gradient(160deg,rgba(37,211,102,.12),var(--card))}
 .ic-t{font-weight:800;font-size:17px}
+
+/* Sistem Poin (infografik ikon) */
+.psys .ic-t{color:var(--gold);font-family:'PS2P';font-size:15px;letter-spacing:.5px}
+.psys .ic-t::after{content:'';display:block;height:2px;margin-top:10px;border-radius:2px;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 22px,transparent 22px 30px)}
+.ps-rows{margin-top:14px;display:flex;flex-direction:column}
+.ps-row{display:grid;grid-template-columns:120px 40px 1fr;align-items:center;gap:12px;padding:7px 0}
+.ps-row+.ps-row{border-top:1px solid rgba(255,255,255,.05)}
+.ps-label{font-family:'PS2P';font-size:11px;color:#eaf1ff;line-height:1.3}
+.ps-ico{display:flex;justify-content:center}
+.psi{width:32px;height:32px;display:block}
+.ps-game{width:40px;height:40px;border-radius:8px;display:block;object-fit:contain}
+.ps-ex-icons .ps-game{width:34px;height:34px}
+.ps-desc{font-size:13.5px;color:var(--muted)}
+.ps-desc b{color:var(--gold);font-weight:800}
+.ps-example{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(252,201,52,.35);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ps-ex-label{font-family:'PS2P';font-size:11px;color:var(--gold)}
+.ps-ex-icons{display:flex;align-items:center;gap:9px}
+.ps-ex-icons .psi{width:30px;height:30px}
+.ps-ex-eq{font-family:'PS2P';font-size:14px;color:#fff;margin-left:auto}
+.ps-ex-eq b{color:var(--gold)}
+@media(max-width:480px){.ps-row{grid-template-columns:100px 34px 1fr;gap:9px}.ps-label{font-size:9.5px}.ps-ex-eq{margin-left:0}}
 .ic-p{font-size:13.5px;color:var(--muted);line-height:1.5;margin:6px 0 14px}
 .ic-lab{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .codecopy{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(0,0,0,.25);border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;cursor:pointer}
@@ -586,17 +664,18 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .resitem:hover{background:rgba(255,255,255,.08)}
 .resitem span{color:var(--gold)}
 .faq{display:flex;flex-direction:column;gap:8px}
-.faq details{background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:10px;padding:0 14px}
-.faq summary{cursor:pointer;font-weight:700;font-size:14px;padding:13px 0;list-style:none}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::before{content:'+ ';color:var(--gold);font-weight:800}
-.faq details[open] summary::before{content:'– '}
-.faq p{font-size:13.5px;color:var(--muted);line-height:1.55;padding:0 0 14px}
+.faq-item{background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:10px;padding:0 14px}
+.faq-q{display:flex;gap:7px;width:100%;text-align:left;cursor:pointer;font-weight:700;font-size:14px;padding:13px 0;background:none;border:0;color:inherit;font-family:inherit}
+.faq-q::before{content:'+';color:var(--gold);font-weight:800}
+.faq-item.open .faq-q::before{content:'–'}
+.faq-a{font-size:13.5px;color:var(--muted);line-height:1.55;padding:0 0 14px}
 
 /* badge breakdown */
 .badgebox{margin-top:14px}
 .badgetoggle{width:100%;text-align:left;background:var(--card);border:1px solid var(--line);color:#dbe6fb;border-radius:12px;padding:12px 15px;font-size:14px;font-weight:600}
 .badgetoggle:hover{background:rgba(255,255,255,.09)}
+.bt-chev{display:inline-block;transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.badgetoggle.open .bt-chev{transform:rotate(90deg)}
 .badgelists{margin-top:10px;display:flex;flex-direction:column;gap:14px}
 .bl{background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
 .blh{font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
@@ -605,6 +684,31 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .bi.s{background:rgba(91,155,255,.12);border-left:3px solid #5b9bff}
 .bi.none{color:var(--muted);background:transparent;padding-left:0}
 .blnote{font-size:11.5px;color:var(--muted);line-height:1.5}
+
+/* Collapse: animasi tinggi mulus (grid 0fr->1fr) dipakai semua bagian yang bisa dilipat */
+.collapse{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1),opacity .24s ease}
+.collapse.open{grid-template-rows:1fr;opacity:1}
+.collapse-inner{overflow:hidden;min-height:0}
+@media(prefers-reduced-motion:reduce){.collapse{transition:none}}
+
+/* Badge Saya (Poin Saya): filter tabs + grup per bulan + link tiap badge */
+.bs-view{margin-top:10px}
+.bf-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.bf{background:var(--card);border:1px solid var(--line);color:#dbe6fb;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px}
+.bf:hover{background:rgba(255,255,255,.09)}
+.bf span{font-size:11.5px;font-weight:700;color:var(--muted);background:rgba(255,255,255,.08);border-radius:999px;padding:1px 7px}
+.bf.on{background:rgba(52,201,95,.16);border-color:rgba(52,201,95,.5);color:#fff}
+.bf.on span{color:#fff;background:rgba(52,201,95,.35)}
+.bmonth{margin-bottom:14px}
+.bmonth-h{font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.bmonth-h span{font-weight:700;color:#dbe6fb;background:rgba(255,255,255,.08);border-radius:999px;padding:1px 8px}
+.bmonth-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px}
+/* kartu se-baris tinggi seragam (stretch) + teks di-tengah vertikal, cegah gap saat ada judul 2 baris */
+.bmonth-list .bi{margin:0;display:flex;align-items:center;min-height:44px}
+.bi.lk{justify-content:space-between;gap:8px;text-decoration:none;color:inherit;transition:background .12s,transform .12s}
+.bi.lk:hover{filter:brightness(1.25);transform:translateX(2px)}
+.bi-x{font-size:12px;opacity:.55;flex:none}
+.bi.lk:hover .bi-x{opacity:1}
 
 /* prizes / tiers */
 .prizehead{margin-top:18px;background:linear-gradient(180deg,#fdd23f,#f0a92e);border:2.5px solid rgba(255,255,255,.8);
