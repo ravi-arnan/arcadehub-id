@@ -10,6 +10,7 @@ const GROUPS = [
     tone: 'done',
     note: 'Sudah live di produksi.',
     items: [
+      { title: 'Proyeksi milestone', desc: 'Di "Mulai dari Sini": sisa hari menuju penutupan, berapa badge lagi yang dibutuhkan, kecepatan badge per minggu yang diperlukan dibanding kecepatanmu sekarang, plus perkiraan tanggal tercapai kalau ritmemu bertahan.' },
       { title: 'Cakupan tes diperluas', desc: 'Tes otomatis di luar logika poin: parsing profil (regex badge & tanggal), normalisasi URL + guard SSRF, dan matching katalog/alias. 25 tes via node --test, ikut gate CI tiap push.' },
       { title: 'Kontrol privasi leaderboard', desc: 'Pemberitahuan consent saat auto-join + tombol "Keluar dari leaderboard" yang menghapus entrimu (aman lewat token kepemilikan). Bisa gabung lagi kapan saja.' },
       { title: 'Badge Saya lebih rapi', desc: 'Badge di Poin Saya dikelompokkan per bulan, bisa difilter Game vs Skill, dan tiap badge yang dikenali nge-link ke halaman Skills Boost-nya.' },
@@ -32,8 +33,7 @@ const GROUPS = [
     tone: 'now',
     note: 'Prioritas dekat.',
     items: [
-      { title: 'Proyeksi poin', desc: 'Estimasi kapan kamu capai milestone berikutnya berdasarkan kecepatan earn badge-mu, dengan sisa hari menuju penutupan.' },
-      { title: 'Rekomendasi "kerjakan selanjutnya"', desc: 'Saran badge terdekat menuju milestone target, diurutkan prioritas, langsung dari progress profilmu.' },
+      { title: 'Shortlist "kerjakan selanjutnya"', desc: 'Sekarang katalog sudah bisa menyaring badge yang belum diambil dan tombolnya menyebut jumlah yang dibutuhkan. Lanjutannya: shortlist sejumlah itu saja biar tidak bingung memilih dari daftar panjang.' },
       { title: 'Test komponen & E2E (browser)', desc: 'Tes render komponen (jsdom) + alur end-to-end di browser (Playwright). Butuh harness + env DB uji, jadi dikerjakan setelah cakupan logika.' },
     ],
   },

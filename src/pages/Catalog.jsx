@@ -2,12 +2,41 @@ import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
+import { projectMilestone } from '../../lib/projection.js'
 import { useMyProfile } from '../profile.jsx'
+import { shortDate } from '../utils/time.js'
 import Bar from '../components/Bar.jsx'
 import Collapse from '../components/Collapse.jsx'
 import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
+const fmtRate = (n) => (n >= 10 ? Math.round(n) : Math.round(n * 10) / 10).toLocaleString('id-ID')
+
+// Proyeksi: bandingkan kecepatan sekarang dengan kecepatan yang dibutuhkan sampai penutupan.
+// Hanya tampil kalau profil sudah tersinkron (tanpa data, tidak ada yang bisa diproyeksikan).
+function PaceStrip({ p }) {
+  if (p.done) {
+    return <div className="sh-pace ok"><span className="sh-verdict ok">Semua milestone tercapai</span><span className="sh-pdesc">Sisa {p.daysLeft} hari. Badge tambahan tetap menambah poin dasar.</span></div>
+  }
+  if (p.daysLeft === 0) {
+    return <div className="sh-pace late"><span className="sh-verdict late">Periode ditutup</span><span className="sh-pdesc">Batas milestone fasilitator sudah lewat.</span></div>
+  }
+  if (p.needSkills === 0) {
+    return <div className="sh-pace ok"><span className="sh-verdict ok">Badge cukup</span><span className="sh-pdesc">Sisa {p.daysLeft} hari. Badge skill untuk {p.target.short} sudah terpenuhi, tinggal {p.needGames} game lagi.</span></div>
+  }
+  const noHistory = p.perWeekActual === 0
+  return (
+    <div className={'sh-pace ' + (p.onTrack ? 'ok' : 'behind')}>
+      <span className={'sh-verdict ' + (p.onTrack ? 'ok' : 'behind')}>{noHistory ? 'Belum mulai' : p.onTrack ? 'Sesuai target' : 'Perlu ngebut'}</span>
+      <span className="sh-pdesc">
+        Sisa <b>{p.daysLeft} hari</b>, butuh <b>{p.needSkills} badge</b> lagi untuk {p.target.short}: sekitar <b>{fmtRate(p.perWeekNeeded)} badge/minggu</b>.
+        {noHistory
+          ? ' Kamu belum menyelesaikan badge di periode fasilitator, jadi belum ada kecepatan untuk diproyeksikan.'
+          : <> Kecepatanmu sekarang <b>{fmtRate(p.perWeekActual)} badge/minggu</b>{p.onTrack && p.etaDate ? <>, perkiraan tercapai <b>{shortDate(p.etaDate)}</b>.</> : '.'}</>}
+      </span>
+    </div>
+  )
+}
 
 // Roadmap prioritas untuk pemula: urutan resmi silabus (Game dulu, lalu kejar milestone via badge).
 function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) {
@@ -16,6 +45,7 @@ function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) 
   const fs = score?.facilSkills || 0
   const target = MS.find((m) => !(fg >= m.g && fs >= m.s)) || MS[MS.length - 1]
   const daysLeft = Math.max(0, Math.floor((DEADLINE.getTime() - Date.now()) / 864e5))
+  const proj = useMemo(() => projectMilestone({ facilGames: fg, facilSkills: fs }), [fg, fs])
 
   return (
     <div className="card starthere">
@@ -51,7 +81,10 @@ function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) 
                 <Bar label="Game" cur={fg} req={target.g} />
                 <Bar label="Badge" cur={fs} req={target.s} />
               </div>
-              <button className="sh-cta" onClick={onShowSkills}>Lihat badge yang belum <IconArrowRight width="14" height="14" /></button>
+              {score && <PaceStrip p={proj} />}
+              <button className="sh-cta" onClick={onShowSkills}>
+                {score && proj.needSkills > 0 ? `Lihat ${proj.needSkills} badge yang dibutuhkan` : 'Lihat badge yang belum'} <IconArrowRight width="14" height="14" />
+              </button>
             </div>
           </li>
         </ol>

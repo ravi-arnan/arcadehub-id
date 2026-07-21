@@ -1,3 +1,6 @@
+// Tanggal singkat Indonesia (mis. "12 Agu 2026").
+export const shortDate = (t) => new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+
 // Waktu relatif singkat dalam Bahasa Indonesia (mis. "3 mnt lalu").
 export function ago(t) {
   const d = (Date.now() - (typeof t === 'number' ? t : new Date(t).getTime())) / 1000
