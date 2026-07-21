@@ -21,8 +21,8 @@ function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) 
     <div className="card starthere">
       <div className="card-h">
         <span className="sh-badge">Panduan Pemula</span> Mulai dari Sini
-        <button className="mb-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-          {open ? 'Sembunyikan' : 'Lihat'} <span className={'mb-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
+        <button className="sh-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          {open ? 'Sembunyikan' : 'Lihat'} <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
         </button>
       </div>
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
