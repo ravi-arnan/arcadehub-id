@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
 import { projectMilestone } from '../../lib/projection.js'
+import { pickShortlist } from '../../lib/shortlist.js'
 import { useMyProfile } from '../profile.jsx'
 import { shortDate } from '../utils/time.js'
 import Bar from '../components/Bar.jsx'
@@ -39,13 +40,17 @@ function PaceStrip({ p }) {
 }
 
 // Roadmap prioritas untuk pemula: urutan resmi silabus (Game dulu, lalu kejar milestone via badge).
-function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) {
+function StartHere({ score, gamesDone, gamesTotal, skillTodo, onShowGames, onShowSkills }) {
   const [open, setOpen] = useState(true)
+  const [shortOff, setShortOff] = useState(0)
   const fg = score?.facilGames || 0
   const fs = score?.facilSkills || 0
   const target = MS.find((m) => !(fg >= m.g && fs >= m.s)) || MS[MS.length - 1]
   const daysLeft = Math.max(0, Math.floor((DEADLINE.getTime() - Date.now()) / 864e5))
   const proj = useMemo(() => projectMilestone({ facilGames: fg, facilSkills: fs }), [fg, fs])
+  // Shortlist dibatasi 4 walau kebutuhannya lebih banyak: daftar panjang justru
+  // mengembalikan masalah "bingung memilih" yang mau dihilangkan.
+  const shortlist = pickShortlist(skillTodo, shortOff, Math.min(proj.needSkills, 4))
 
   return (
     <div className="card starthere">
@@ -82,6 +87,26 @@ function StartHere({ score, gamesDone, gamesTotal, onShowGames, onShowSkills }) 
                 <Bar label="Badge" cur={fs} req={target.s} />
               </div>
               {score && <PaceStrip p={proj} />}
+              {/* Tanpa profil tersinkron, badge "belum" tidak bisa dipercaya, jadi
+                  shortlist hanya muncul setelah poin dihitung. */}
+              {score && shortlist.length > 0 && (
+                <div className="sh-short">
+                  <div className="sh-shead">
+                    <span>Mulai dari {shortlist.length} badge ini</span>
+                    {skillTodo.length > shortlist.length && (
+                      <button className="sh-swap" onClick={() => setShortOff((o) => o + shortlist.length)}>Ganti saran</button>
+                    )}
+                  </div>
+                  <ul className="sh-slist">
+                    {shortlist.map((it) => (
+                      <li key={it.key}>
+                        <a href={it.url} target="_blank" rel="noreferrer">{it.title} <IconArrowRight width="13" height="13" /></a>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="sh-snote">Bukan urutan prioritas: semua badge skill bernilai sama (0,5 poin). Ini cuma potongan pendek dari {skillTodo.length} badge yang belum kamu ambil, biar tidak bingung memilih.</p>
+                </div>
+              )}
               <button className="sh-cta" onClick={onShowSkills}>
                 {score && proj.needSkills > 0 ? `Lihat ${proj.needSkills} badge yang dibutuhkan` : 'Lihat badge yang belum'} <IconArrowRight width="14" height="14" />
               </button>
@@ -211,6 +236,8 @@ export default function Catalog() {
     return [...games, ...skills]
   }, [gameBadges, earned])
 
+  const skillTodo = useMemo(() => items.filter((it) => it.type === 'skill' && !it.done), [items])
+
   const gameCount = GAME_CATALOG.length
   const skillCount = SKILL_CATALOG.length
   const doneCount = items.filter((it) => it.done).length
@@ -230,7 +257,7 @@ export default function Catalog() {
 
   return (
     <div>
-      <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} onShowGames={showGames} onShowSkills={showSkills} />
+      <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} skillTodo={skillTodo} onShowGames={showGames} onShowSkills={showSkills} />
 
       {!score && (
         <div className="lb-invite" style={{ marginTop: 16, marginBottom: 4 }}>
