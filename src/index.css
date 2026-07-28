@@ -69,15 +69,20 @@ body{
   gap:16px;padding:12px 20px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand-title{font-family:'PS2P';font-size:15px;color:var(--gold);text-shadow:0 2px 0 rgba(0,0,0,.35)}
-.topnav{display:flex;gap:4px}
+.topnav{position:relative;display:flex;gap:4px}
 .topnav .navitem{position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--muted);text-decoration:none;
   font-size:14px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:color .12s,background .12s,transform .12s;white-space:nowrap}
 .topnav .navitem:hover{background:rgba(255,255,255,.07);color:#fff;transform:translateY(-1px)}
 .topnav .navitem:active{transform:scale(.96)}
 .topnav .navitem.on{color:#fff}
 .topnav .navitem.on:hover{background:transparent}
-.topnav .navpill{position:absolute;inset:0;border-radius:10px;background:linear-gradient(180deg,#3ad46a,#2bb457);z-index:0}
-.topnav .navitem>svg,.topnav .navitem>span:not(.navpill){position:relative;z-index:1}
+/* Satu pil untuk seluruh nav, digeser ke item aktif oleh Nav.jsx. Ditaruh
+   paling awal di DOM supaya teks item selalu menimpanya tanpa perlu z-index. */
+.topnav .navpill{position:absolute;top:0;left:0;height:100%;border-radius:10px;
+  background:linear-gradient(180deg,#3ad46a,#2bb457);pointer-events:none;
+  transition:transform .34s cubic-bezier(.22,1,.36,1),width .34s cubic-bezier(.22,1,.36,1),opacity .15s}
+@media (prefers-reduced-motion:reduce){.topnav .navpill{transition:none}}
+.topnav .navitem>svg,.topnav .navitem>span{position:relative;z-index:1}
 .topnav svg{width:18px;height:18px;flex:none}
 /* Skeleton loading saat pindah halaman */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
