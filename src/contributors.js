@@ -19,4 +19,11 @@ export const CONTRIBUTORS = [
     tags: ['Engineering', 'Direction'],
     core: true,
   },
+  {
+    name: 'Sulistiyanto Tiyan',
+    github: '',
+    web: '',
+    bio: 'Peserta Google Cloud Arcade 2026 yang bantu Arcade Hub lewat laporan bug.',
+    tags: ['Bug Report'],
+  },
 ]
