@@ -1,15 +1,46 @@
 import { lazy } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
+import {
+  CHUNK_RELOAD_KEY,
+  shouldReloadForChunkError,
+} from '../lib/chunkReload.js'
 
-// Tiap halaman di-lazy load (code-splitting per rute).
-const Points = lazy(() => import('./pages/Points.jsx'))
-const Leaderboard = lazy(() => import('./pages/Leaderboard.jsx'))
-const Catalog = lazy(() => import('./pages/Catalog.jsx'))
-const Prizes = lazy(() => import('./pages/Prizes.jsx'))
-const Info = lazy(() => import('./pages/Info.jsx'))
-const Contribute = lazy(() => import('./pages/Contribute.jsx'))
-const Roadmap = lazy(() => import('./pages/Roadmap.jsx'))
+// Tiap halaman di-lazy load (code-splitting per rute), lewat satu pembungkus
+// supaya chunk basi sesudah deploy sembuh sendiri. Tanpa ini, tab yang kebuka
+// waktu deploy jalan akan gagal import chunk lama (hilang dari server dan dari
+// cache service worker) dan mendarat di layar error, padahal cukup refresh.
+function lazyRoute(load) {
+  return lazy(() =>
+    load().catch((err) => {
+      let last = null
+      try {
+        last = Number(sessionStorage.getItem(CHUNK_RELOAD_KEY)) || null
+      } catch {
+        // Private mode / storage mati: tidak ada cara aman menghindari loop,
+        // jadi jangan reload sama sekali. Error boundary yang menangani.
+        throw err
+      }
+      if (!shouldReloadForChunkError(last, Date.now())) throw err
+      try {
+        sessionStorage.setItem(CHUNK_RELOAD_KEY, String(Date.now()))
+      } catch {
+        throw err
+      }
+      location.reload()
+      // Sengaja tidak pernah resolve: halaman sudah diganti oleh reload.
+      return new Promise(() => {})
+    }),
+  )
+}
+
+const Points = lazyRoute(() => import('./pages/Points.jsx'))
+const Leaderboard = lazyRoute(() => import('./pages/Leaderboard.jsx'))
+const Catalog = lazyRoute(() => import('./pages/Catalog.jsx'))
+const Prizes = lazyRoute(() => import('./pages/Prizes.jsx'))
+const Info = lazyRoute(() => import('./pages/Info.jsx'))
+const Contribute = lazyRoute(() => import('./pages/Contribute.jsx'))
+const Roadmap = lazyRoute(() => import('./pages/Roadmap.jsx'))
 
 // "/" -> /points, meneruskan ?guild= supaya guild ikut terpakai saat auto-join dari Poin Saya.
 function IndexRedirect() {
