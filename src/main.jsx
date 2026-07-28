@@ -29,3 +29,10 @@ createRoot(document.getElementById('root')).render(
     <SpeedInsights />
   </React.StrictMode>
 )
+
+// Moved out of an inline <script> in index.html so the CSP can stay script-src
+// 'self'. Registering after the bundle loads instead of on window load costs
+// nothing: the worker only matters from the second visit onward.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {})
+}

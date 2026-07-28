@@ -29,13 +29,8 @@
 </head>
 <body>
   <div id="root"></div>
+  <!-- Service worker registration lives in src/main.jsx, not inline here, so the
+       CSP in vercel.json can keep script-src at 'self' with no hash or nonce. -->
   <script type="module" src="/src/main.jsx"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {})
-      })
-    }
-  </script>
 </body>
 </html>

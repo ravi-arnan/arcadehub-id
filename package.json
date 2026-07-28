@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test"
+    "test": "node --test",
+    "preview:csp": "node scripts/preview-headers.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
