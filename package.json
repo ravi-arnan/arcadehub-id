@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test",
-    "preview:csp": "node scripts/preview-headers.mjs"
+    "preview:csp": "node scripts/preview-headers.mjs",
+    "check:arcade": "node scripts/check-arcade.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

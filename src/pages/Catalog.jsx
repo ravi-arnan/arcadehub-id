@@ -11,6 +11,11 @@ import Collapse from '../components/Collapse.jsx'
 import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
+
+// Level resmi dari silabus fasilitator. Badge di luar silabus tidak punya level, ditaruh paling akhir.
+const LEVEL_LABEL = { beginner: 'Pemula', intermediate: 'Menengah', advanced: 'Lanjutan' }
+const LEVEL_ORDER = { beginner: 0, intermediate: 1, advanced: 2 }
+const levelRank = (lv) => LEVEL_ORDER[lv] ?? 3
 const fmtRate = (n) => (n >= 10 ? Math.round(n) : Math.round(n * 10) / 10).toLocaleString('id-ID')
 
 // Proyeksi: bandingkan kecepatan sekarang dengan kecepatan yang dibutuhkan sampai penutupan.
@@ -40,7 +45,7 @@ function PaceStrip({ p }) {
 }
 
 // Roadmap prioritas untuk pemula: urutan resmi silabus (Game dulu, lalu kejar milestone via badge).
-function StartHere({ score, gamesDone, gamesTotal, skillTodo, onShowGames, onShowSkills }) {
+function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, onShowGames, onShowSkills }) {
   const [open, setOpen] = useState(true)
   const [shortOff, setShortOff] = useState(0)
   const fg = score?.facilGames || 0
@@ -72,6 +77,11 @@ function StartHere({ score, gamesDone, gamesTotal, skillTodo, onShowGames, onSho
               <p className="sh-desc">
                 Prioritas #1. Game rilis tiap bulan dengan <b>kuota terbatas</b> dan game lama <b>kedaluwarsa</b>, jadi amankan dulu selagi ada. Sisa {daysLeft} hari menuju penutupan.
               </p>
+              {gamesOff.length > 0 && (
+                <p className="sh-desc sh-off">
+                  {gamesOff.map((g) => g.name).join(', ')} bulan ini <b>ditarik sementara</b> oleh Google, jadi belum bisa dikerjakan. <b>Poinnya tidak hangus</b>: Google menjanjikan sesi susulan, dan game itu tetap dihitung 1 poin, jadi targetmu tetap {gamesTotal} game. Kerjakan yang lain dulu.
+                </p>
+              )}
               <button className="sh-cta" onClick={onShowGames}>Lihat {gamesTotal} Game <IconArrowRight width="14" height="14" /></button>
             </div>
           </li>
@@ -101,10 +111,11 @@ function StartHere({ score, gamesDone, gamesTotal, skillTodo, onShowGames, onSho
                     {shortlist.map((it) => (
                       <li key={it.key}>
                         <a href={it.url} target="_blank" rel="noreferrer">{it.title} <IconArrowRight width="13" height="13" /></a>
+                        {it.level && <span className="sh-lvl">{LEVEL_LABEL[it.level]}</span>}
                       </li>
                     ))}
                   </ul>
-                  <p className="sh-snote">Bukan urutan prioritas: semua badge skill bernilai sama (0,5 poin). Ini cuma potongan pendek dari {skillTodo.length} badge yang belum kamu ambil, biar tidak bingung memilih.</p>
+                  <p className="sh-snote">Diurutkan dari level termudah menurut silabus resmi (Pemula, lalu Menengah, lalu Lanjutan). Poinnya sama semua (0,5 poin), jadi ini soal beban belajar, bukan nilai. Potongan pendek dari {skillTodo.length} badge yang belum kamu ambil.</p>
                 </div>
               )}
               <button className="sh-cta" onClick={onShowSkills}>
@@ -156,9 +167,11 @@ function BadgeThumb({ it, onCopy }) {
     ? `Buka ${it.name} di Google Skills` + (it.code ? ' (access code otomatis tersalin)' : '')
     : `Buka ${it.name} di Google Skills`
   const cls = 'bc-badge' + (it.type === 'skill' ? (it.img ? ' bc-badge-skill' : ' bc-skillthumb') : '')
+  const thumb = it.img ? <img src={it.img} alt={it.name} loading="lazy" /> : <IconAward width="34" height="34" />
+  if (!it.url) return <span className={cls}>{thumb}</span>
   return (
     <a className={cls} href={it.url} target="_blank" rel="noreferrer" onClick={onCopy} title={title}>
-      {it.img ? <img src={it.img} alt={it.name} loading="lazy" /> : <IconAward width="34" height="34" />}
+      {thumb}
     </a>
   )
 }
@@ -166,9 +179,10 @@ function BadgeThumb({ it, onCopy }) {
 function BadgeCard({ it }) {
   const [copied, copy] = useCopyCode(it.code)
   return (
-    <div className={'badgecard' + (it.done ? ' done' : '')}>
+    <div className={'badgecard' + (it.done ? ' done' : '') + (it.off ? ' off' : '')}>
       <div className="bc-top">
         <span className={'bc-tag ' + it.type}>{it.type === 'game' ? 'Game' : 'Skill'}</span>
+        {it.level && <span className={'bc-lvl ' + it.level}>{LEVEL_LABEL[it.level]}</span>}
         {it.done && <span className="bc-check" title="Selesai">✓</span>}
         <BadgeThumb it={it} onCopy={copy} />
       </div>
@@ -178,9 +192,14 @@ function BadgeCard({ it }) {
           {it.code ? <CodeChip code={it.code} copied={copied} onCopy={copy} /> : <span />}
           <span className="bc-pts">{fmtPts(it.points)} Poin</span>
         </div>
-        <a className="bc-start" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>
-          {it.type === 'game' ? 'Mulai Challenge' : 'Buka Badge'} <IconArrowRight width="15" height="15" />
-        </a>
+        {it.off ? (
+          <span className="bc-start off">Belum bisa dikerjakan</span>
+        ) : (
+          <a className="bc-start" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>
+            {it.type === 'game' ? 'Mulai Challenge' : 'Buka Badge'} <IconArrowRight width="15" height="15" />
+          </a>
+        )}
+        {it.off && <div className="bc-offnote">{it.off}</div>}
       </div>
     </div>
   )
@@ -191,10 +210,12 @@ function BadgeRow({ it }) {
   return (
     <div className={'badgerow' + (it.done ? ' done' : '')}>
       <span className={'br-tag ' + it.type}>{it.type === 'game' ? 'Game' : 'Skill'}</span>
-      <a className="br-title" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>{it.title}</a>
+      {it.url
+        ? <a className="br-title" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>{it.title}</a>
+        : <span className="br-title">{it.title}</span>}
       {it.code && <CodeChip code={it.code} copied={copied} onCopy={copy} />}
       <span className="br-pts">{fmtPts(it.points)} Poin</span>
-      <span className={'br-status' + (it.done ? ' ok' : '')}>{it.done ? '✓ Selesai' : 'Belum'}</span>
+      <span className={'br-status' + (it.done ? ' ok' : '')}>{it.done ? '✓ Selesai' : it.off ? 'Ditunda' : 'Belum'}</span>
     </div>
   )
 }
@@ -218,7 +239,9 @@ export default function Catalog() {
       title: g.sub ? `${g.name}: ${g.sub}` : g.name,
       img: g.img + '?v=3',
       code: g.code || null,
-      url: g.game ? gameUrl(g.game) : null,
+      // Game yang ditarik Google tidak dilink: halamannya tidak bisa dimasuki lagi.
+      url: g.off || !g.game ? null : gameUrl(g.game),
+      off: g.off || null,
       points: 1,
       done: gameBadges.some((b) => g.re.test(b.title)),
     }))
@@ -227,6 +250,7 @@ export default function Catalog() {
       type: 'skill',
       name: s.name,
       title: s.name,
+      level: s.level || null,
       img: skillImg(s.id),
       code: null,
       url: courseUrl(s.id),
@@ -236,9 +260,17 @@ export default function Catalog() {
     return [...games, ...skills]
   }, [gameBadges, earned])
 
-  const skillTodo = useMemo(() => items.filter((it) => it.type === 'skill' && !it.done), [items])
+  // Diurutkan Pemula -> Menengah -> Lanjutan -> di luar silabus, supaya shortlist "kerjakan
+  // selanjutnya" mulai dari yang paling ringan, bukan dari posisi acak di katalog.
+  const skillTodo = useMemo(
+    () => items.filter((it) => it.type === 'skill' && !it.done).sort((a, b) => levelRank(a.level) - levelRank(b.level)),
+    [items],
+  )
 
+  // Game yang ditarik TETAP masuk hitungan: poinnya tidak hangus, Google menjanjikan susulan.
+  // Menurunkan target jadi 5 justru menyesatkan (milestone fasilitator tetap butuh 6/8/10/12 game).
   const gameCount = GAME_CATALOG.length
+  const gameOff = GAME_CATALOG.filter((g) => g.off)
   const skillCount = SKILL_CATALOG.length
   const doneCount = items.filter((it) => it.done).length
   const gamesDone = items.filter((it) => it.type === 'game' && it.done).length
@@ -257,7 +289,7 @@ export default function Catalog() {
 
   return (
     <div>
-      <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} skillTodo={skillTodo} onShowGames={showGames} onShowSkills={showSkills} />
+      <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} gamesOff={gameOff} skillTodo={skillTodo} onShowGames={showGames} onShowSkills={showSkills} />
 
       {!score && (
         <div className="lb-invite" style={{ marginTop: 16, marginBottom: 4 }}>

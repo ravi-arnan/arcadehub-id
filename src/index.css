@@ -219,6 +219,7 @@ body{
 .gc-code:hover{color:var(--ink);border-color:var(--gold)}
 .gc-status{font-size:11px;color:var(--muted);margin-top:3px;font-weight:700}
 .gc-status.ok{color:var(--green)}
+.gc-off{font-size:10.5px;line-height:1.35;color:var(--muted);margin-top:3px}
 .swaggrid img{width:100%;border-radius:10px;aspect-ratio:3/2;object-fit:cover;background:#0b0e1e;display:block}
 
 /* katalog */
@@ -277,6 +278,30 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-count{margin-left:auto;font-family:'PS2P';font-size:10px;color:var(--gold);background:rgba(252,201,52,.12);padding:4px 8px;border-radius:8px;white-space:nowrap}
 .sh-desc{font-size:12.5px;color:var(--muted);line-height:1.55;margin:6px 0 10px}
 .sh-desc b{color:#e7edfb}
+/* Catatan game yang ditarik Google: dibedakan supaya tidak terbaca sebagai instruksi biasa. */
+.sh-off{border-left:2px solid var(--gold);padding-left:9px}
+
+/* Bonus Milestone (+10 poin, klaim manual) */
+.bonusms{margin-top:14px}
+.bm-pts{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold);background:rgba(252,201,52,.12);border:1px solid rgba(252,201,52,.35);border-radius:999px;padding:3px 9px}
+.bm-req{display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 0 10px;font-size:12.5px;color:var(--muted)}
+.bm-rrow{display:flex;align-items:center;gap:7px}
+.bm-dot{width:16px;height:16px;border-radius:50%;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex:none}
+.bm-dot.ok{background:rgba(52,201,95,.16);border-color:rgba(52,201,95,.5);color:var(--green)}
+.bm-gear{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:1px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.bm-gear li{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:9px 12px;background:rgba(0,0,0,.16);font-size:13px}
+.bm-gear li.ok{background:rgba(52,201,95,.07)}
+.bm-gear a{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.bm-gear a:hover{color:var(--gold)}
+.bm-gstat{flex:none;font-size:11.5px;font-weight:700;color:var(--muted)}
+.bm-gear li.ok .bm-gstat{color:var(--green)}
+.bm-toggle{margin-bottom:10px}
+.bm-steps{margin:4px 0 8px;padding-left:20px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.bm-steps li{margin-bottom:6px}
+.bm-steps a{color:var(--gold)}
+.bm-claim{display:flex;align-items:flex-start;gap:9px;font-size:13px;cursor:pointer;padding-top:4px}
+.bm-claim input{margin-top:2px;accent-color:var(--gold);width:16px;height:16px;flex:none}
+.bm-claimed{margin-top:9px;font-size:12px;line-height:1.55;color:var(--muted);border-left:2px solid var(--green);padding-left:9px}
 .sh-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:11px}
 .sh-pace{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin-bottom:11px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);border-left-width:3px;background:rgba(0,0,0,.2)}
 .sh-pace.ok{border-left-color:var(--green)}
@@ -294,6 +319,9 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-swap{flex:none;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer;transition:.14s}
 .sh-swap:hover{background:rgba(255,255,255,.12);color:#fff}
 .sh-slist{list-style:none;display:flex;flex-direction:column;gap:6px}
+.sh-slist li{display:flex;align-items:center;gap:7px}
+.sh-slist li a{flex:1;min-width:0}
+.sh-lvl{flex:none;font-size:10.5px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:7px;padding:3px 8px}
 .sh-slist a{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:700;color:var(--blue);text-decoration:none;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.04);transition:.14s}
 .sh-slist a:hover{background:rgba(91,139,255,.14);color:#c3d3ff}
 .sh-slist svg{flex:none;opacity:.7}
@@ -329,6 +357,11 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-tag{position:absolute;top:10px;left:10px;font-size:11px;font-weight:800;letter-spacing:.02em;padding:3px 9px;border-radius:7px}
 .bc-tag.game{color:#c7ccff;background:rgba(111,123,255,.2);border:1px solid rgba(111,123,255,.4)}
 .bc-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16);border:1px solid rgba(52,201,95,.4)}
+/* Level silabus resmi (Pemula/Menengah/Lanjutan). Badge di luar silabus tidak punya chip ini. */
+.bc-lvl{position:absolute;bottom:10px;left:10px;font-size:10.5px;font-weight:800;letter-spacing:.02em;padding:2px 8px;border-radius:7px;color:var(--muted);background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.bc-lvl.beginner{color:#8fe6b6;border-color:rgba(52,201,95,.35)}
+.bc-lvl.intermediate{color:#f2d16b;border-color:rgba(252,201,52,.35)}
+.bc-lvl.advanced{color:#f2a3a3;border-color:rgba(234,67,53,.35)}
 .bc-check{position:absolute;top:9px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#04240f;display:grid;place-items:center;font-size:13px;font-weight:900}
 .bc-badge{display:block;cursor:pointer;border-radius:9px;transition:transform .15s}
 .bc-badge:hover{transform:scale(1.04)}
@@ -346,6 +379,10 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-start:hover{background:rgba(111,123,255,.26);color:#fff}
 .badgecard.done .bc-start{background:rgba(52,201,95,.12);border-color:rgba(52,201,95,.4);color:#8fe6b6}
 .badgecard.done .bc-start:hover{background:rgba(52,201,95,.22);color:#fff}
+/* Game yang ditarik Google: tetap terlihat (biar orang tahu nasibnya) tapi jelas tidak bisa diklik. */
+.badgecard.off .bc-badge{filter:grayscale(1);opacity:.55}
+.bc-start.off{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--muted);cursor:not-allowed}
+.bc-offnote{font-size:11.5px;line-height:1.4;color:var(--muted)}
 
 /* catalog: list rows */
 .badgelist{display:flex;flex-direction:column;gap:7px}

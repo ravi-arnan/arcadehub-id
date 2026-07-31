@@ -13,6 +13,7 @@ import Bar from '../components/Bar.jsx'
 import MyBadges from '../components/MyBadges.jsx'
 import Collapse from '../components/Collapse.jsx'
 import ArcadeHero from '../components/ArcadeHero.jsx'
+import BonusMilestone from '../components/BonusMilestone.jsx'
 import { ago } from '../utils/time.js'
 
 // Guild tampil/ubah di tampilan tersinkron. Kosongkan lalu simpan tidak menghapus guild lama (backend COALESCE).
@@ -115,6 +116,8 @@ function MyPoints() {
       )}
       {err && <div className="ferr">{err}</div>}
       {showShare && <Suspense fallback={null}><ShareCard score={score} onClose={() => setShowShare(false)} /></Suspense>}
+
+      <BonusMilestone score={score} />
 
       {score?.seasonBadges?.length ? (
         <div className="badgebox">

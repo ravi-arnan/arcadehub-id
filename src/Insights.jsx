@@ -83,11 +83,12 @@ export function CategoryTable({ badges }) {
 }
 
 // Satu sumber kebenaran daftar game di catalog.js; di sini pakai nama pendek + sub.
-const GAMES = GAME_CATALOG.map((g) => ({ name: g.short, sub: g.sub, img: g.img, re: g.re }))
+const GAMES = GAME_CATALOG.map((g) => ({ name: g.short, sub: g.sub, img: g.img, re: g.re, off: g.off || null }))
 
 // Game Arcade bulan ini (foto badge asli) + status selesai/belum
 export function MonthlyGames({ badges }) {
   const done = (re) => badges.some((b) => b.cat !== 'skill' && re.test(b.title))
+  // Game yang ditarik sementara tetap ikut penyebut: poinnya tetap dihitung lewat sesi susulan.
   const nDone = GAMES.filter((g) => done(g.re)).length
   return (
     <div className="card">
@@ -100,7 +101,8 @@ export function MonthlyGames({ badges }) {
               <img src={g.img + '?v=3'} alt={g.name} loading="lazy" />
               <div className="gc-name">{g.name}</div>
               {g.sub && <div className="gc-sub">{g.sub}</div>}
-              <div className={'gc-status' + (ok ? ' ok' : '')}>{ok ? '✓ Selesai' : 'Belum'}</div>
+              <div className={'gc-status' + (ok ? ' ok' : '')}>{ok ? '✓ Selesai' : g.off ? 'Ditunda' : 'Belum'}</div>
+              {g.off && <div className="gc-off">{g.off}</div>}
             </div>
           )
         })}

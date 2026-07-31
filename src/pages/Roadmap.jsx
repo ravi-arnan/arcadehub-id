@@ -10,6 +10,8 @@ const GROUPS = [
     tone: 'done',
     note: 'Sudah live di produksi.',
     items: [
+      { title: 'Bonus Milestone (+10 poin)', desc: 'Panduan Bonus Milestone AI Agent di halaman Poin Saya: progress 4 badge GEAR terbaca otomatis dari profilmu, langkah lengkap, link dokumen instruksi dan form verifikasi. Klaim selesainya dicatat lokal saja karena Google yang memverifikasi lewat form.' },
+      { title: 'Status game yang ditutup', desc: 'Game yang ditarik Google bulan berjalan ditandai jelas di katalog dan tidak bisa diklik, access code-nya disembunyikan, tapi tetap dihitung sebagai target karena poinnya bisa diambil lewat sesi susulan.' },
       { title: 'Shortlist "kerjakan selanjutnya"', desc: 'Di langkah 2 "Mulai dari Sini": 4 badge yang belum kamu ambil ditampilkan langsung, dengan tombol "Ganti saran" kalau topiknya kurang cocok. Bukan peringkat, cuma potongan pendek biar tidak perlu memilih dari daftar panjang.' },
       { title: 'Header keamanan (CSP)', desc: 'Content-Security-Policy aktif di produksi: script hanya dari domain sendiri, tanpa inline script, plus object-src/frame-src dikunci. Ada `npm run preview:csp` untuk menguji header yang sama secara lokal sebelum deploy.' },
       { title: 'Animasi pill navigasi', desc: 'Penanda menu aktif meluncur antar tab, bukan lompat. Ditulis ulang pakai transform CSS, jadi tidak perlu menambah bundle animasi layout, dan otomatis diam saat perangkat minta reduced-motion.' },
