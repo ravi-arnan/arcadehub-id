@@ -20,6 +20,9 @@ function PodiumCard({ p, place, isMe, refreshing, onRefresh }) {
       <div className="pod-name" title={p.name}>{p.name}{isMe && <span className="youtag">kamu</span>}</div>
       <span className="gtag pod-guild">{guildLabel(p.guild)}</span>
       <div className="pod-score">{p.total}<span>poin</span></div>
+      {/* Pemaksa ganti baris untuk layout mobile: tanpa ini, kartu dengan nama pendek
+          menaikkan chip guild ke baris pertama sehingga tiap kartu tampak beda susunan. */}
+      <span className="pod-break" aria-hidden="true" />
       <div className="pod-stats">
         <span className="pstat"><IconGame />{p.games}</span>
         <span className="pstat"><IconBadge />{p.skills}</span>
