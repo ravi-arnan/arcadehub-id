@@ -182,14 +182,17 @@ function BadgeCard({ it }) {
     <div className={'badgecard' + (it.done ? ' done' : '') + (it.off ? ' off' : '')}>
       <div className="bc-top">
         <span className={'bc-tag ' + it.type}>{it.type === 'game' ? 'Game' : 'Skill'}</span>
-        {it.level && <span className={'bc-lvl ' + it.level}>{LEVEL_LABEL[it.level]}</span>}
         {it.done && <span className="bc-check" title="Selesai">✓</span>}
         <BadgeThumb it={it} onCopy={copy} />
       </div>
       <div className="bc-body">
         <div className="bc-title">{it.title}</div>
         <div className="bc-meta">
-          {it.code ? <CodeChip code={it.code} copied={copied} onCopy={copy} /> : <span />}
+          {/* Chip level ditaruh di baris meta, bukan di atas gambar: art badge Google punya
+              garis warna di tepi bawah, chip melayang di sana jadi bertabrakan. */}
+          {it.code
+            ? <CodeChip code={it.code} copied={copied} onCopy={copy} />
+            : it.level ? <span className={'bc-lvl ' + it.level}>{LEVEL_LABEL[it.level]}</span> : <span />}
           <span className="bc-pts">{fmtPts(it.points)} Poin</span>
         </div>
         {it.off ? (

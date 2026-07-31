@@ -89,7 +89,9 @@ function MyPoints() {
       </div>
       <div className="breakdown">
         <span className="chip">Base Arcade: <b>{score?.base || 0}</b></span>
-        <span className="chip">Bonus Milestone: <b>{score?.mbonus || 0}</b></span>
+        {/* "dari Milestone" supaya tidak tertukar dengan kartu Bonus Milestone AI Agent (+10)
+            yang tampil di halaman yang sama tapi hitungannya lain. */}
+        <span className="chip">Bonus dari Milestone: <b>{score?.mbonus || 0}</b></span>
         <span className="chip">Tier: <b>{myTier >= 0 ? TIERS[myTier].n : '-'}</b></span>
       </div>
 

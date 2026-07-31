@@ -34,7 +34,7 @@ export default function BonusMilestone({ score }) {
   return (
     <div className="card bonusms">
       <div className="card-h">
-        <IconTrophy width="17" height="17" /> Bonus Milestone
+        <IconTrophy width="17" height="17" /> Bonus Milestone AI Agent
         <span className="bm-pts">+{BONUS_TASK} poin</span>
       </div>
       <div className="card-note" style={{ marginTop: 0 }}>

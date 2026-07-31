@@ -358,7 +358,7 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-tag.game{color:#c7ccff;background:rgba(111,123,255,.2);border:1px solid rgba(111,123,255,.4)}
 .bc-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16);border:1px solid rgba(52,201,95,.4)}
 /* Level silabus resmi (Pemula/Menengah/Lanjutan). Badge di luar silabus tidak punya chip ini. */
-.bc-lvl{position:absolute;bottom:10px;left:10px;font-size:10.5px;font-weight:800;letter-spacing:.02em;padding:2px 8px;border-radius:7px;color:var(--muted);background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.bc-lvl{font-size:10.5px;font-weight:800;letter-spacing:.02em;padding:3px 9px;border-radius:7px;color:var(--muted);background:rgba(255,255,255,.06);border:1px solid var(--line)}
 .bc-lvl.beginner{color:#8fe6b6;border-color:rgba(52,201,95,.35)}
 .bc-lvl.intermediate{color:#f2d16b;border-color:rgba(252,201,52,.35)}
 .bc-lvl.advanced{color:#f2a3a3;border-color:rgba(234,67,53,.35)}
