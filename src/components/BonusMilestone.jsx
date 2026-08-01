@@ -62,6 +62,17 @@ export default function BonusMilestone({ score }) {
         ))}
       </ul>
 
+      {/* Sumber resmi ditaruh di luar Collapse: sebelumnya cuma ada di dalam langkah yang
+          tertutup, jadi orang tidak tahu ada dokumen panduannya sama sekali. */}
+      <div className="bm-src">
+        <a className="bm-srclink" href={CONFIG.bonusDocUrl} target="_blank" rel="noreferrer">
+          Dokumen instruksi resmi <IconArrowRight width="13" height="13" />
+        </a>
+        <a className="bm-srclink" href={CONFIG.bonusForumUrl} target="_blank" rel="noreferrer">
+          Pengumuman lengkap Google <IconArrowRight width="13" height="13" />
+        </a>
+      </div>
+
       <button className="sh-toggle bm-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
         {open ? 'Sembunyikan langkah' : 'Lihat langkah lengkap'} <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
       </button>

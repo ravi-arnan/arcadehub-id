@@ -39,11 +39,14 @@ const RESOURCES = [
   ['Halaman Arcade resmi', CONFIG.arcadeUrl],
   ['Katalog badge (skill & game)', CONFIG.catalogUrl],
   ['Profil & pengaturan publik', CONFIG.profileHelp],
+  ['Bonus Milestone: pengumuman resmi', CONFIG.bonusForumUrl],
+  ['Bonus Milestone: dokumen instruksi', CONFIG.bonusDocUrl],
 ]
 
 const FAQ = [
   ['Apa itu program ini?', 'Google Cloud Arcade Fasilitator 2026: program beasiswa coding gamifikasi dari Google Cloud (Cloud, AI, ML, Data Engineering). Gratis untuk semua WNI. Selesaikan game & skill badge, kumpulkan poin, tukar hadiah.'],
   ['Bagaimana poin dihitung?', '1 Arcade Game = 1 poin. Setiap 2 Skill Badge = 1 poin. Milestone memberi bonus poin (hanya milestone tertinggi yang dihitung).'],
+  ['Apa itu Bonus Milestone (+10 poin)?', 'Proyek tambahan dari Google: bangun AI Agent pertamamu, dapat 10 Poin Arcade bonus. Syaratnya sudah terdaftar di kohort, Milestone 1 terbuka, dan 4 badge GEAR selesai. Panduan langkah demi langkah plus link dokumen instruksi dan form verifikasinya ada di tab Poin Saya, di kartu Bonus Milestone AI Agent.'],
   ['Kenapa poin saya 0 padahal punya badge?', 'Pastikan profil di-set PUBLIC. Yang dihitung hanya badge Arcade Season 2026 (earned Jan–Des 2026); badge dari tahun sebelumnya tidak masuk hitungan.'],
   ['Berapa lab yang bisa saya kerjakan per hari?', 'Maksimum 15 lab dalam 24 jam. Batas ini tidak bisa dinaikkan.'],
   ['Email pendaftaran tidak masuk?', `Tambahkan ${CONFIG.spamEmail} ke kontak/allowlist emailmu agar tidak masuk folder Spam/Promosi, lalu daftar ulang bila perlu.`],

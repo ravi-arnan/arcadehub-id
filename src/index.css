@@ -297,6 +297,13 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bm-gear a:hover{color:var(--gold)}
 .bm-gstat{flex:none;font-size:11.5px;font-weight:700;color:var(--muted)}
 .bm-gear li.ok .bm-gstat{color:var(--green)}
+.bm-src{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:11px}
+.bm-srclink{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;
+  color:#0f1220;background:linear-gradient(180deg,#fcd452,#f0b429);border-radius:9px;
+  padding:8px 13px;text-decoration:none;transition:.13s}
+.bm-srclink:hover{filter:brightness(1.08)}
+.bm-srclink+.bm-srclink{background:rgba(255,255,255,.06);border:1px solid var(--line);color:#dbe6fb}
+.bm-srclink+.bm-srclink:hover{background:rgba(255,255,255,.13);filter:none}
 .bm-toggle{margin-bottom:10px}
 .bm-steps{margin:4px 0 8px;padding-left:20px;font-size:12.5px;color:var(--muted);line-height:1.6}
 .bm-steps li{margin-bottom:6px}
