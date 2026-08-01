@@ -101,6 +101,9 @@ export const SKILL_CATALOG = [
 // Urutan sesuai postingan resmi. 1586 sudah lama ada di katalog, tiga sisanya ditambahkan sesi ini.
 export const GEAR_BADGES = [1586, 1596, 1445, 1682]
 
+// Game bulan-bulan sebelumnya (sudah "Game over", tidak bisa dikerjakan lagi) + bobot poinnya.
+export { PAST_GAMES, gamePoints, pastGameImg } from '../lib/pastGames.js'
+
 // Access code + game id (skills.google/games/{game}) berubah TIAP BULAN. Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
 export const GAME_CATALOG = [
   { name: 'Arcade Base Camp', short: 'Base Camp', game: 7313, code: '1q-basecamp-07511', img: '/img/game-basecamp.webp', re: /base ?camp/i },

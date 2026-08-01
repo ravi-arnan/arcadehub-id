@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
 import { projectMilestone } from '../../lib/projection.js'
 import { pickShortlist } from '../../lib/shortlist.js'
@@ -223,6 +223,62 @@ function BadgeRow({ it }) {
   )
 }
 
+const PG_MONTHS = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni']
+
+// Arsip game Jan-Jun 2026. Tidak bisa dikerjakan lagi (halaman game-nya ditutup), tapi poinnya
+// TETAP masuk total Season, jadi ini penjelasan dari mana poin peserta lama datang.
+function PastGames({ gameBadges }) {
+  const [open, setOpen] = useState(false)
+  const done = useMemo(() => new Set(gameBadges.map((b) => norm(b.title))), [gameBadges])
+  const months = useMemo(() => {
+    const map = new Map()
+    for (const g of PAST_GAMES) {
+      if (!map.has(g.m)) map.set(g.m, [])
+      map.get(g.m).push({ ...g, done: done.has(norm(g.name)) })
+    }
+    return [...map.entries()].sort((a, b) => b[0] - a[0])
+  }, [done])
+  const mine = PAST_GAMES.filter((g) => done.has(norm(g.name)))
+  const minePts = mine.reduce((n, g) => n + g.pts, 0)
+
+  return (
+    <div className="card">
+      <div className="card-h">
+        Game Terdahulu <span className="card-tag">{mine.length}/{PAST_GAMES.length}</span>
+        <button className="sh-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          {open ? 'Sembunyikan' : 'Lihat'} <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
+        </button>
+      </div>
+      <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
+        Game Arcade Januari–Juni 2026 yang sudah ditutup. Tidak bisa dikerjakan lagi, tapi kalau kamu
+        sempat main, poinnya tetap dihitung di total Season 2026
+        {mine.length > 0 && <> — punyamu <b>{mine.length} game = {minePts} poin</b></>}.
+      </div>
+      <Collapse open={open}>
+        {months.map(([m, items]) => (
+          <div key={m} className="bmonth">
+            <div className="bmonth-h">{PG_MONTHS[m]} 2026 <span>{items.length}</span></div>
+            <div className="bmonth-list">
+              {items.map((g) => (
+                <div key={g.name} className={'bi g pg' + (g.done ? ' pg-done' : '')}>
+                  <img className="pg-img" src={pastGameImg(g.name)} alt="" loading="lazy" />
+                  <span className="pg-name">{g.done && <span className="pg-ok" aria-hidden>✓</span>}{g.name}</span>
+                  <span className="pg-pts">{g.pts} poin</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+        <div className="blnote">
+          Sumber: bagian “Game over!” di halaman resmi Google Skills Arcade (arsip 1 Agu 2026).
+          Game spesial bernilai 2–3 poin, sisanya 1 poin. “Arcade Skill Up Summer” dan “Arcade
+          Expressive Efficiency” berjalan dua bulan (Mei–Juni) jadi hanya dihitung sekali.
+        </div>
+      </Collapse>
+    </div>
+  )
+}
+
 export default function Catalog() {
   const navigate = useNavigate()
   const { score } = useMyProfile()
@@ -340,6 +396,8 @@ export default function Catalog() {
 
         <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill: 2 badge = 1 poin. Kode game Jul 2026, diperbarui tiap bulan.</div>
       </div>
+
+      <PastGames gameBadges={gameBadges} />
     </div>
   )
 }
