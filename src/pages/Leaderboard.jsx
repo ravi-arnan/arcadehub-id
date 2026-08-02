@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { MS } from '../points.js'
+import { searchMembers } from '../../lib/searchMembers.js'
 import { useMyProfile } from '../profile.jsx'
 import Tip from '../Tip.jsx'
 import Medal from '../Medal.jsx'
@@ -11,6 +12,7 @@ const Rank = ({ i }) => (i > 2 ? <span className="rnum">{i + 1}</span> : <Medal 
 const IconGame = () => <svg className="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="6" x2="10" y1="11" y2="11" /><line x1="8" x2="8" y1="9" y2="13" /><line x1="15" x2="15.01" y1="12" y2="12" /><line x1="18" x2="18.01" y1="10" y2="10" /><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" /></svg>
 const IconBadge = () => <svg className="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /><circle cx="12" cy="8" r="6" /></svg>
 const IconFilter = () => <svg className="gf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+const IconSearch = () => <svg className="lbs-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
 const guildLabel = (g) => (!g || g === 'UMUM' ? 'Umum' : g)
 
 function PodiumCard({ p, place, isMe, refreshing, onRefresh }) {
@@ -40,6 +42,35 @@ function PodiumCard({ p, place, isMe, refreshing, onRefresh }) {
   )
 }
 
+// rank dilewatkan dari luar, bukan dihitung dari urutan render: hasil pencarian
+// harus tetap menunjukkan peringkat asli peserta di leaderboard, bukan nomor
+// urut di daftar hasil.
+function MemberRow({ p, rank, isMe, refreshing, onRefresh }) {
+  return (
+    <div className={'lbrow' + (p.tier_idx >= 0 ? ' hasms' : '') + (isMe ? ' me' : '')}>
+      <div className="rank"><Rank i={rank} /></div>
+      <div className="pinfo">
+        <div className="pname">{p.name}{isMe && <span className="youtag">kamu</span>}</div>
+        <div className="ptier">
+          <span className="gtag">{guildLabel(p.guild)}</span>
+          <span className="pstat"><IconGame />{p.games}</span> <span className="pstat"><IconBadge />{p.skills}</span> · sync {ago(p.last_synced)}
+        </div>
+      </div>
+      <div className="pscore">{p.total}<small>poin</small></div>
+      <div className="pacts">
+        <Tip label={'Lihat profil ' + p.name}>
+          <a className="viewlink" href={p.profile_url} target="_blank" rel="noreferrer" aria-label={'Lihat profil ' + p.name}>↗</a>
+        </Tip>
+        <Tip label="Sinkronkan ulang poin">
+          <button className="miniref" disabled={refreshing} onClick={onRefresh} aria-label={'Sinkronkan ulang ' + p.name}>
+            {refreshing ? '…' : '↻'}
+          </button>
+        </Tip>
+      </div>
+    </div>
+  )
+}
+
 // dukung ?guild=KODE untuk auto-filter ke guild tsb
 const urlGuild = (() => {
   try { const g = new URLSearchParams(location.search).get('guild'); return g ? g.trim().toUpperCase() : '' } catch { return '' }
@@ -53,6 +84,7 @@ export default function Leaderboard() {
   const [refreshingId, setRefreshingId] = useState(null)
   const [filter, setFilter] = useState(urlGuild || 'ALL')
   const [filterOpen, setFilterOpen] = useState(false)
+  const [query, setQuery] = useState('')
 
   // bust=true melewati cache edge (dipakai tombol Muat ulang & setelah sync) agar data terbaru.
   const load = useCallback(async (bust) => {
@@ -89,6 +121,13 @@ export default function Leaderboard() {
   const shown = filter === 'ALL' ? members : members.filter((m) => (m.guild || 'UMUM') === filter)
   const reached = MS.map((_, i) => shown.filter((p) => p.tier_idx >= i).length)
   const isMe = (p) => (memberId && p.id === memberId) || (profileUrl && p.profile_url === profileUrl)
+
+  const searching = query.trim() !== ''
+  const results = useMemo(() => searchMembers(shown, query), [shown, query])
+  // Peringkat asli tiap peserta dalam tampilan sekarang, dipetakan sebelum
+  // pencarian menyaring. Tanpa ini, hasil cari akan menampilkan medali emas
+  // untuk siapa pun yang kebetulan jadi baris pertama.
+  const rankOf = useMemo(() => new Map(shown.map((p, i) => [p.id, i])), [shown])
 
   return (
     <div>
@@ -133,46 +172,65 @@ export default function Leaderboard() {
             </div>
           )}
 
+          <div className="lbsearch">
+            <IconSearch />
+            <input
+              className="lbs-in"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Cari nama peserta…"
+              aria-label="Cari nama peserta"
+            />
+            {searching && (
+              <>
+                {/* aria-live: pembaca layar tidak melihat daftar berubah, jadi
+                    jumlah hasilnya harus diumumkan. */}
+                <span className="lbs-cnt" aria-live="polite">{results.length} hasil</span>
+                <button className="lbs-clear" onClick={() => setQuery('')} aria-label="Hapus pencarian">×</button>
+              </>
+            )}
+          </div>
+
           <div className="lbsummary">
             <span className="chip">Peserta: <b>{shown.length}</b></span>
             {MS.map((m, i) => reached[i] > 0 ? <span key={m.short} className="chip">{m.short}: <b>{reached[i]}</b></span> : null)}
             <button className="miniref" onClick={() => load(true)} aria-label="Muat ulang leaderboard">↻ Muat ulang</button>
           </div>
 
-          {shown.length > 0 && (
-            <div className="podium">
-              {shown.slice(0, 3).map((p, i) => (
-                <PodiumCard key={p.id} p={p} place={i + 1} isMe={isMe(p)} refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
-              ))}
-            </div>
-          )}
-
-          {shown.length > 3 && (
-            <div className="lblist">
-              {shown.slice(3).map((p, i) => (
-                <div key={p.id} className={'lbrow' + (p.tier_idx >= 0 ? ' hasms' : '') + (isMe(p) ? ' me' : '')}>
-                  <div className="rank"><Rank i={i + 3} /></div>
-                  <div className="pinfo">
-                    <div className="pname">{p.name}{isMe(p) && <span className="youtag">kamu</span>}</div>
-                    <div className="ptier">
-                      <span className="gtag">{guildLabel(p.guild)}</span>
-                      <span className="pstat"><IconGame />{p.games}</span> <span className="pstat"><IconBadge />{p.skills}</span> · sync {ago(p.last_synced)}
-                    </div>
-                  </div>
-                  <div className="pscore">{p.total}<small>poin</small></div>
-                  <div className="pacts">
-                    <Tip label={'Lihat profil ' + p.name}>
-                      <a className="viewlink" href={p.profile_url} target="_blank" rel="noreferrer" aria-label={'Lihat profil ' + p.name}>↗</a>
-                    </Tip>
-                    <Tip label="Sinkronkan ulang poin">
-                      <button className="miniref" disabled={refreshingId === p.id} onClick={() => refresh(p.id)} aria-label={'Sinkronkan ulang ' + p.name}>
-                        {refreshingId === p.id ? '…' : '↻'}
-                      </button>
-                    </Tip>
-                  </div>
+          {/* Saat mencari, podium dilewati: menaruh hasil cari di atas podium
+              bakal memasangkan medali emas ke orang yang sebenarnya peringkat 50.
+              Hasilnya jadi daftar datar dengan peringkat aslinya masing-masing. */}
+          {searching ? (
+            results.length === 0 ? (
+              <div className="empty">Tidak ada peserta bernama “{query.trim()}”.</div>
+            ) : (
+              <div className="lblist">
+                {results.map((p) => (
+                  <MemberRow key={p.id} p={p} rank={rankOf.get(p.id)} isMe={isMe(p)}
+                    refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
+                ))}
+              </div>
+            )
+          ) : (
+            <>
+              {shown.length > 0 && (
+                <div className="podium">
+                  {shown.slice(0, 3).map((p, i) => (
+                    <PodiumCard key={p.id} p={p} place={i + 1} isMe={isMe(p)} refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+
+              {shown.length > 3 && (
+                <div className="lblist">
+                  {shown.slice(3).map((p, i) => (
+                    <MemberRow key={p.id} p={p} rank={i + 3} isMe={isMe(p)}
+                      refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
+                  ))}
+                </div>
+              )}
+            </>
           )}
           <div className="foot">Poin dihitung otomatis dari badge di profil (best-effort). Klik ↗ untuk verifikasi. Untuk masuk guild fasilitator, buka link dengan ?guild=KODE.</div>
         </>
