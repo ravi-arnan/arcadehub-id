@@ -197,7 +197,14 @@ body{
 .herobanner{width:100%;height:auto;aspect-ratio:752/547;border-radius:12px;margin-bottom:16px;display:block}
 
 /* ===== Hero arcade animasi 8-bit (pengganti hero.png) ===== */
-.ahero{position:relative;container-type:inline-size;width:100%;aspect-ratio:752/547;border-radius:12px;margin-bottom:16px;overflow:hidden;
+/* max-height: aspect-ratio sendirian bikin tingginya ikut lebar — di kartu
+   selebar 962px jadi 700px, padahal isinya (judul + subjudul) cuma ~70px.
+   Batasnya 260px karena di lebar terkecil (~358px) rasio itu memang menghasilkan
+   260px, jadi tampilan mobile sama sekali tidak berubah; yang dipangkas cuma
+   ruang kosong yang muncul saat layar melebar. Dekorasinya diposisikan pakai
+   persen, jadi ikut menyesuaikan sendiri. */
+.ahero{position:relative;container-type:inline-size;width:100%;aspect-ratio:752/547;max-height:260px;
+  border-radius:12px;margin-bottom:16px;overflow:hidden;
   background:radial-gradient(120% 130% at 50% -8%, #1b2b52 0%, #101d3f 30%, #0a1330 55%, #060b1e 78%, #04060f 100%);
   border:1px solid rgba(255,255,255,.08)}
 .ah-stars{position:absolute;inset:0}
@@ -478,25 +485,72 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 @media(max-width:560px){.fab span{display:none}.fab{padding:14px;border-radius:50%}}
 
 /* footer */
-.site-footer{border-top:1px solid var(--line);background:rgba(11,14,30,.55)}
+.site-footer{position:relative;overflow:hidden;border-top:1px solid var(--line);background:rgba(11,14,30,.55)}
+/* Isi footer harus positioned: ::after di bawah ini absolute, jadi masuk lapis
+   positioned dan otomatis menimpa konten statis. */
+.site-footer>*{position:relative;z-index:1}
+/* Garis putus-putus vertikal. Lapisannya cuma garis lurus 1px tiap 172px;
+   putus-putusnya datang dari mask, dan mask kedua memudarkannya dari atas.
+   mask-composite:intersect mengalikan keduanya. */
+.site-footer::after{content:'';position:absolute;left:0;right:0;bottom:0;height:min(80%,600px);z-index:0;pointer-events:none;
+  opacity:var(--reveal,0);
+  background-image:repeating-linear-gradient(to right,rgba(255,255,255,.14) 0 1px,transparent 1px 172px);
+  -webkit-mask-image:repeating-linear-gradient(to bottom,#000 0 3px,transparent 3px 9px),linear-gradient(to bottom,transparent,#000 45%);
+  -webkit-mask-composite:source-in;
+  mask-image:repeating-linear-gradient(to bottom,#000 0 3px,transparent 3px 9px),linear-gradient(to bottom,transparent,#000 45%);
+  mask-composite:intersect}
 .foot-cta{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:24px 20px;border-bottom:1px solid var(--line)}
 .fc-t{font-weight:800;font-size:18px}
 .fc-p{font-size:13px;color:var(--muted);margin-top:4px}
 .fc-btn{background:linear-gradient(180deg,#2be072,#1eb85c);color:#fff;font-weight:800;font-size:14px;padding:12px 20px;border-radius:12px;text-decoration:none;white-space:nowrap;box-shadow:0 8px 20px rgba(18,140,75,.35)}
-.foot-cols{max-width:960px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:28px;padding:28px 20px}
+/* Asimetris seperti referensinya: blok brand menepi ke kiri, kolom link
+   mengelompok di kanan, ruang kosong di tengah dibiarkan menganga. */
+.foot-cols{max-width:1040px;margin:0 auto;display:flex;justify-content:space-between;
+  gap:40px;flex-wrap:wrap;padding:28px 20px}
+.brandcol{max-width:340px}
+.foot-colgroup{display:flex;gap:48px}
 .brandcol .brand-title{font-size:14px}
 .brandcol p{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:10px}
 .brandcol .disc{color:#8496b8;font-size:11.5px;margin-top:8px}
 .fcol h4{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .flink{display:block;width:100%;background:transparent;border:0;padding:0 0 9px;color:#dbe6fb;font-size:13.5px;font-weight:600;text-decoration:none;text-align:left;cursor:pointer;white-space:nowrap}
 .flink:hover{color:var(--gold)}
-.fcode{margin-top:8px;font-size:10.5px;color:var(--muted)}
+.fcode{font-size:10.5px;color:var(--muted)}
 .fcode span{display:block;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .fcode b{font-family:'PS2P';font-size:9px;color:var(--gold);letter-spacing:-.5px;line-height:1.4}
-.foot-bottom{border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--muted);padding:16px 20px}
+/* Baris penutup: item kecil di kiri, copyright di kanan. */
+.foot-bottom{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);font-size:12px;color:var(--muted);padding:16px 20px 28px}
+/* Wordmark penutup. Ukurannya dikunci ke lebar container (cqw), bukan ke
+   viewport, supaya tetap pas selebar kolom konten di layar seberapa pun —
+   itu sebabnya perlu pembungkus terpisah: cqw di dalam elemen merujuk ke
+   container leluhurnya, bukan dirinya sendiri.
+   10cqw diukur, bukan dikira-kira: PS2P monospace dan teksnya 10 karakter, jadi
+   angka ini bikin lebarnya pas ~100% container. overflow:hidden jaring pengaman
+   kalau font gagal dimuat dan fallback-nya lebih lebar. */
+.foot-markwrap{container-type:inline-size;max-width:1040px;margin:0 auto;padding:20px 20px 14px;overflow:hidden}
+/* Cahayanya tinggal di dalam hurufnya sendiri, bukan sebagai kubah di belakang.
+   background-clip:text memotong gradien + grain mengikuti bentuk huruf, jadi
+   warnanya datang dari isi huruf; pusat radial di 118% (di luar kotak, bawah)
+   bikin bagian bawah huruf paling terang seolah disorot dari bawah.
+   Grain-nya bukan hiasan: gradien selebar ini rawan banding di panel 8-bit,
+   dan noise memecah pita itu jadi dither halus — tekstur yang sama seperti
+   di referensinya, cuma sekarang terkurung di dalam huruf.
+   drop-shadow (bukan text-shadow) karena filter ini mengikuti bentuk alfa
+   hasil clip, jadi pendarnya betul-betul membentuk huruf, bukan kotak. */
+.foot-mark{font-family:'PS2P';font-size:10cqw;line-height:.86;white-space:nowrap;text-align:center;user-select:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(88% 165% at 50% 118%,rgba(255,245,220,.98) 0%,rgba(255,196,40,.86) 26%,rgba(240,140,25,.5) 55%,rgba(190,105,20,.28) 100%);
+  background-size:160px 160px,100% 100%;background-blend-mode:overlay;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 14px rgba(255,176,30,.4)) drop-shadow(0 0 44px rgba(255,140,0,.22))}
 @media(max-width:620px){
-  .foot-cols{grid-template-columns:1fr 1fr;gap:22px}
-  .brandcol{grid-column:1 / -1}
+  /* Brand menumpuk di atas, tiga kolom link membungkus jadi dua-dua. */
+  .foot-cols{gap:24px}
+  .brandcol{max-width:none}
+  .foot-colgroup{flex-wrap:wrap;gap:24px 40px}
+  .foot-colgroup .fcol{min-width:120px}
 }
 
 @media(max-width:620px){
