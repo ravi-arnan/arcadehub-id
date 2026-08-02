@@ -33,6 +33,16 @@ createRoot(document.getElementById('root')).render(
 // Moved out of an inline <script> in index.html so the CSP can stay script-src
 // 'self'. Registering after the bundle loads instead of on window load costs
 // nothing: the worker only matters from the second visit onward.
+// Hanya di production. Di dev, worker ini meng-cache URL modul Vite yang
+// hash-nya berubah tiap re-optimize dependensi, jadi halaman bisa kebagian
+// campuran modul lama dan baru: dua salinan React sekaligus, lalu "Invalid
+// hook call". Sekalian bersihkan worker sisa dari dev sebelumnya.
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {})
+  if (import.meta.env.PROD) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {})
+  } else {
+    navigator.serviceWorker.getRegistrations()
+      .then((regs) => regs.forEach((r) => r.unregister()))
+      .catch(() => {})
+  }
 }

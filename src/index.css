@@ -52,24 +52,69 @@ body{
 @media (prefers-reduced-motion:reduce){.stars-b,.inv{animation:none}}
 
 /* top nav bar + centered content */
-.page{min-height:100vh;display:flex;flex-direction:column}
-.announce{display:block;text-align:center;text-decoration:none;font-size:13px;font-weight:600;color:#dbe6fb;
-  background:linear-gradient(90deg,rgba(37,211,102,.16),rgba(91,155,255,.12));border-bottom:1px solid var(--line);padding:9px 16px}
-.announce:hover{color:#fff}
-.ann-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;vertical-align:middle;box-shadow:0 0 0 3px rgba(52,201,95,.25)}
-.ann-short{display:none}
-@media(max-width:560px){
-  .announce{white-space:nowrap;font-size:12px;padding:8px 12px;overflow:hidden;text-overflow:ellipsis}
-  .ann-full{display:none}
-  .ann-short{display:inline}
-}
-.topbar{position:sticky;top:0;z-index:40;background:rgba(18,21,42,.85);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.topbar-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
-  gap:16px;padding:12px 20px}
+/* relative: jangkar untuk .topbar-sentinel. */
+.page{position:relative;min-height:100vh;display:flex;flex-direction:column}
+/* Dua tampilan, satu markup: di puncak halaman bar-nya full-bleed nempel tepi,
+   begitu di-scroll menyusut jadi pil mengambang.
+   Yang menyusut adalah SATU permukaan yang sama (.topbar::before) — lebarnya
+   dianimasikan dari selebar layar ke 1000px sambil radiusnya 0 -> 9999px. Bukan
+   dua lapis yang saling fade: cross-fade bikin bar-nya terasa "berganti", bukan
+   "menyusut", dan itu beda rasa yang paling kentara.
+   Tinggi .topbar wajib konstan di kedua state: dia sticky (bukan fixed), jadi
+   tiap perubahan tinggi bakal menggeser seluruh konten di bawahnya saat state
+   flip. Karena itu jarak pil ke atas pakai transform, bukan margin, dan garis
+   pil pakai inset box-shadow, bukan border — keduanya tidak menambah tinggi.
+   pointer-events: saat jadi pil, .topbar tetap membentang selebar layar tapi
+   tembus pandang — tanpa ini dia menghalangi klik di kiri-kanan pil. */
+.topbar{position:sticky;top:0;z-index:40;pointer-events:none;
+  border-bottom:1px solid transparent;transition:padding .5s cubic-bezier(.25,1,.5,1)}
+/* Permukaan bar, sengaja dipisah dari .topbar-inner supaya lebarnya bisa
+   dianimasikan tanpa menyeret isinya. Ditaruh di ::before, bukan di .topbar,
+   karena elemen ber-backdrop-filter jadi "backdrop root" untuk keturunannya:
+   blur yang menempel di .topbar bakal mematikan blur milik anaknya.
+   Bayangan ditulis dua-duanya sejak awal (ring transparan + garis bawah) supaya
+   daftar shadow-nya sebangun dan bisa diinterpolasi mulus ke ring + drop shadow. */
+.topbar::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:100%;max-width:100%;
+  transform:translateX(-50%);border-radius:0;background:rgba(18,21,42,.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 0 0 1px rgba(255,255,255,0) inset,0 1px 0 var(--line);
+  transition:width .5s cubic-bezier(.25,1,.5,1),max-width .5s cubic-bezier(.25,1,.5,1),
+    border-radius .5s cubic-bezier(.25,1,.5,1),transform .5s cubic-bezier(.25,1,.5,1),
+    box-shadow .5s cubic-bezier(.25,1,.5,1),backdrop-filter .5s cubic-bezier(.25,1,.5,1),
+    -webkit-backdrop-filter .5s cubic-bezier(.25,1,.5,1)}
+/* Padding 5px atas-bawah ini bukan hiasan: isi bar menyusut 10px (padding
+   12 -> 7), dan .topbar itu sticky — kalau tingginya ikut menyusut, seluruh
+   konten di bawahnya melompat 10px saat state flip. Padding di sini menggantikan
+   persis 10px yang hilang. 5px + translateY(11px) = 16px jarak dari atas layar. */
+.topbar.stuck{padding:5px 0}
+.topbar.stuck::before{width:calc(100% - 32px);max-width:1000px;border-radius:9999px;
+  transform:translateX(-50%) translateY(11px);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  box-shadow:0 0 0 1px rgba(255,255,255,.15) inset,0 10px 35px rgba(0,0,0,.8)}
+/* Ambang bagi IntersectionObserver di Layout.jsx: pil muncul setelah scroll
+   ~20px, sama seperti referensinya. Diparkir absolute supaya tidak memakan
+   ruang — kalau ikut alur, 20px ini malah mendorong header ke bawah. */
+.topbar-sentinel{position:absolute;top:20px;left:0;width:1px;height:1px;pointer-events:none}
+/* relative: ::before itu absolute jadi masuk lapis positioned; tanpa ini isi bar
+   yang static malah tertimpa latarnya sendiri.
+   1040px menyamai .app di bawahnya, jadi brand dan menu sebaris dengan tepi
+   kartu-kartu konten. Sekaligus menyediakan ruang buat gap 12px antar item
+   menu: isi bar butuh ~912px (brand 150 + gap 16 + nav 746). */
+.topbar-inner{position:relative;pointer-events:auto;width:100%;max-width:1040px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 20px;
+  transition:width .5s cubic-bezier(.25,1,.5,1),max-width .5s cubic-bezier(.25,1,.5,1),
+    transform .5s cubic-bezier(.25,1,.5,1),padding .5s cubic-bezier(.25,1,.5,1)}
+/* Ikut permukaannya persis (1000px, geser 11px) supaya isinya tidak pernah
+   menyembul keluar pil. Padding 24 bukan 20: isi bar butuh minimum ~912px
+   (brand 150 + gap 16 + nav 746), dan 1000 - 48 = 952 masih menyisakan ruang.
+   Kalau kurang, .navitem punya overflow:hidden — labelnya terpotong diam-diam. */
+.topbar.stuck .topbar-inner{width:calc(100% - 32px);max-width:1000px;
+  transform:translateY(11px);padding:7px 24px}
+@media (prefers-reduced-motion:reduce){.topbar,.topbar-inner,.topbar::before{transition:none}}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand-title{font-family:'PS2P';font-size:15px;color:var(--gold);text-shadow:0 2px 0 rgba(0,0,0,.35)}
-.topnav{position:relative;display:flex;gap:4px}
+/* nowrap: saat topbar menyusut jadi pil, tanpa ini "ARCADE HUB" pecah dua baris. */
+.brand-title{font-family:'PS2P';font-size:15px;color:var(--gold);text-shadow:0 2px 0 rgba(0,0,0,.35);white-space:nowrap}
+.topnav{position:relative;display:flex;gap:12px}
 .topnav .navitem{position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--muted);text-decoration:none;
   font-size:14px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:color .12s,background .12s,transform .12s;white-space:nowrap}
 .topnav .navitem:hover{background:rgba(255,255,255,.07);color:#fff;transform:translateY(-1px)}
@@ -461,6 +506,12 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
   .topnav .navitem{justify-content:center;padding:11px 0}
   .topnav .navitem>span:not(.navpill){display:none}
   .topnav svg{width:22px;height:22px}
+  /* Di sini isinya jadi dua baris (brand di atas nav), bentuknya blok bukan
+     batang — radius pil penuh malah aneh, jadi dilembutkan saja. Padding tetap
+     harus menyusut 10px seperti di desktop (10 -> 5) supaya tebusan 5px di
+     .topbar.stuck pas dan tingginya tidak berubah. */
+  .topbar.stuck::before{border-radius:20px}
+  .topbar.stuck .topbar-inner{padding:5px 14px}
   .main{padding:20px 14px 48px}
 }
 button{font-family:inherit;cursor:pointer}
@@ -678,7 +729,10 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .joincard .jp{font-size:13.5px;color:var(--muted);line-height:1.5;margin:6px 0 14px}
 .fin{width:100%;background:rgba(0,0,0,.24);border:1px solid var(--line);border-radius:11px;color:#fff;font-size:15px;padding:12px 14px;margin-bottom:10px}
 .fin::placeholder{color:#8a99ba}
-.frow{display:flex;gap:10px}
+/* .fin bawa jarak bawahnya sendiri, tapi di dalam .frow itu dinolkan supaya
+   tingginya pas dengan tombol di sebelahnya. Jadi jarak ke elemen berikutnya
+   dioper ke .frow — tanpa ini input di bawahnya menempel tanpa celah. */
+.frow{display:flex;gap:10px;margin-bottom:10px}
 .frow .fin{margin-bottom:0}
 .guildin{font-size:13.5px;padding:10px 13px}
 .guildrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px}

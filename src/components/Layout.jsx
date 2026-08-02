@@ -1,7 +1,6 @@
-import { Suspense, lazy, useEffect } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation, Link } from 'react-router-dom'
 import { m, AnimatePresence } from 'framer-motion'
-import { CONFIG } from '../config.js'
 import { titleFor } from '../routes.jsx'
 import SpaceFX from '../SpaceFX.jsx'
 import Nav from './Nav.jsx'
@@ -15,17 +14,28 @@ const FeedbackBubble = lazy(() => import('../FeedbackBubble.jsx'))
 export default function Layout() {
   const location = useLocation()
   useEffect(() => { document.title = titleFor(location.pathname) }, [location.pathname])
+
+  // Topbar menyusut jadi pil setelah halaman di-scroll sedikit. Ambangnya
+  // ditandai sentinel yang diparkir 20px dari puncak dokumen (lihat
+  // .topbar-sentinel): begitu dia keluar viewport, state flip. Pakai
+  // IntersectionObserver, bukan listener scroll, supaya scroll tidak memicu
+  // re-render sama sekali — cuma satu flip saat lewat batas.
+  const sentinelRef = useRef(null)
+  const [stuck, setStuck] = useState(false)
+  useEffect(() => {
+    const el = sentinelRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([entry]) => setStuck(!entry.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   return (
     <div className="page">
       <SpaceFX />
-      <a className="announce" href={CONFIG.whatsappUrl} target="_blank" rel="noreferrer">
-        <span className="ann-dot" />
-        <span className="ann-full">Gabung komunitas WhatsApp fasilitator untuk info &amp; bantuan</span>
-        <span className="ann-short">Gabung grup WhatsApp fasilitator</span>
-        &nbsp;→
-      </a>
+      <div className="topbar-sentinel" ref={sentinelRef} aria-hidden="true" />
 
-      <header className="topbar">
+      <header className={'topbar' + (stuck ? ' stuck' : '')}>
         <div className="topbar-inner">
           <Link to="/points" className="brand"><span className="brand-title">ARCADE HUB</span></Link>
           <Nav />
