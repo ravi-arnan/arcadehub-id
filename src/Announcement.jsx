@@ -36,6 +36,13 @@ export default function Announcement() {
             <div className="ann-body">
               {a.body.map((line, i) => <p key={i}>{line}</p>)}
             </div>
+            {a.links?.length > 0 && (
+              <div className="ann-links">
+                {a.links.map((l) => (
+                  <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">{l.label} <span aria-hidden>↗</span></a>
+                ))}
+              </div>
+            )}
             {a.signature && <div className="ann-sign">{a.signature}</div>}
           </m.div>
         </Dialog.Content>

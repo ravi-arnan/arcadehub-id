@@ -1063,6 +1063,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .ann-date{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:-8px 0 10px}
 .ann-body p{font-size:13.5px;line-height:1.6;color:#dbe6fb;margin:0 0 10px}
 .ann-body p:last-child{margin-bottom:0}
+.ann-links{display:flex;flex-direction:column;gap:7px;margin-top:13px}
+.ann-links a{font-size:13px;font-weight:700;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(252,201,52,.3);align-self:flex-start;padding-bottom:1px;transition:.14s}
+.ann-links a:hover{border-bottom-color:var(--gold)}
 .ann-sign{margin-top:16px;text-align:right;font-family:'PS2P';font-size:10px;color:var(--gold);opacity:.85}
 /* Kartu pengumuman di halaman Info, judulnya ikut gaya PS2P seperti .psys .ic-t */
 .infocard.ann .ic-t{color:var(--gold);font-family:'PS2P';font-size:14px;line-height:1.45;margin:2px 0 12px}

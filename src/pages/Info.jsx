@@ -38,6 +38,8 @@ const STEPS = [
 const RESOURCES = [
   ['Halaman Arcade resmi', CONFIG.arcadeUrl],
   ['Katalog badge (skill & game)', CONFIG.catalogUrl],
+  ['Weekly Challenge Player: info & aturan', CONFIG.wcPlayerUrl],
+  ['Weekly Challenge Player: leaderboard', CONFIG.wcLeaderboardUrl],
   ['Profil & pengaturan publik', CONFIG.profileHelp],
   ['Bonus Milestone: pengumuman resmi', CONFIG.bonusForumUrl],
   ['Bonus Milestone: dokumen instruksi', CONFIG.bonusDocUrl],
@@ -64,6 +66,13 @@ export default function Info() {
           <div className="ann-body">
             {ANNOUNCEMENT.body.map((line, i) => <p key={i}>{line}</p>)}
           </div>
+          {ANNOUNCEMENT.links?.length > 0 && (
+            <div className="ann-links">
+              {ANNOUNCEMENT.links.map((l) => (
+                <a key={l.href} href={l.href} target="_blank" rel="noreferrer">{l.label} <span aria-hidden>↗</span></a>
+              ))}
+            </div>
+          )}
           {ANNOUNCEMENT.signature && <div className="ann-sign">{ANNOUNCEMENT.signature}</div>}
         </div>
       )}

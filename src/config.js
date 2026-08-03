@@ -1,6 +1,8 @@
 // Pengumuman admin, muncul sekali per pengunjung saat buka web.
 // Cara pakai: ganti `id` tiap bikin pengumuman baru (itu yang bikin modal muncul
 // lagi buat semua orang). Set `id: null` kalau lagi tidak ada pengumuman.
+// `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
+// tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT = {
   id: '2026-08-03-week2',
   date: '3 Agustus 2026',
@@ -9,6 +11,10 @@ export const ANNOUNCEMENT = {
     'Periode: 3 - 7 Agustus 2026, berakhir Jumat 23.59 WIB.',
     'Cek badge list yang bisa kamu kerjakan di halaman Catalog, dan pantau posisimu di Leaderboard.',
     'Ada kendala redeem code atau daftar? Office Hour Kamis, 6 Agustus, 19.00 - 20.00 WIB.',
+  ],
+  links: [
+    { label: 'Dokumen Weekly Challenge Player', href: 'https://dicoding.id/Arcade26-WCPlayer' },
+    { label: 'Leaderboard Weekly Challenge Player', href: 'https://dicoding.id/Arcade26-PlayerLeaderboard' },
   ],
   signature: 'R',
 }
@@ -21,6 +27,10 @@ export const CONFIG = {
   regOpen: '13 Juli 2026, 09.00 WIB',
   regClose: '14 September 2026, 23.59 WIB',
   arcadeUrl: 'https://go.cloudskillsboost.google/arcade',
+  // Weekly challenge peserta (Dicoding). Short link sengaja dipakai apa adanya:
+  // tujuannya bisa berganti tanpa perlu ubah kode.
+  wcPlayerUrl: 'https://dicoding.id/Arcade26-WCPlayer',
+  wcLeaderboardUrl: 'https://dicoding.id/Arcade26-PlayerLeaderboard',
   catalogUrl: 'https://www.cloudskillsboost.google/catalog',
   profileHelp: 'https://www.cloudskillsboost.google/my_account/profile',
   spamEmail: 'googlecloudedu-noreply@google.com',
