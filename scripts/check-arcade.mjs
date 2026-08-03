@@ -120,3 +120,8 @@ section('RINGKASAN')
 const drift = dead.length + renamed.length + unknownCodes.length + featured.filter((f) => !catIds.has(f.id)).length
 say(drift === 0 ? 'Tidak ada perbedaan. Katalog masih sinkron dengan sumber resmi.' : `${drift} hal perlu ditindaklanjuti, lihat detail di atas.`)
 say('Silabus fasilitator (level Pemula/Menengah/Lanjutan) TIDAK ikut dicek: butuh login, save manual.')
+
+// Exit non-zero saat ada perbedaan. Laporannya tetap dicetak penuh; kode keluar cuma sinyal,
+// dipakai workflow terjadwal .github/workflows/arcade-check.yml supaya GitHub mengirim email
+// begitu Google merilis batch bulanan baru. Tidak ada file yang diubah, keputusan tetap manusia.
+if (drift > 0) process.exitCode = 1

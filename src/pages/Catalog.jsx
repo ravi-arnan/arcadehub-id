@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, isNewSkill, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
 import { projectMilestone } from '../../lib/projection.js'
 import { pickShortlist } from '../../lib/shortlist.js'
@@ -182,6 +182,7 @@ function BadgeCard({ it }) {
     <div className={'badgecard' + (it.done ? ' done' : '') + (it.off ? ' off' : '')}>
       <div className="bc-top">
         <span className={'bc-tag ' + it.type}>{it.type === 'game' ? 'Game' : 'Skill'}</span>
+        {it.isNew && <span className="bc-new" title="Badge unggulan batch terbaru">BARU</span>}
         {it.done && <span className="bc-check" title="Selesai">✓</span>}
         <BadgeThumb it={it} onCopy={copy} />
       </div>
@@ -213,6 +214,7 @@ function BadgeRow({ it }) {
   return (
     <div className={'badgerow' + (it.done ? ' done' : '')}>
       <span className={'br-tag ' + it.type}>{it.type === 'game' ? 'Game' : 'Skill'}</span>
+      {it.isNew && <span className="bc-new">BARU</span>}
       {it.url
         ? <a className="br-title" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>{it.title}</a>
         : <span className="br-title">{it.title}</span>}
@@ -315,6 +317,7 @@ export default function Catalog() {
       url: courseUrl(s.id),
       points: 0.5,
       done: skillEarned(s.id, s.name, earned),
+      isNew: isNewSkill(s),
     }))
     return [...games, ...skills]
   }, [gameBadges, earned])
@@ -394,7 +397,7 @@ export default function Catalog() {
           <div className="badgelist">{shown.map((it) => <BadgeRow key={it.key} it={it} />)}</div>
         )}
 
-        <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill: 2 badge = 1 poin. Kode game Jul 2026, diperbarui tiap bulan.</div>
+        <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill: 2 badge = 1 poin. Access code diperbarui tiap bulan mengikuti rilis Arcade.</div>
       </div>
 
       <PastGames gameBadges={gameBadges} />

@@ -423,6 +423,11 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-lvl.beginner{color:#8fe6b6;border-color:rgba(52,201,95,.35)}
 .bc-lvl.intermediate{color:#f2d16b;border-color:rgba(252,201,52,.35)}
 .bc-lvl.advanced{color:#f2a3a3;border-color:rgba(234,67,53,.35)}
+/* Penanda batch terbaru. Di kartu diletakkan di sudut bawah-kiri gambar: sudut atas sudah
+   dipakai chip tipe (kiri) dan centang selesai (kanan). Di mode list tampil inline. */
+.bc-new{flex:none;font-size:10px;font-weight:900;letter-spacing:.06em;padding:3px 7px;border-radius:6px;
+  background:linear-gradient(180deg,#ffd75e,#f0ad00);color:#3a2a00;box-shadow:0 2px 8px rgba(240,173,0,.35)}
+.badgecard .bc-new{position:absolute;top:auto;bottom:10px;left:10px}
 .bc-check{position:absolute;top:9px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#04240f;display:grid;place-items:center;font-size:13px;font-weight:900}
 .bc-badge{display:block;cursor:pointer;border-radius:9px;transition:transform .15s}
 .bc-badge:hover{transform:scale(1.04)}

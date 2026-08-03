@@ -94,8 +94,16 @@ export const SKILL_CATALOG = [
   { id: 759, name: 'Mitigate Threats and Vulnerabilities with Security Command Center' },
   { id: 1445, name: 'Deploy Multi-Agent Architectures' },
   { id: 1682, name: 'Orchestrate Multi-agent Workflows with Gemini Enterprise' },
-  { id: 747, name: 'Monitoring in Google Cloud' }, // badge unggulan Agustus 2026
+  // `since` = batch bulanan saat badge ini masuk katalog (YYYY-MM). Isi HANYA untuk badge yang
+  // baru ditambahkan; entri lama dibiarkan tanpa `since`. Katalog menandai "BARU" pada batch
+  // terbaru saja, jadi tanda itu hilang sendiri begitu batch bulan berikutnya ditambahkan.
+  { id: 747, name: 'Monitoring in Google Cloud', since: '2026-08' },
 ]
+
+// Batch terbaru di katalog. Dihitung dari data, bukan dari tanggal hari ini: tanda "BARU" ikut
+// isi katalog, tidak akan hilang cuma karena bulan berganti sementara katalog belum diperbarui.
+export const NEWEST_BATCH = SKILL_CATALOG.reduce((max, s) => (s.since && s.since > max ? s.since : max), '')
+export const isNewSkill = (s) => Boolean(s.since) && s.since === NEWEST_BATCH
 
 // Empat badge GEAR yang wajib selesai untuk klaim Bonus Milestone (+10 poin).
 // Sumber: discuss.google.dev/t/arcade-facilitator-2026-bonus-milestone/386412 (31 Jul 2026).
