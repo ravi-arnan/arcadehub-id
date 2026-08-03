@@ -526,9 +526,15 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
    itu sebabnya perlu pembungkus terpisah: cqw di dalam elemen merujuk ke
    container leluhurnya, bukan dirinya sendiri.
    10cqw diukur, bukan dikira-kira: PS2P monospace dan teksnya 10 karakter, jadi
-   angka ini bikin lebarnya pas ~100% container. overflow:hidden jaring pengaman
-   kalau font gagal dimuat dan fallback-nya lebih lebar. */
-.foot-markwrap{container-type:inline-size;max-width:1040px;margin:0 auto;padding:20px 20px 14px;overflow:hidden}
+   angka ini bikin lebarnya pas ~100% container. Klip tetap dipertahankan sebagai
+   jaring pengaman kalau font gagal dimuat dan fallback-nya lebih lebar — tapi
+   pakai clip + clip-margin, bukan hidden: drop-shadow di bawah blur-nya 44px
+   sementara padding wrapper cuma 14-20px, jadi overflow:hidden memotong halonya
+   lurus mengikuti kotak wrapper (kelihatan sebagai tepi kotak di sekeliling
+   wordmark). Marginnya 64px = kira-kira jangkauan visual blur 44px. Browser
+   tanpa dukungan overflow-clip-margin jatuh ke perilaku lama, bukan rusak. */
+.foot-markwrap{container-type:inline-size;max-width:1040px;margin:0 auto;padding:20px 20px 14px;
+  overflow:clip;overflow-clip-margin:64px}
 /* Cahayanya tinggal di dalam hurufnya sendiri, bukan sebagai kubah di belakang.
    background-clip:text memotong gradien + grain mengikuti bentuk huruf, jadi
    warnanya datang dari isi huruf; pusat radial di 118% (di luar kotak, bawah)
