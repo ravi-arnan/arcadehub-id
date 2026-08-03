@@ -10,6 +10,7 @@ const GROUPS = [
     tone: 'done',
     note: 'Sudah live di produksi.',
     items: [
+      { title: 'Alert game baru', desc: 'Katalog dibandingkan dengan halaman Arcade resmi tiap hari secara otomatis; kalau Google merilis batch bulanan baru atau mengubah badge, pengelola langsung dapat notifikasi dan katalog bisa segera disegarkan. Badge yang baru masuk ditandai chip "BARU", dan tandanya hilang sendiri saat batch berikutnya datang.' },
       { title: 'Pengumuman dari admin', desc: 'Pengumuman penting (mis. weekly challenge yang sedang berjalan) muncul sekali sebagai modal saat kamu membuka situs, lengkap dengan link dokumen dan leaderboard-nya. Sekali ditutup tidak mengganggu lagi, dan isinya tetap bisa dibaca ulang sebagai kartu di halaman Info.' },
       { title: 'Katalog mengikuti siklus bulanan Arcade', desc: 'Game bulan berjalan, access code, dan art badge-nya diperbarui tiap Google merilis batch baru; game bulan lalu otomatis pindah ke arsip Game Terdahulu beserta art-nya. Ada `npm run check:arcade` yang membandingkan katalog dengan halaman resmi supaya tidak ada yang tertinggal.' },
       { title: 'Deteksi badge lama diperbaiki', desc: 'Judul badge di profil sering bertema ("Arcade Voyage: Cloud Storage and Data Governance") sedangkan arsip Google memakai label generik ("Arcade Voyage: July 2026"), jadi banyak game lama tidak tercentang dan game spesial 2-3 poin kehitung 1 poin. Sekarang keduanya dikenali lewat daftar alias.' },
@@ -41,7 +42,6 @@ const GROUPS = [
     tone: 'now',
     note: 'Prioritas dekat.',
     items: [
-      { title: 'Alert game baru', desc: 'Arcade rilis game tiap bulan. Pengecekan ke halaman resmi dijadwalkan otomatis, lalu game dan badge unggulan yang baru muncul ditandai "BARU" di katalog, jadi kamu tahu ada batch baru tanpa harus membandingkan sendiri.' },
       { title: 'Leaderboard mingguan / "naik daun"', desc: 'Papan peringkat berdasarkan kenaikan poin minggu ini, menyorot peserta yang paling progresif. Butuh penyimpanan histori poin per peserta supaya selisih antar minggu bisa dihitung.' },
       { title: 'Halaman per-guild', desc: 'Leaderboard + statistik khusus satu guild (dibuka lewat ?guild=KODE), plus perbandingan antar-guild.' },
     ],
