@@ -542,15 +542,21 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
    Grain-nya bukan hiasan: gradien selebar ini rawan banding di panel 8-bit,
    dan noise memecah pita itu jadi dither halus — tekstur yang sama seperti
    di referensinya, cuma sekarang terkurung di dalam huruf.
-   drop-shadow (bukan text-shadow) karena filter ini mengikuti bentuk alfa
-   hasil clip, jadi pendarnya betul-betul membentuk huruf, bukan kotak. */
+   Pendarnya pakai text-shadow, BUKAN filter:drop-shadow. Keduanya sama-sama
+   mengikuti bentuk huruf (background-clip:text bikin alfa elemen = alfa glyph),
+   tapi filter memaksa elemen ini punya render surface sendiri — dan surface itu
+   yang rusak di halaman /points: satu-satunya halaman yang juga menganimasikan
+   filter (.ah-arcade, keyframe ah-glow), jadi pipeline filter jalan tiap frame.
+   Hasilnya huruf tergambar dobel/bergeser, dan sembuh sendiri kalau zoom diubah
+   (device scale factor berubah) — ciri khas bug raster jalur filter. text-shadow
+   digambar langsung tanpa surface terpisah, jadi jalur itu tidak dipakai lagi. */
 .foot-mark{font-family:'PS2P';font-size:10cqw;line-height:.86;white-space:nowrap;text-align:center;user-select:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
     radial-gradient(88% 165% at 50% 118%,rgba(255,245,220,.98) 0%,rgba(255,196,40,.86) 26%,rgba(240,140,25,.5) 55%,rgba(190,105,20,.28) 100%);
   background-size:160px 160px,100% 100%;background-blend-mode:overlay;
   -webkit-background-clip:text;background-clip:text;
   color:transparent;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 14px rgba(255,176,30,.4)) drop-shadow(0 0 44px rgba(255,140,0,.22))}
+  text-shadow:0 0 14px rgba(255,176,30,.4),0 0 44px rgba(255,140,0,.22)}
 @media(max-width:620px){
   /* Brand menumpuk di atas, tiga kolom link membungkus jadi dua-dua. */
   .foot-cols{gap:24px}
