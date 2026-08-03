@@ -41,7 +41,9 @@ const GROUPS = [
     tone: 'now',
     note: 'Prioritas dekat.',
     items: [
-      { title: 'Test komponen & E2E (browser)', desc: 'Tes render komponen (jsdom) + alur end-to-end di browser (Playwright). Butuh harness + env DB uji, jadi dikerjakan setelah cakupan logika.' },
+      { title: 'Alert game baru', desc: 'Arcade rilis game tiap bulan. Pengecekan ke halaman resmi dijadwalkan otomatis, lalu game dan badge unggulan yang baru muncul ditandai "BARU" di katalog, jadi kamu tahu ada batch baru tanpa harus membandingkan sendiri.' },
+      { title: 'Leaderboard mingguan / "naik daun"', desc: 'Papan peringkat berdasarkan kenaikan poin minggu ini, menyorot peserta yang paling progresif. Butuh penyimpanan histori poin per peserta supaya selisih antar minggu bisa dihitung.' },
+      { title: 'Halaman per-guild', desc: 'Leaderboard + statistik khusus satu guild (dibuka lewat ?guild=KODE), plus perbandingan antar-guild.' },
     ],
   },
   {
@@ -51,15 +53,14 @@ const GROUPS = [
     note: 'Ide untuk nanti.',
     items: [
       { title: 'Notifikasi milestone', desc: 'Beri tahu (toast/push) saat kamu mencapai milestone berikutnya.' },
-      { title: 'Halaman per-guild', desc: 'Leaderboard + statistik khusus satu guild (dibuka lewat ?guild=KODE), plus perbandingan antar-guild.' },
-      { title: 'Leaderboard mingguan / "naik daun"', desc: 'Papan peringkat berdasarkan kenaikan poin minggu ini, menyorot peserta yang paling progresif.' },
-      { title: 'Alert game baru', desc: 'Arcade rilis game tiap bulan; deteksi otomatis dan tandai game/badge "BARU" di katalog.' },
       { title: 'Dashboard analitik diperluas', desc: 'Grafik poin dari waktu ke waktu + breakdown per bulan/kategori, lanjutan dari chart yang sudah ada.' },
       { title: 'Toggle tema terang/gelap', desc: 'Pilihan tema; sekarang gelap-only. Simpan preferensi & hormati setting sistem.' },
       { title: 'Versi Bahasa Inggris (i18n)', desc: 'Dukungan dua bahasa agar bisa dipakai peserta non-Indonesia.' },
       { title: 'Digest opt-in', desc: 'Ringkasan progress mingguan via email/WhatsApp, sepenuhnya sukarela.' },
       { title: 'Pengalaman offline (PWA)', desc: 'Installable + halaman offline + prompt "versi baru tersedia".' },
       { title: 'Error monitoring & audit a11y', desc: 'Tangkap error produksi (mis. Sentry) dan audit aksesibilitas: kontras, keyboard-nav, ARIA.' },
+      // Sengaja ditaruh paling akhir: butuh harness + env DB uji, dan fitur di atas masih bergerak.
+      { title: 'Test komponen & E2E (browser)', desc: 'Tes render komponen (jsdom) + alur end-to-end di browser (Playwright). Butuh harness dan env database uji, dan paling berguna setelah fitur-fitur di atas mengendap, jadi dikerjakan paling akhir. Logika inti sendiri sudah ditutup 62 tes unit yang jalan di CI.' },
     ],
   },
 ]
