@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
 import { projectMilestone } from '../../lib/projection.js'
 import { pickShortlist } from '../../lib/shortlist.js'
@@ -234,11 +234,11 @@ function PastGames({ gameBadges }) {
     const map = new Map()
     for (const g of PAST_GAMES) {
       if (!map.has(g.m)) map.set(g.m, [])
-      map.get(g.m).push({ ...g, done: done.has(norm(g.name)) })
+      map.get(g.m).push({ ...g, done: pastGameEarned(g, done) })
     }
     return [...map.entries()].sort((a, b) => b[0] - a[0])
   }, [done])
-  const mine = PAST_GAMES.filter((g) => done.has(norm(g.name)))
+  const mine = PAST_GAMES.filter((g) => pastGameEarned(g, done))
   const minePts = mine.reduce((n, g) => n + g.pts, 0)
 
   return (

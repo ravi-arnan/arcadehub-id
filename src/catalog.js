@@ -103,7 +103,7 @@ export const SKILL_CATALOG = [
 export const GEAR_BADGES = [1586, 1596, 1445, 1682]
 
 // Game bulan-bulan sebelumnya (sudah "Game over", tidak bisa dikerjakan lagi) + bobot poinnya.
-export { PAST_GAMES, gamePoints, pastGameImg } from '../lib/pastGames.js'
+export { PAST_GAMES, gamePoints, pastGameImg, pastGameEarned } from '../lib/pastGames.js'
 
 // Access code + game id (skills.google/games/{game}) berubah TIAP BULAN. Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
 // Agustus 2026 (dicek 3 Agu 2026). Trail sudah dibuka lagi, jadi tidak ada lagi entri `off`.
