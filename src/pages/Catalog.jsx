@@ -223,9 +223,9 @@ function BadgeRow({ it }) {
   )
 }
 
-const PG_MONTHS = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni']
+const PG_MONTHS = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli']
 
-// Arsip game Jan-Jun 2026. Tidak bisa dikerjakan lagi (halaman game-nya ditutup), tapi poinnya
+// Arsip game Jan-Jul 2026. Tidak bisa dikerjakan lagi (halaman game-nya ditutup), tapi poinnya
 // TETAP masuk total Season, jadi ini penjelasan dari mana poin peserta lama datang.
 function PastGames({ gameBadges }) {
   const [open, setOpen] = useState(false)
@@ -250,7 +250,7 @@ function PastGames({ gameBadges }) {
         </button>
       </div>
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
-        Game Arcade Januari–Juni 2026 yang sudah ditutup. Tidak bisa dikerjakan lagi, tapi kalau kamu
+        Game Arcade Januari–Juli 2026 yang sudah ditutup. Tidak bisa dikerjakan lagi, tapi kalau kamu
         sempat main, poinnya tetap dihitung di total Season 2026
         {mine.length > 0 && <> — punyamu <b>{mine.length} game = {minePts} poin</b></>}.
       </div>
@@ -296,7 +296,7 @@ export default function Catalog() {
       type: 'game',
       name: g.name,
       title: g.sub ? `${g.name}: ${g.sub}` : g.name,
-      img: g.img + '?v=3',
+      img: g.img + '?v=4',
       code: g.code || null,
       // Game yang ditarik Google tidak dilink: halamannya tidak bisa dimasuki lagi.
       url: g.off || !g.game ? null : gameUrl(g.game),

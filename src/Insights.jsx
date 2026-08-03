@@ -98,7 +98,7 @@ export function MonthlyGames({ badges }) {
           const ok = done(g.re)
           return (
             <div key={g.name} className={'gamecard' + (ok ? ' done' : '')}>
-              <img src={g.img + '?v=3'} alt={g.name} loading="lazy" />
+              <img src={g.img + '?v=4'} alt={g.name} loading="lazy" />
               <div className="gc-name">{g.name}</div>
               {g.sub && <div className="gc-sub">{g.sub}</div>}
               <div className={'gc-status' + (ok ? ' ok' : '')}>{ok ? '✓ Selesai' : g.off ? 'Ditunda' : 'Belum'}</div>

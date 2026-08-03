@@ -94,6 +94,7 @@ export const SKILL_CATALOG = [
   { id: 759, name: 'Mitigate Threats and Vulnerabilities with Security Command Center' },
   { id: 1445, name: 'Deploy Multi-Agent Architectures' },
   { id: 1682, name: 'Orchestrate Multi-agent Workflows with Gemini Enterprise' },
+  { id: 747, name: 'Monitoring in Google Cloud' }, // badge unggulan Agustus 2026
 ]
 
 // Empat badge GEAR yang wajib selesai untuk klaim Bonus Milestone (+10 poin).
@@ -105,19 +106,18 @@ export const GEAR_BADGES = [1586, 1596, 1445, 1682]
 export { PAST_GAMES, gamePoints, pastGameImg } from '../lib/pastGames.js'
 
 // Access code + game id (skills.google/games/{game}) berubah TIAP BULAN. Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
+// Agustus 2026 (dicek 3 Agu 2026). Trail sudah dibuka lagi, jadi tidak ada lagi entri `off`.
 export const GAME_CATALOG = [
-  { name: 'Arcade Base Camp', short: 'Base Camp', game: 7313, code: '1q-basecamp-07511', img: '/img/game-basecamp.webp', re: /base ?camp/i },
-  { name: 'Arcade Adventure', short: 'Adventure', sub: 'Low-Code Development', game: 7314, code: '1q-lowcode-92316', img: '/img/game-adventure.webp', re: /adventure/i },
-  { name: 'Arcade Voyage', short: 'Voyage', sub: 'Cloud Storage and Data Governance', game: 7315, code: '1q-bucket-58231', img: '/img/game-voyage.webp', re: /voyage/i },
-  // Trail Juli 2026 ditarik sementara: kartunya hilang dari halaman resmi, tapi POIN-NYA TETAP
-  // DIHITUNG. Banner resmi: "a makeup opportunity will be made soon so you can collect the Arcade
-  // Point you missed", dan bagian POINTS SYSTEM masih memuat "Arcade Trail x1 game badge = 1 point".
-  // Jadi `off` HANYA berarti "belum bisa dikerjakan sekarang": entri ini tetap ikut penyebut target
-  // (6 game), cuma kartunya tidak bisa diklik. JANGAN keluarkan dari hitungan.
-  // Access code lama sengaja dibuang supaya tidak ada yang mencoba menukarkannya.
-  { name: 'Arcade Trail', short: 'Trail', sub: 'Google Workspace Administration', game: 7316, code: null, img: '/img/game-trail.webp', re: /trail/i, off: 'Ditarik sementara, poin tetap dihitung lewat sesi susulan' },
-  { name: 'Arcade Special', short: 'Special', sub: 'Safe Spaces', game: 7318, code: '1q-security-19110', img: '/img/game-special.webp', re: /special|safe space/i },
-  { name: 'Arcade Simulator', short: 'Simulator', sub: 'Data Mesh Architect', game: 7317, code: '1q-datamesh-16451', img: '/img/game-new.webp', re: /simulator|new game|data mesh/i },
+  { name: 'Arcade Base Camp', short: 'Base Camp', game: 7394, code: '1q-basecamp-10219', img: '/img/game-basecamp.webp', re: /base ?camp/i },
+  { name: 'Arcade Adventure', short: 'Adventure', sub: 'Data Vault', game: 7395, code: '1q-datamgt-92372', img: '/img/game-adventure.webp', re: /adventure/i },
+  { name: 'Arcade Voyage', short: 'Voyage', sub: 'Google Sheets', game: 7398, code: '1q-sheets-29185', img: '/img/game-voyage.webp', re: /voyage/i },
+  { name: 'Arcade Trail', short: 'Trail', sub: 'Cloud Delivery Systems', game: 7396, code: '1q-delivery-31058', img: '/img/game-trail.webp', re: /trail/i },
+  // Judul resmi game spesial bulan ini cuma "Spans and Plans" (tanpa awalan Arcade), jadi `re`
+  // harus memuat frasa itu supaya badge di profil peserta tetap terdeteksi.
+  { name: 'Arcade Special', short: 'Special', sub: 'Spans and Plans', game: 7399, code: '1q-schema-27083', img: '/img/game-special.webp', re: /spans ?and ?plans/i },
+  // Sengaja TIDAK memakai /network security/i saja: skill badge 1412 "Designing Network Security
+  // in Google Cloud" akan ikut kena dan salah di-link ke halaman game.
+  { name: 'Arcade Simulator', short: 'Simulator', sub: 'Network Security Engineer', game: 7397, code: '1q-network-51470', img: '/img/game-new.webp', re: /arcade simulator|network security engineer/i },
 ]
 
 // Skill badge yang punya gambar asli di /public/img/skills/{id}.webp (dari screenshot resmi Google Skills).
