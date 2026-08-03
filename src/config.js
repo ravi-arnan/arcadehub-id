@@ -1,3 +1,18 @@
+// Pengumuman admin, muncul sekali per pengunjung saat buka web.
+// Cara pakai: ganti `id` tiap bikin pengumuman baru (itu yang bikin modal muncul
+// lagi buat semua orang). Set `id: null` kalau lagi tidak ada pengumuman.
+export const ANNOUNCEMENT = {
+  id: '2026-08-03-week2',
+  date: '3 Agustus 2026',
+  title: 'Weekly Challenge Week 2 dimulai',
+  body: [
+    'Periode: 3 - 7 Agustus 2026, berakhir Jumat 23.59 WIB.',
+    'Cek badge list yang bisa kamu kerjakan di halaman Catalog, dan pantau posisimu di Leaderboard.',
+    'Ada kendala redeem code atau daftar? Office Hour Kamis, 6 Agustus, 19.00 - 20.00 WIB.',
+  ],
+  signature: 'R',
+}
+
 // Konfigurasi guild fasilitator, ubah di sini kalau ganti kode/link.
 export const CONFIG = {
   referralCode: 'GCAF26-ID-D4J-QEH',

@@ -10,6 +10,8 @@ import RouteSkeleton from './RouteSkeleton.jsx'
 
 // Tombol masukan (pakai Radix Popover) di-defer, tidak kritis untuk render awal.
 const FeedbackBubble = lazy(() => import('../FeedbackBubble.jsx'))
+// Modal pengumuman admin, isinya di config.js (ANNOUNCEMENT).
+const Announcement = lazy(() => import('../Announcement.jsx'))
 
 export default function Layout() {
   const location = useLocation()
@@ -58,6 +60,7 @@ export default function Layout() {
 
       <Footer />
       <Suspense fallback={null}><FeedbackBubble /></Suspense>
+      <Suspense fallback={null}><Announcement /></Suspense>
     </div>
   )
 }

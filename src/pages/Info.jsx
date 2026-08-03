@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CONFIG } from '../config.js'
+import { CONFIG, ANNOUNCEMENT } from '../config.js'
 import Collapse from '../components/Collapse.jsx'
 import PointsSystem from '../components/PointsSystem.jsx'
 
@@ -56,6 +56,18 @@ const FAQ = [
 export default function Info() {
   return (
     <div className="info">
+      {/* Pengumuman yang sedang aktif, sumbernya sama dengan modal (config.js). */}
+      {ANNOUNCEMENT?.id && (
+        <div className="infocard ann">
+          <div className="ic-lab">Pengumuman · {ANNOUNCEMENT.date}</div>
+          <div className="ic-t">{ANNOUNCEMENT.title}</div>
+          <div className="ann-body">
+            {ANNOUNCEMENT.body.map((line, i) => <p key={i}>{line}</p>)}
+          </div>
+          {ANNOUNCEMENT.signature && <div className="ann-sign">{ANNOUNCEMENT.signature}</div>}
+        </div>
+      )}
+
       <div className="infocard hero">
         <div className="ic-t">Daftar Program</div>
         <p className="ic-p">Belum daftar? Gunakan kode referral guild ini saat mengisi formulir pendaftaran.</p>
