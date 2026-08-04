@@ -607,7 +607,10 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
   border-radius:20px;padding:20px 22px;box-shadow:0 14px 34px rgba(20,120,55,.4),inset 0 2px 0 rgba(255,255,255,.5);
   display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .total .lab{font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;opacity:.92}
-.total .big{font-family:'PS2P';font-size:42px;line-height:1;font-variant-numeric:tabular-nums}
+/* line-height:1 di PS2P itu jebakan: font ini butuh sekitar 1,25em, jadi angkanya meluber
+   keluar line box dan menggerogoti padding bawah .total sampai terlihat mepet ke tepi kartu.
+   margin-top memberi jarak dari .lab, yang sebelumnya nol karena keduanya div beruntun. */
+.total .big{font-family:'PS2P';font-size:42px;line-height:1.2;margin-top:8px;font-variant-numeric:tabular-nums}
 .total .tier{font-weight:800;font-size:14px;background:rgba(0,0,0,.18);padding:7px 14px;border-radius:999px}
 .breakdown{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .chip{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;color:#e7eefc}
@@ -635,7 +638,12 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .bars{margin-top:11px;display:grid;gap:7px}
 .bar{display:grid;grid-template-columns:66px 1fr 56px;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
 .track{height:9px;border-radius:6px;background:rgba(0,0,0,.28);overflow:hidden}
-.fill{position:relative;height:100%;border-radius:6px;background:linear-gradient(90deg,#fcc934,#f7a53b);transform-origin:left;overflow:hidden}
+/* display:block WAJIB, jangan dihapus. .fill itu <span> di dalam .track yang cuma block,
+   jadi tanpa ini dia tetap inline. Elemen inline mengabaikan width, height, DAN transform,
+   sehingga width dari Bar.jsx, height:100% di bawah, dan scaleX framer-motion semuanya
+   tidak berefek dan barnya selalu tampak kosong. .track kelihatan karena dia grid item
+   milik .bar (otomatis diblokifikasi); .fill tidak dapat perlakuan itu. */
+.fill{display:block;position:relative;height:100%;border-radius:6px;background:linear-gradient(90deg,#fcc934,#f7a53b);transform-origin:left;overflow:hidden}
 .ms.done .fill{background:linear-gradient(90deg,#3ad46a,#2bb457)}
 .fill-shine{position:absolute;inset:0;transform:translateX(-120%);
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:barshine 3.4s ease-in-out infinite}
