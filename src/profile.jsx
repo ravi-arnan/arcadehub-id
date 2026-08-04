@@ -41,6 +41,7 @@ export function ProfileProvider({ children }) {
         name: m.name, total: m.total, games: m.games, skills: m.skills,
         facilGames: m.facilGames || 0, facilSkills: m.facilSkills || 0,
         base: m.base, mbonus: m.mbonus, tierIdx: m.tierIdx,
+        seasonUnknown: m.seasonUnknown || 0, unknownList: m.unknownList || [],
         gameList: m.gameList || [], skillList: m.skillList || [], seasonBadges: m.seasonBadges || [], syncedAt: Date.now(),
       })
       setProfileUrl(m.profileUrl || url)

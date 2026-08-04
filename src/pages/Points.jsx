@@ -102,6 +102,18 @@ function MyPoints() {
         <div className="icard"><h3>Skill Badges</h3><div className="hint">total 2026</div><div className="statnum">{score?.skills || 0}</div></div>
       </div>
 
+      {/* Tanpa ini, peserta yang punya banyak completion badge melihat angka Skill Badges jauh
+          lebih kecil dari jumlah badge di profilnya dan tidak punya cara menebak sebabnya.
+          Ditampilkan sebagai catatan, bukan peringatan: tidak ada yang salah dengan profilnya. */}
+      {score?.seasonUnknown > 0 && (
+        <div className="unknownnote">
+          <b>{score.seasonUnknown} badge</b> lain di profilmu tidak menambah poin. Program ini hanya
+          menghitung <b>Arcade Game</b> dan <b>badge keahlian resmi</b>; badge dari course biasa
+          (completion badge) tidak termasuk. Kalau menurutmu ada badge keahlian resmi yang terlewat,
+          kabari lewat tombol Masukan supaya katalognya kami perbarui.
+        </div>
+      )}
+
       <div className="myprofrow">
         <span className="pmeta">{score?.name ? score.name + ' · ' : ''}sync {score ? ago(score.syncedAt) : '-'}</span>
         <span className="myacts">
