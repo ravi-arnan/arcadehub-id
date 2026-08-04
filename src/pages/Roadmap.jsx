@@ -10,6 +10,7 @@ const GROUPS = [
     tone: 'done',
     note: 'Sudah live di produksi.',
     items: [
+      { title: 'Halaman perbandingan guild', desc: 'Halaman /guilds meranking semua guild: total poin, rata-rata, poin tertinggi, jumlah game dan badge, plus berapa anggota yang sudah menembus tiap milestone. Peringkat memakai total poin sehingga guild besar wajar unggul, jadi kolom rata-rata ditaruh berdampingan supaya guild kecil yang aktif tetap terbaca. Tiap baris membuka leaderboard yang sudah terfilter ke guild itu.' },
       { title: 'Alert game baru', desc: 'Katalog dibandingkan dengan halaman Arcade resmi tiap hari secara otomatis; kalau Google merilis batch bulanan baru atau mengubah badge, pengelola langsung dapat notifikasi dan katalog bisa segera disegarkan. Badge yang baru masuk ditandai chip "BARU", dan tandanya hilang sendiri saat batch berikutnya datang.' },
       { title: 'Pengumuman dari admin', desc: 'Pengumuman penting (mis. weekly challenge yang sedang berjalan) muncul sekali sebagai modal saat kamu membuka situs, lengkap dengan link dokumen dan leaderboard-nya. Sekali ditutup tidak mengganggu lagi, dan isinya tetap bisa dibaca ulang sebagai kartu di halaman Info.' },
       { title: 'Katalog mengikuti siklus bulanan Arcade', desc: 'Game bulan berjalan, access code, dan art badge-nya diperbarui tiap Google merilis batch baru; game bulan lalu otomatis pindah ke arsip Game Terdahulu beserta art-nya. Ada `npm run check:arcade` yang membandingkan katalog dengan halaman resmi supaya tidak ada yang tertinggal.' },
@@ -21,13 +22,13 @@ const GROUPS = [
       { title: 'Animasi pill navigasi', desc: 'Penanda menu aktif meluncur antar tab, bukan lompat. Ditulis ulang pakai transform CSS, jadi tidak perlu menambah bundle animasi layout, dan otomatis diam saat perangkat minta reduced-motion.' },
       { title: 'Pulih otomatis dari deploy baru', desc: 'Tab yang sedang terbuka saat versi baru dirilis tidak lagi mendarat di layar error karena chunk lama hilang: halaman me-refresh sendiri sekali, dengan pengaman supaya tidak jadi loop.' },
       { title: 'Proyeksi milestone', desc: 'Di "Mulai dari Sini": sisa hari menuju penutupan, berapa badge lagi yang dibutuhkan, kecepatan badge per minggu yang diperlukan dibanding kecepatanmu sekarang, plus perkiraan tanggal tercapai kalau ritmemu bertahan.' },
-      { title: 'Cakupan tes diperluas', desc: 'Tes otomatis di luar logika poin: parsing profil (regex badge & tanggal), normalisasi URL + guard SSRF, matching katalog/alias, dan proyeksi milestone. 62 tes via node --test, ikut gate CI tiap push.' },
+      { title: 'Cakupan tes diperluas', desc: 'Tes otomatis di luar logika poin: parsing profil (regex badge & tanggal), normalisasi URL + guard SSRF, matching katalog/alias, proyeksi milestone, dan statistik guild. 84 tes via node --test, ikut gate CI tiap push.' },
       { title: 'Kontrol privasi leaderboard', desc: 'Pemberitahuan consent saat auto-join + tombol "Keluar dari leaderboard" yang menghapus entrimu (aman lewat token kepemilikan). Bisa gabung lagi kapan saja.' },
       { title: 'Badge Saya lebih rapi', desc: 'Badge di Poin Saya dikelompokkan per bulan, bisa difilter Game vs Skill, dan tiap badge yang dikenali nge-link ke halaman Skills Boost-nya.' },
       { title: 'Panduan pemula "Mulai dari Sini"', desc: 'Roadmap prioritas di atas Katalog: kerjakan Game dulu (kuota terbatas), lalu kejar milestone terdekat lewat badge, dengan progress dari profilmu.' },
       { title: 'Field guild di Poin Saya', desc: 'Isi kode guild saat hitung poin atau ubah kapan saja; tersimpan dan ikut saat sinkron ulang.' },
-      { title: 'Katalog badge terpadu', desc: 'Game + skill jadi satu koleksi: tab tipe, pencarian, filter status, dan toggle grid/list.' },
-      { title: '68 gambar badge skill asli', desc: 'Tiap skill badge tampil art resmi Google Skills, plus deteksi "Selesai" via alias nama badge.' },
+      { title: 'Katalog badge terpadu', desc: 'Game, skill badge, dan completion badge jadi satu koleksi: empat tab tipe, pencarian, filter status, dan toggle grid/list. Completion badge (497 course, diurutkan dari yang paling singkat) ikut masuk karena parser poin memang sudah lama menghitungnya, jadi katalog kini cocok dengan cara skor dihitung.' },
+      { title: 'Gambar badge skill asli', desc: '80 dari 93 skill badge tampil art resmi Google Skills, plus deteksi "Selesai" via alias nama badge untuk badge yang pernah diganti nama oleh Google.' },
       { title: 'Access code & buka game', desc: 'Klik badge game membuka halaman Google Skills dan menyalin access code otomatis.' },
       { title: 'Leaderboard podium ala Kahoot', desc: 'Top 3 di podium 2-1-3, sisanya list; responsif di mobile.' },
       { title: 'Auto-join dari Poin Saya', desc: 'Masukkan link profil sekali, otomatis muncul & tersinkron di leaderboard.' },
@@ -42,8 +43,8 @@ const GROUPS = [
     tone: 'now',
     note: 'Prioritas dekat.',
     items: [
-      { title: 'Leaderboard mingguan / "naik daun"', desc: 'Papan peringkat berdasarkan kenaikan poin minggu ini, menyorot peserta yang paling progresif. Butuh penyimpanan histori poin per peserta supaya selisih antar minggu bisa dihitung.' },
-      { title: 'Halaman per-guild', desc: 'Leaderboard + statistik khusus satu guild (dibuka lewat ?guild=KODE), plus perbandingan antar-guild.' },
+      { title: 'Leaderboard mingguan / "naik daun"', desc: 'Papan peringkat berdasarkan kenaikan poin minggu ini, menyorot peserta yang paling progresif, bukan cuma yang totalnya sudah tinggi. Perekaman datanya SUDAH JALAN: poin tiap peserta di-snapshot sekali sehari bersamaan dengan sinkronisasi otomatis. Papannya sendiri baru dipasang setelah snapshot terkumpul cukup, karena sebelum itu tidak ada selisih yang bisa ditampilkan.' },
+      { title: 'Statistik mendalam per guild', desc: 'Lanjutan dari halaman perbandingan guild: tren poin guild dari waktu ke waktu dan badge apa yang paling banyak dikerjakan anggotanya. Menunggu data snapshot yang sama seperti leaderboard mingguan.' },
     ],
   },
   {
@@ -60,7 +61,7 @@ const GROUPS = [
       { title: 'Pengalaman offline (PWA)', desc: 'Installable + halaman offline + prompt "versi baru tersedia".' },
       { title: 'Error monitoring & audit a11y', desc: 'Tangkap error produksi (mis. Sentry) dan audit aksesibilitas: kontras, keyboard-nav, ARIA.' },
       // Sengaja ditaruh paling akhir: butuh harness + env DB uji, dan fitur di atas masih bergerak.
-      { title: 'Test komponen & E2E (browser)', desc: 'Tes render komponen (jsdom) + alur end-to-end di browser (Playwright). Butuh harness dan env database uji, dan paling berguna setelah fitur-fitur di atas mengendap, jadi dikerjakan paling akhir. Logika inti sendiri sudah ditutup 62 tes unit yang jalan di CI.' },
+      { title: 'Test komponen & E2E (browser)', desc: 'Tes render komponen (jsdom) + alur end-to-end di browser (Playwright). Butuh harness dan env database uji, dan paling berguna setelah fitur-fitur di atas mengendap, jadi dikerjakan paling akhir. Logika inti sendiri sudah ditutup 84 tes unit yang jalan di CI.' },
     ],
   },
 ]

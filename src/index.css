@@ -948,7 +948,9 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
   border-radius:20px;padding:18px 22px;color:#2a2400;box-shadow:0 14px 34px rgba(180,130,20,.35),inset 0 2px 0 rgba(255,255,255,.5);
   display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .prizehead .lab{font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;opacity:.82}
-.prizehead .big{font-family:'PS2P';font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
+/* Sama persis dengan .total .big, lihat alasannya di sana: PS2P butuh sekitar 1,25em, dan
+   .lab/.big itu dua div beruntun tanpa jarak. Kalau salah satu diubah, ubah keduanya. */
+.prizehead .big{font-family:'PS2P';font-size:38px;line-height:1.2;margin-top:8px;font-variant-numeric:tabular-nums}
 .prizehead .tier{font-weight:800;font-size:14px;background:rgba(0,0,0,.16);padding:7px 14px;border-radius:999px}
 .nextnote{margin-top:12px;font-size:14px;color:#e8eefb;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 15px}
 .nextnote b{color:var(--gold)}
@@ -1058,3 +1060,40 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .errbound .eb-emoji svg{width:44px;height:44px}
 .errbound h1{font-size:16px;margin:0 0 10px}
 .errbound p{color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 18px}
+
+/* halaman guild (/guilds) */
+/* Link ke perbandingan guild, duduk di samping tombol filter guild. inline-block + margin
+   kiri, bukan flex di .gf-wrap: .gf-wrap juga membungkus panel Collapse yang harus tetap
+   turun ke baris sendiri. */
+.gf-compare{display:inline-block;margin-left:10px;color:var(--gold);font-size:13px;font-weight:700;text-decoration:none;vertical-align:middle}
+.gf-compare:hover{text-decoration:underline}
+.gl-list{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+/* Empat area: peringkat, identitas, angka, tombol. Kolom angka dikunci auto supaya poin
+   guild besar tidak menggencet nama. */
+.gl-card{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:'rank main nums' 'open open open';
+  align-items:center;gap:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.gl-card.me{border-color:rgba(252,201,52,.5);background:rgba(252,201,52,.06)}
+.gl-rank{grid-area:rank;min-width:34px;display:flex;align-items:center;justify-content:center}
+.gl-rank .rnum{font-size:20px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.gl-main{grid-area:main;min-width:0}
+.gl-name{font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gl-tag{font-size:10.5px;font-weight:700;color:#bfeccd;background:rgba(52,201,95,.16);border:1px solid rgba(52,201,95,.4);padding:1px 8px;border-radius:999px}
+.gl-meta{font-size:12.5px;color:var(--muted);margin-top:3px}
+/* Chip milestone boleh kosong (guild yang belum ada yang tembus), jadi jarak atasnya
+   dipasang di chip-nya lewat :not(:empty), bukan di wadahnya. */
+.gl-ms{display:flex;gap:6px;flex-wrap:wrap}
+.gl-ms:not(:empty){margin-top:8px}
+.gl-ms .chip{padding:5px 9px;font-size:11.5px}
+.gl-nums{grid-area:nums;text-align:right}
+.gl-total{font-family:'PS2P';font-size:18px;line-height:1.2;color:var(--gold);font-variant-numeric:tabular-nums}
+.gl-total span{font-family:'Segoe UI',system-ui,sans-serif;font-size:10px;color:var(--muted);margin-left:6px}
+.gl-avg{font-size:11.5px;color:var(--muted);margin-top:6px}
+.gl-open{grid-area:open;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:4px;padding:9px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.05);
+  color:#dbe6fb;font-size:13px;font-weight:700;text-decoration:none}
+.gl-open:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28)}
+@media(max-width:560px){
+  .gl-card{grid-template-columns:auto 1fr;grid-template-areas:'rank main' 'nums nums' 'open open';gap:8px 12px}
+  .gl-nums{text-align:left}
+  .gl-name{font-size:15.5px}
+}

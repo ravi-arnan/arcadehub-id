@@ -100,6 +100,7 @@ export default function Footer() {
             {NAV.map(({ path, label }) => (
               <NavLink key={path} to={path} className="flink">{label}</NavLink>
             ))}
+            <NavLink to="/guilds" className="flink">Guild</NavLink>
             <NavLink to="/roadmap" className="flink">Roadmap</NavLink>
           </div>
           <div className="fcol">

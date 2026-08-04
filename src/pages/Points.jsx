@@ -15,7 +15,7 @@ import Collapse from '../components/Collapse.jsx'
 import ArcadeHero from '../components/ArcadeHero.jsx'
 import BonusMilestone from '../components/BonusMilestone.jsx'
 import { ago } from '../utils/time.js'
-import { guildKey, guildLabel } from '../utils/guild.js'
+import { guildKey, guildLabel } from '../../lib/guild.js'
 import { IconTrophy } from '../icons.jsx'
 
 // Guild tampil/ubah di tampilan tersinkron. Kosongkan lalu simpan tidak menghapus guild lama (backend COALESCE).

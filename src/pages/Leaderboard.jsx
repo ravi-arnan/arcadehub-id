@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { MS } from '../points.js'
 import { searchMembers } from '../../lib/searchMembers.js'
 import { useMyProfile } from '../profile.jsx'
@@ -7,7 +7,7 @@ import Tip from '../Tip.jsx'
 import Medal from '../Medal.jsx'
 import Collapse from '../components/Collapse.jsx'
 import { ago } from '../utils/time.js'
-import { guildKey, guildLabel } from '../utils/guild.js'
+import { guildKey, guildLabel } from '../../lib/guild.js'
 import { IconGamepad } from '../icons.jsx'
 
 const Rank = ({ i }) => (i > 2 ? <span className="rnum">{i + 1}</span> : <Medal i={i} className="rmedal" />)
@@ -74,13 +74,15 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }) {
   )
 }
 
-// dukung ?guild=KODE untuk auto-filter ke guild tsb
-const urlGuild = (() => {
-  try { const g = new URLSearchParams(location.search).get('guild'); return g ? g.trim().toUpperCase() : '' } catch { return '' }
-})()
-
 export default function Leaderboard() {
   const { profileUrl, memberId } = useMyProfile()
+  // ?guild=KODE dibaca lewat useSearchParams, BUKAN sekali di level modul seperti dulu.
+  // Nilai level modul cuma dihitung saat chunk pertama dimuat, jadi link dalam aplikasi
+  // (dari /guilds) tidak akan pernah mengubah filter: rutenya berganti tapi modulnya
+  // sudah terlanjur dievaluasi. Dulu tidak ketahuan karena satu-satunya jalan ke sini
+  // dengan ?guild= adalah membuka URL-nya langsung, yang selalu memuat modul dari nol.
+  const [params] = useSearchParams()
+  const urlGuild = (params.get('guild') || '').trim().toUpperCase()
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState('')
@@ -164,6 +166,9 @@ export default function Leaderboard() {
                 <span className="gf-cnt">{shown.length}</span>
                 <span className="gf-chev" aria-hidden>▾</span>
               </button>
+              {/* Pintu masuk ke /guilds ditaruh di sini, bukan cuma di footer: orang yang
+                  penasaran soal guild sedang berdiri tepat di filter guild. */}
+              <Link className="gf-compare" to="/guilds">Bandingkan guild <span aria-hidden>→</span></Link>
               <Collapse open={filterOpen}>
                 <div className="gfilter gf-panel" id="gf-panel">
                   <button className={filter === 'ALL' ? 'on' : ''} onClick={() => { setFilter('ALL'); setFilterOpen(false) }}>Semua ({members.length})</button>

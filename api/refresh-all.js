@@ -43,7 +43,28 @@ export default async function handler(req, res) {
     }
     await Promise.all(Array.from({ length: Math.min(CONCURRENCY, rows.length) }, worker))
 
-    res.status(200).json({ ok: true, total: rows.length, refreshed: ok, failed, skipped, ms: Date.now() - startedAt })
+    // Snapshot poin harian, dasar untuk leaderboard mingguan. Menyapu SEMUA anggota lewat
+    // satu statement, bukan cuma `rows`: BATCH membatasi berapa profil yang di-fetch ulang
+    // dari Google, sedangkan histori harus lengkap tiap hari supaya selisih mingguan tidak
+    // bolong untuk peserta yang kebetulan tidak kebagian batch hari itu.
+    //
+    // try terpisah: menyinkron poin adalah tugas utama dan sudah berhasil di titik ini.
+    // Snapshot gagal tidak boleh membuat cron dilaporkan merah dan memicu retry sia-sia.
+    let snapshot = 0
+    let snapshotError = null
+    try {
+      const snap = await sql`
+        INSERT INTO point_history (member_id, day, total, games, skills)
+        SELECT id, (now() AT TIME ZONE 'Asia/Jakarta')::date, total, games, skills FROM members
+        ON CONFLICT (member_id, day) DO UPDATE
+          SET total = EXCLUDED.total, games = EXCLUDED.games, skills = EXCLUDED.skills
+        RETURNING member_id`
+      snapshot = snap.length
+    } catch (e) {
+      snapshotError = e.message
+    }
+
+    res.status(200).json({ ok: true, total: rows.length, refreshed: ok, failed, skipped, snapshot, snapshotError, ms: Date.now() - startedAt })
   } catch (e) {
     res.status(500).json({ error: e.message || 'Gagal refresh-all.' })
   }
