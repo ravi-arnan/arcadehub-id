@@ -10,6 +10,7 @@ import { BONUS_TASK } from '../points.js'
 import { GEAR_BADGES, SKILL_CATALOG, courseUrl, skillEarned, norm } from '../catalog.js'
 import { CONFIG } from '../config.js'
 import Collapse from './Collapse.jsx'
+import ToggleButton from './ToggleButton.jsx'
 import { IconArrowRight, IconTrophy } from '../icons.jsx'
 
 const KEY = 'gcaf2026_bonus_done'
@@ -73,9 +74,8 @@ export default function BonusMilestone({ score }) {
         </a>
       </div>
 
-      <button className="sh-toggle bm-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-        {open ? 'Sembunyikan langkah' : 'Lihat langkah lengkap'} <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
-      </button>
+      <ToggleButton open={open} onToggle={() => setOpen((o) => !o)} className="bm-toggle"
+        showLabel="Lihat langkah lengkap" hideLabel="Sembunyikan langkah" />
       <Collapse open={open}>
         <ol className="bm-steps">
           <li>Selesaikan 4 badge GEAR di atas. Badge ini juga tetap menambah poin milestone biasa.</li>

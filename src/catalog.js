@@ -184,21 +184,12 @@ const SKILL_ALIASES = {
 export const skillEarned = (id, name, earnedSet) =>
   earnedSet.has(norm(name)) || (SKILL_ALIASES[id] || []).some((a) => earnedSet.has(norm(a)))
 
-// Cari gambar katalog untuk judul badge yang di-earn (cocok nama/alias). null kalau di luar katalog.
-export const earnedSkillImg = (title) => {
-  const n = norm(title)
-  for (const s of SKILL_CATALOG) {
-    if (norm(s.name) === n || (SKILL_ALIASES[s.id] || []).some((a) => norm(a) === n)) return skillImg(s.id)
-  }
-  return null
-}
-
 const UTM = '?utm_source=arcade-hub'
 export const courseUrl = (id) => `https://www.skills.google/course_templates/${id}${UTM}`
 export const gameUrl = (id) => `https://www.skills.google/games/${id}${UTM}`
 
 // Link ke halaman badge di Skills Boost dari judul yang di-earn: game -> halaman game,
-// skill/completion -> course. Cocokkan nama/alias seperti earnedSkillImg.
+// skill/completion -> course. Cocokkan nama sekarang maupun alias lamanya.
 // null kalau di luar katalog (tanpa link).
 export const badgeUrl = (title) => {
   const t = title || ''

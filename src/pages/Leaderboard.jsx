@@ -7,13 +7,16 @@ import Tip from '../Tip.jsx'
 import Medal from '../Medal.jsx'
 import Collapse from '../components/Collapse.jsx'
 import { ago } from '../utils/time.js'
+import { guildKey, guildLabel } from '../utils/guild.js'
+import { IconGamepad } from '../icons.jsx'
 
 const Rank = ({ i }) => (i > 2 ? <span className="rnum">{i + 1}</span> : <Medal i={i} className="rmedal" />)
-const IconGame = () => <svg className="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="6" x2="10" y1="11" y2="11" /><line x1="8" x2="8" y1="9" y2="13" /><line x1="15" x2="15.01" y1="12" y2="12" /><line x1="18" x2="18.01" y1="10" y2="10" /><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" /></svg>
-const IconBadge = () => <svg className="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /><circle cx="12" cy="8" r="6" /></svg>
-const IconFilter = () => <svg className="gf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+const IconGame = () => <IconGamepad className="mini" />
+// Sengaja TIDAK diganti IconAward dari icons.jsx: glif-nya beda (pita polos vs pita berlekuk),
+// jadi menukarnya itu perubahan tampilan, bukan dedup. Dipakai dua kali di file ini saja.
+const IconBadge = () => <svg className="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /><circle cx="12" cy="8" r="6" /></svg>
+const IconFilter = () => <svg className="gf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
 const IconSearch = () => <svg className="lbs-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
-const guildLabel = (g) => (!g || g === 'UMUM' ? 'Umum' : g)
 
 function PodiumCard({ p, place, isMe, refreshing, onRefresh }) {
   return (
@@ -114,11 +117,11 @@ export default function Leaderboard() {
 
   const guilds = useMemo(() => {
     const map = new Map()
-    members.forEach((m) => map.set(m.guild || 'UMUM', (map.get(m.guild || 'UMUM') || 0) + 1))
+    members.forEach((m) => map.set(guildKey(m.guild), (map.get(guildKey(m.guild)) || 0) + 1))
     return [...map.entries()].sort((a, b) => b[1] - a[1])
   }, [members])
 
-  const shown = filter === 'ALL' ? members : members.filter((m) => (m.guild || 'UMUM') === filter)
+  const shown = filter === 'ALL' ? members : members.filter((m) => guildKey(m.guild) === filter)
   const reached = MS.map((_, i) => shown.filter((p) => p.tier_idx >= i).length)
   const isMe = (p) => (memberId && p.id === memberId) || (profileUrl && p.profile_url === profileUrl)
 

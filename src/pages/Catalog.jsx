@@ -8,6 +8,7 @@ import { useMyProfile } from '../profile.jsx'
 import { shortDate } from '../utils/time.js'
 import Bar from '../components/Bar.jsx'
 import Collapse from '../components/Collapse.jsx'
+import ToggleButton from '../components/ToggleButton.jsx'
 import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
@@ -73,9 +74,7 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, onS
     <div className="card starthere">
       <div className="card-h">
         <span className="sh-badge">Panduan Pemula</span> Mulai dari Sini
-        <button className="sh-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-          {open ? 'Sembunyikan' : 'Lihat'} <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
-        </button>
+        <ToggleButton open={open} onToggle={() => setOpen((o) => !o)} />
       </div>
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
         Bingung mulai dari mana? Ikuti urutan ini biar poinmu naik paling cepat.
@@ -264,9 +263,7 @@ function PastGames({ gameBadges }) {
     <div className="card">
       <div className="card-h">
         Game Terdahulu <span className="card-tag">{mine.length}/{PAST_GAMES.length}</span>
-        <button className="sh-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-          {open ? 'Sembunyikan' : 'Lihat'} <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
-        </button>
+        <ToggleButton open={open} onToggle={() => setOpen((o) => !o)} />
       </div>
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
         Game Arcade Januari–Juli 2026 yang sudah ditutup. Tidak bisa dikerjakan lagi, tapi kalau kamu
