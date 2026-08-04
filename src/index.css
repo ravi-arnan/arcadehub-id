@@ -418,6 +418,9 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-tag{position:absolute;top:10px;left:10px;font-size:11px;font-weight:800;letter-spacing:.02em;padding:3px 9px;border-radius:7px}
 .bc-tag.game{color:#c7ccff;background:rgba(111,123,255,.2);border:1px solid rgba(111,123,255,.4)}
 .bc-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16);border:1px solid rgba(52,201,95,.4)}
+/* Completion badge: warna sendiri supaya tidak tertukar dengan skill badge silabus, walau
+   bobot poinnya sama (0,5). */
+.bc-tag.completion{color:#9fd8f5;background:rgba(66,165,245,.16);border:1px solid rgba(66,165,245,.42)}
 /* Level silabus resmi (Pemula/Menengah/Lanjutan). Badge di luar silabus tidak punya chip ini. */
 .bc-lvl{font-size:10.5px;font-weight:800;letter-spacing:.02em;padding:3px 9px;border-radius:7px;color:var(--muted);background:rgba(255,255,255,.06);border:1px solid var(--line)}
 .bc-lvl.beginner{color:#8fe6b6;border-color:rgba(52,201,95,.35)}
@@ -458,15 +461,23 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .br-tag{flex:none;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:6px}
 .br-tag.game{color:#c7ccff;background:rgba(111,123,255,.2)}
 .br-tag.skill{color:#8fe6b6;background:rgba(52,201,95,.16)}
+.br-tag.completion{color:#9fd8f5;background:rgba(66,165,245,.16)}
 .br-title{flex:1;min-width:0;font-size:14px;font-weight:600;color:#dbe6fb;text-decoration:none;line-height:1.35}
 .br-title:hover{color:#fff}
 .badgerow .gc-code{margin-top:0;flex:none}
+.br-dur{flex:none;font-size:11.5px;font-weight:600;color:var(--muted);white-space:nowrap}
 .br-pts{flex:none;font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap}
 .br-status{flex:none;font-size:12px;font-weight:700;color:var(--muted);min-width:64px;text-align:right}
 .br-status.ok{color:var(--green)}
 @media(max-width:560px){
-  .badgerow .gc-code,.br-status{display:none}
+  .badgerow .gc-code,.br-dur,.br-status{display:none}
 }
+/* Tombol buka sisa katalog. Katalog kini ~590 badge, dirender bertahap 60 per klik. */
+.catmore{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:14px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:11px;color:#dbe6fb;
+  font-size:13.5px;font-weight:700;padding:12px;cursor:pointer;transition:.13s}
+.catmore:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+.catmore span{font-size:11.5px;font-weight:600;color:var(--muted)}
 
 /* feedback bubble */
 .fab{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;align-items:center;gap:8px;

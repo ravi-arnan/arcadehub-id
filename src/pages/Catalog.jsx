@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, isNewSkill, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, COMPLETION_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, completionEarned, isNewSkill, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
 import { projectMilestone } from '../../lib/projection.js'
 import { pickShortlist } from '../../lib/shortlist.js'
@@ -17,6 +17,18 @@ const LEVEL_LABEL = { beginner: 'Pemula', intermediate: 'Menengah', advanced: 'L
 const LEVEL_ORDER = { beginner: 0, intermediate: 1, advanced: 2 }
 const levelRank = (lv) => LEVEL_ORDER[lv] ?? 3
 const fmtRate = (n) => (n >= 10 ? Math.round(n) : Math.round(n * 10) / 10).toLocaleString('id-ID')
+
+const TYPE_LABEL = { game: 'Game', skill: 'Skill', completion: 'Completion' }
+
+// Durasi resmi course, dipakai sebagai chip di kartu completion badge. Poin tiap completion
+// badge sama (0,5), jadi lama pengerjaan itu satu-satunya pembeda yang berguna.
+const fmtDur = (min) => {
+  if (!min) return null
+  if (min < 60) return `${min} menit`
+  const h = Math.floor(min / 60)
+  const m = min % 60
+  return m ? `${h} jam ${m} menit` : `${h} jam`
+}
 
 // Proyeksi: bandingkan kecepatan sekarang dengan kecepatan yang dibutuhkan sampai penutupan.
 // Hanya tampil kalau profil sudah tersinkron (tanpa data, tidak ada yang bisa diproyeksikan).
@@ -166,7 +178,7 @@ function BadgeThumb({ it, onCopy }) {
   const title = it.type === 'game'
     ? `Buka ${it.name} di Google Skills` + (it.code ? ' (access code otomatis tersalin)' : '')
     : `Buka ${it.name} di Google Skills`
-  const cls = 'bc-badge' + (it.type === 'skill' ? (it.img ? ' bc-badge-skill' : ' bc-skillthumb') : '')
+  const cls = 'bc-badge' + (it.type !== 'game' ? (it.img ? ' bc-badge-skill' : ' bc-skillthumb') : '')
   const thumb = it.img ? <img src={it.img} alt={it.name} loading="lazy" /> : <IconAward width="34" height="34" />
   if (!it.url) return <span className={cls}>{thumb}</span>
   return (
@@ -181,7 +193,7 @@ function BadgeCard({ it }) {
   return (
     <div className={'badgecard' + (it.done ? ' done' : '') + (it.off ? ' off' : '')}>
       <div className="bc-top">
-        <span className={'bc-tag ' + it.type}>{it.type === 'game' ? 'Game' : 'Skill'}</span>
+        <span className={'bc-tag ' + it.type}>{TYPE_LABEL[it.type]}</span>
         {it.isNew && <span className="bc-new" title="Badge unggulan batch terbaru">BARU</span>}
         {it.done && <span className="bc-check" title="Selesai">✓</span>}
         <BadgeThumb it={it} onCopy={copy} />
@@ -193,7 +205,8 @@ function BadgeCard({ it }) {
               garis warna di tepi bawah, chip melayang di sana jadi bertabrakan. */}
           {it.code
             ? <CodeChip code={it.code} copied={copied} onCopy={copy} />
-            : it.level ? <span className={'bc-lvl ' + it.level}>{LEVEL_LABEL[it.level]}</span> : <span />}
+            : it.level ? <span className={'bc-lvl ' + it.level}>{LEVEL_LABEL[it.level]}</span>
+            : it.dur ? <span className="bc-lvl">{it.dur}</span> : <span />}
           <span className="bc-pts">{fmtPts(it.points)} Poin</span>
         </div>
         {it.off ? (
@@ -213,17 +226,21 @@ function BadgeRow({ it }) {
   const [copied, copy] = useCopyCode(it.code)
   return (
     <div className={'badgerow' + (it.done ? ' done' : '')}>
-      <span className={'br-tag ' + it.type}>{it.type === 'game' ? 'Game' : 'Skill'}</span>
+      <span className={'br-tag ' + it.type}>{TYPE_LABEL[it.type]}</span>
       {it.isNew && <span className="bc-new">BARU</span>}
       {it.url
         ? <a className="br-title" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>{it.title}</a>
         : <span className="br-title">{it.title}</span>}
       {it.code && <CodeChip code={it.code} copied={copied} onCopy={copy} />}
+      {it.dur && <span className="br-dur">{it.dur}</span>}
       <span className="br-pts">{fmtPts(it.points)} Poin</span>
       <span className={'br-status' + (it.done ? ' ok' : '')}>{it.done ? '✓ Selesai' : it.off ? 'Ditunda' : 'Belum'}</span>
     </div>
   )
 }
+
+// Banyak badge dirender sekaligus per klik "Tampilkan lebih banyak".
+const PAGE_SIZE = 60
 
 const PG_MONTHS = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli']
 
@@ -285,9 +302,12 @@ export default function Catalog() {
   const navigate = useNavigate()
   const { score } = useMyProfile()
   const [q, setQ] = useState('')
-  const [type, setType] = useState('all') // all | game | skill
+  const [type, setType] = useState('all') // all | game | skill | completion
   const [status, setStatus] = useState('all') // all | todo | done
   const [view, setView] = useState('grid') // grid | list
+  const filterKey = `${type}|${status}|${q}`
+  const [limit, setLimit] = useState(PAGE_SIZE)
+  const [prevFilter, setPrevFilter] = useState(filterKey)
 
   const earned = useMemo(() => new Set((score?.skillList || []).map(norm)), [score])
   const gameBadges = useMemo(() => (score?.seasonBadges || []).filter((b) => b.cat !== 'skill'), [score])
@@ -319,7 +339,20 @@ export default function Catalog() {
       done: skillEarned(s.id, s.name, earned),
       isNew: isNewSkill(s),
     }))
-    return [...games, ...skills]
+    // Completion badge: sudah terurut dari yang paling singkat di file datanya.
+    const completions = COMPLETION_CATALOG.map((c) => ({
+      key: 'c-' + c.id,
+      type: 'completion',
+      name: c.name,
+      title: c.name,
+      dur: fmtDur(c.min),
+      img: null,
+      code: null,
+      url: courseUrl(c.id),
+      points: 0.5,
+      done: completionEarned(c.name, earned),
+    }))
+    return [...games, ...skills, ...completions]
   }, [gameBadges, earned])
 
   // Diurutkan Pemula -> Menengah -> Lanjutan -> di luar silabus, supaya shortlist "kerjakan
@@ -334,6 +367,7 @@ export default function Catalog() {
   const gameCount = GAME_CATALOG.length
   const gameOff = GAME_CATALOG.filter((g) => g.off)
   const skillCount = SKILL_CATALOG.length
+  const completionCount = COMPLETION_CATALOG.length
   const doneCount = items.filter((it) => it.done).length
   const gamesDone = items.filter((it) => it.type === 'game' && it.done).length
 
@@ -348,6 +382,15 @@ export default function Catalog() {
     if (q && !it.title.toLowerCase().includes(q.toLowerCase())) return false
     return true
   })
+
+  // Sejak completion badge masuk, "Semua" berisi ~590 item. Merender semuanya sekaligus bikin
+  // HP kelas menengah tersendat, jadi dipotong dan sisanya dibuka manual. Pola reset state
+  // saat filter berubah (bukan useEffect): bandingkan kunci filter waktu render.
+  if (prevFilter !== filterKey) {
+    setPrevFilter(filterKey)
+    setLimit(PAGE_SIZE)
+  }
+  const visible = shown.slice(0, limit)
 
   return (
     <div>
@@ -368,7 +411,7 @@ export default function Catalog() {
 
         <div className="catcontrols">
           <div className="cattabs">
-            {[['all', 'Semua', items.length], ['game', 'Game', gameCount], ['skill', 'Skill', skillCount]].map(([k, l, n]) => (
+            {[['all', 'Semua', items.length], ['game', 'Game', gameCount], ['skill', 'Skill', skillCount], ['completion', 'Completion', completionCount]].map(([k, l, n]) => (
               <button key={k} className={type === k ? 'on' : ''} onClick={() => setType(k)}>
                 {l} <span className="tabn">{n}</span>
               </button>
@@ -392,12 +435,18 @@ export default function Catalog() {
         {shown.length === 0 ? (
           <div className="card-note" style={{ textAlign: 'center', padding: '18px 0' }}>Tidak ada badge cocok.</div>
         ) : view === 'grid' ? (
-          <div className="badgegrid">{shown.map((it) => <BadgeCard key={it.key} it={it} />)}</div>
+          <div className="badgegrid">{visible.map((it) => <BadgeCard key={it.key} it={it} />)}</div>
         ) : (
-          <div className="badgelist">{shown.map((it) => <BadgeRow key={it.key} it={it} />)}</div>
+          <div className="badgelist">{visible.map((it) => <BadgeRow key={it.key} it={it} />)}</div>
         )}
 
-        <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill: 2 badge = 1 poin. Access code diperbarui tiap bulan mengikuti rilis Arcade.</div>
+        {shown.length > visible.length && (
+          <button className="catmore" onClick={() => setLimit((n) => n + PAGE_SIZE)}>
+            Tampilkan lebih banyak <span>{visible.length} dari {shown.length}</span>
+          </button>
+        )}
+
+        <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill dan completion: 2 badge = 1 poin. Completion badge diurutkan dari yang paling singkat, dan chip di kartunya adalah perkiraan durasi resmi Google. Access code diperbarui tiap bulan mengikuti rilis Arcade.</div>
       </div>
 
       <PastGames gameBadges={gameBadges} />

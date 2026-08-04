@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test": "node --test",
     "preview:csp": "node scripts/preview-headers.mjs",
-    "check:arcade": "node scripts/check-arcade.mjs"
+    "check:arcade": "node scripts/check-arcade.mjs",
+    "scrape:completion": "node scripts/scrape-completion.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

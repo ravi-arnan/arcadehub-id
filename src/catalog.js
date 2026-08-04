@@ -1,9 +1,16 @@
+import { COMPLETION_CATALOG } from './completionCatalog.js'
+import { GAME_CATALOG } from '../lib/gameCatalog.js'
+
 // Katalog skill badge fasilitator 2026 (nama resmi EN + course id).
 // Sumber: halaman Silabus rsvp.withgoogle.com/events/arcade-fasilitator-id (disalin manual 31 Jul
 // 2026, arsipnya di reference/silabus-2026-07-31/) + judul live skills.google.
 // 51 badge pertama = daftar resmi silabus lengkap dengan `level`; sisanya badge tambahan.
 // 646/647/688 dikeluarkan 31 Jul 2026: halaman course-nya balas 403 di kedua domain Google,
 // jadi tidak bisa dikerjakan lagi dan tak boleh ikut masuk saran "kerjakan selanjutnya".
+// 1412 dikeluarkan 4 Agu 2026 dengan alasan yang sama: Google menamainya ulang jadi
+// "[DEPRECATED] Designing Network Security in Google Cloud" dan mencabut status skill badge-nya.
+// Poin peserta yang terlanjur mengambilnya TIDAK hilang (parseProfile menghitung dari judul badge
+// di profil, bukan dari katalog ini); yang hilang cuma sarannya untuk mengerjakan badge mati.
 export const SKILL_CATALOG = [
   // Beginner (17)
   { id: 1586, name: 'Create Your First Gemini Enterprise Application', level: 'beginner' },
@@ -19,7 +26,7 @@ export const SKILL_CATALOG = [
   { id: 658, name: 'Store, Process, and Manage Data on Google Cloud - Console', level: 'beginner' },
   { id: 659, name: 'Store, Process, and Manage Data on Google Cloud - Command Line', level: 'beginner' },
   { id: 629, name: 'Migrate MySQL Data to Cloud SQL Using Database Migration Service', level: 'beginner' },
-  { id: 750, name: 'Get Started with Sensitive Data Protection', level: 'beginner' },
+  { id: 750, name: 'Implement Sensitive Data Protection on Google Cloud', level: 'beginner' },
   { id: 633, name: 'Analyze Images with the Cloud Vision API', level: 'beginner' },
   { id: 727, name: 'Build Event-Driven Applications with Eventarc', level: 'beginner' },
   { id: 702, name: 'Configure Service Accounts and IAM Roles for Google Cloud', level: 'beginner' },
@@ -70,7 +77,6 @@ export const SKILL_CATALOG = [
   { id: 667, name: 'Analyze Sentiment with Natural Language API' },
   { id: 636, name: 'Build Infrastructure with Terraform on Google Cloud' },
   { id: 691, name: 'Implement CI/CD Pipelines on Google Cloud' },
-  { id: 1412, name: 'Designing Network Security in Google Cloud' },
   { id: 635, name: 'App Building with AppSheet' },
   { id: 696, name: 'Build Serverless Applications with Cloud Run Functions' },
   { id: 643, name: 'Create and Manage Cloud Spanner Instances' },
@@ -94,6 +100,21 @@ export const SKILL_CATALOG = [
   { id: 759, name: 'Mitigate Threats and Vulnerabilities with Security Command Center' },
   { id: 1445, name: 'Deploy Multi-Agent Architectures' },
   { id: 1682, name: 'Orchestrate Multi-agent Workflows with Gemini Enterprise' },
+  // Ditambahkan 4 Agu 2026 setelah membandingkan katalog ini dengan seluruh skill badge live di
+  // skills.google (filter Credential = Skill Badge, 93 hasil). Sembilan ini sudah lama ada di
+  // Google tapi tidak pernah masuk sini, jadi sebelumnya TIDAK muncul di mana pun di aplikasi:
+  // tanpa kartu di katalog, tanpa deteksi "Selesai", dan tanpa link di Badge Saya. Sengaja tanpa
+  // `since`: tanda "BARU" untuk badge unggulan rilisan Google, bukan untuk kelalaian kita.
+  // Sesudah ini katalog = 93 badge, pas dengan daftar live Google.
+  { id: 630, name: 'Use Machine Learning APIs on Google Cloud' },
+  { id: 631, name: 'Prepare Data for ML APIs on Google Cloud' },
+  { id: 645, name: 'Implement Cloud Security Fundamentals on Google Cloud' },
+  { id: 656, name: 'Perform Predictive Data Analysis in BigQuery' },
+  { id: 674, name: 'Automate Data Capture at Scale with Document AI' },
+  { id: 741, name: 'Develop Serverless Applications on Cloud Run' },
+  { id: 1232, name: 'Implement Multimodal Vector Search with BigQuery' },
+  { id: 1241, name: 'Enhance Gemini Model Capabilities' },
+  { id: 1399, name: 'Kickstarting Application Development with Gemini Code Assist' },
   // `since` = batch bulanan saat badge ini masuk katalog (YYYY-MM). Isi HANYA untuk badge yang
   // baru ditambahkan; entri lama dibiarkan tanpa `since`. Katalog menandai "BARU" pada batch
   // terbaru saja, jadi tanda itu hilang sendiri begitu batch bulan berikutnya ditambahkan.
@@ -113,28 +134,14 @@ export const GEAR_BADGES = [1586, 1596, 1445, 1682]
 // Game bulan-bulan sebelumnya (sudah "Game over", tidak bisa dikerjakan lagi) + bobot poinnya.
 export { PAST_GAMES, gamePoints, pastGameImg, pastGameEarned } from '../lib/pastGames.js'
 
-// Access code + game id (skills.google/games/{game}) berubah TIAP BULAN. Sumber: go.cloudskillsboost.google/arcade. Update bulanan.
-// Agustus 2026 (dicek 3 Agu 2026). Trail sudah dibuka lagi, jadi tidak ada lagi entri `off`.
-//
-// `re` HARUS memuat penanda khas bulan ini (nama tema atau bulannya), bukan cuma kata generik
-// seperti /base ?camp/ atau /voyage/. Judul badge Juli ("Arcade Base Camp July", "Arcade Voyage:
-// July 2026") ikut tersimpan di profil peserta, jadi regex generik membuat game bulan lalu
-// terbaca sebagai game bulan ini dan statusnya salah jadi "Selesai".
-// `title` = judul resmi badge (dari <title> skills.google/games/{id}), dipakai test untuk
-// membuktikan tiap regex cocok dengan judulnya sendiri dan tidak dengan game lain.
-export const GAME_CATALOG = [
-  { name: 'Arcade Base Camp', short: 'Base Camp', title: 'Arcade Base Camp August 2026', game: 7394, code: '1q-basecamp-10219', img: '/img/game-basecamp.webp', re: /base ?camp august/i },
-  { name: 'Arcade Adventure', short: 'Adventure', title: 'Arcade Adventure: Data Vault', sub: 'Data Vault', game: 7395, code: '1q-datamgt-92372', img: '/img/game-adventure.webp', re: /adventure.*data vault/i },
-  // Bukan /google sheets/i polos: skill badge 776 "Use Functions, Formulas, and Charts in Google
-  // Sheets" akan ikut kena.
-  { name: 'Arcade Voyage', short: 'Voyage', title: 'Arcade Voyage: Google Sheets', sub: 'Google Sheets', game: 7398, code: '1q-sheets-29185', img: '/img/game-voyage.webp', re: /voyage.*sheets/i },
-  { name: 'Arcade Trail', short: 'Trail', title: 'Arcade Trail: Cloud Delivery Systems', sub: 'Cloud Delivery Systems', game: 7396, code: '1q-delivery-31058', img: '/img/game-trail.webp', re: /trail.*cloud delivery/i },
-  // Judul resmi game spesial bulan ini cuma "Spans and Plans" (tanpa awalan Arcade).
-  { name: 'Arcade Special', short: 'Special', title: 'Spans and Plans', sub: 'Spans and Plans', game: 7399, code: '1q-schema-27083', img: '/img/game-special.webp', re: /spans ?and ?plans/i },
-  // Bukan /network security/i polos: skill badge 1412 "Designing Network Security in Google Cloud"
-  // akan ikut kena dan salah di-link ke halaman game.
-  { name: 'Arcade Simulator', short: 'Simulator', title: 'Arcade Simulator: Network Security Engineer', sub: 'Network Security Engineer', game: 7397, code: '1q-network-51470', img: '/img/game-new.webp', re: /simulator.*network security/i },
-]
+// Completion badge (badge dari course biasa, bukan skill badge berbasis lab). Daftarnya panjang
+// (~500) dan dibuat otomatis, jadi ditaruh di file sendiri: `npm run scrape:completion`.
+export { COMPLETION_CATALOG }
+
+// Game Arcade bulan berjalan. Sumbernya `lib/gameCatalog.js` karena `lib/parseProfile.js`
+// (jalan di serverless api/) juga memakainya untuk memisahkan game dari badge keahlian.
+// Update bulanan tetap dilakukan di file lib/ itu, bukan di sini.
+export { GAME_CATALOG }
 
 // Skill badge yang punya gambar asli di /public/img/skills/{id}.webp (dari screenshot resmi Google Skills).
 // Tambah id di sini saat badge baru dikonversi.
@@ -163,6 +170,8 @@ const SKILL_ALIASES = {
   959: ['Explore Generative AI with the Vertex AI Gemini API', 'Explore Generative AI with the Gemini API in Vertex AI'],
   976: ['Prompt Design in Vertex AI'],
   1453: ['Train a Small Language Model'],
+  // Ganti nama terdeteksi `npm run check:arcade` 4 Agu 2026 (course id tetap).
+  750: ['Get Started with Sensitive Data Protection'],
   // Rebrand Dataplex -> Knowledge Catalog (cek 31 Jul 2026, course id tetap).
   681: ['Build a Data Mesh with Dataplex'],
   726: ['Get Started with Dataplex'],
@@ -188,8 +197,9 @@ const UTM = '?utm_source=arcade-hub'
 export const courseUrl = (id) => `https://www.skills.google/course_templates/${id}${UTM}`
 export const gameUrl = (id) => `https://www.skills.google/games/${id}${UTM}`
 
-// Link ke halaman badge di Skills Boost dari judul yang di-earn: game -> halaman game, skill -> course.
-// Cocokkan nama/alias seperti earnedSkillImg. null kalau di luar katalog (tanpa link).
+// Link ke halaman badge di Skills Boost dari judul yang di-earn: game -> halaman game,
+// skill/completion -> course. Cocokkan nama/alias seperti earnedSkillImg.
+// null kalau di luar katalog (tanpa link).
 export const badgeUrl = (title) => {
   const t = title || ''
   const g = GAME_CATALOG.find((x) => x.re.test(t))
@@ -198,6 +208,13 @@ export const badgeUrl = (title) => {
   for (const s of SKILL_CATALOG) {
     if (norm(s.name) === n || (SKILL_ALIASES[s.id] || []).some((a) => norm(a) === n)) return courseUrl(s.id)
   }
-  return null
+  const c = COMPLETION_BY_NAME.get(n)
+  return c ? courseUrl(c) : null
 }
 export const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '')
+
+// Completion badge tidak pernah di-rename massal seperti skill badge, jadi tidak butuh alias:
+// cukup peta nama -> course id. Dibangun sekali karena dipakai untuk tiap badge di Badge Saya.
+// Harus di bawah `norm` (const, bukan function declaration) supaya tidak kena TDZ.
+const COMPLETION_BY_NAME = new Map(COMPLETION_CATALOG.map((c) => [norm(c.name), c.id]))
+export const completionEarned = (name, earnedSet) => earnedSet.has(norm(name))
