@@ -2,6 +2,11 @@ import { useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { CONFIG } from '../config.js'
 import { NAV } from '../routes.jsx'
+import { shortDate } from '../utils/time.js'
+
+// Disuntik saat build oleh `define` di vite.config.js. Fallback ke waktu sekarang supaya
+// impor file ini di luar bundel Vite (mis. tes Node) tidak melempar ReferenceError.
+const BUILD_TIME = typeof __BUILD_TIME__ === 'string' ? __BUILD_TIME__ : new Date().toISOString()
 
 // Jeda sebelum memantul, dihitung dari saat scroll benar-benar berhenti
 // (momentum trackpad ikut terhitung berhenti). Nilainya menentukan berapa lama
@@ -118,7 +123,15 @@ export default function Footer() {
 
       <div className="foot-bottom">
         <div className="fcode"><span>Kode referral</span><b>{CONFIG.referralCode}</b></div>
-        <div className="fcopy">© 2026 Arcade Hub · Dibuat untuk komunitas Google Cloud Arcade Fasilitator 2026</div>
+        <div className="fcopy">
+          © 2026 Arcade Hub · Dibuat untuk komunitas Google Cloud Arcade Fasilitator 2026
+          {/* Tanggal build, disuntik vite.config.js. <time dateTime> dipakai supaya mesin
+              pencari dan pembaca layar mendapat tanggal yang tidak ambigu, sementara
+              manusia tetap membaca format Indonesia. */}
+          <span className="fupdated">
+            Terakhir diperbarui <time dateTime={BUILD_TIME}>{shortDate(BUILD_TIME)}</time>
+          </span>
+        </div>
       </div>
 
       {/* Wordmark raksasa. aria-hidden: murni dekorasi, namanya sudah diumumkan

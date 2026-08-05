@@ -1,0 +1,12 @@
+# File nyata di public/, BUKAN kebetulan. Aturan rewrite SPA di vercel.json
+# (/((?!api/).*) -> /index.html) menangkap semua path yang bukan file, jadi sebelum file ini
+# ada, /robots.txt membalas halaman HTML dengan status 200. Crawler mengira ada aturan padahal
+# isinya markup. File fisik menang atas rewrite, jadi keberadaannya sendiri yang memperbaiki itu.
+
+User-agent: *
+Allow: /
+
+# Endpoint API tidak punya isi untuk diindeks dan sebagian menulis ke database.
+Disallow: /api/
+
+Sitemap: https://arcadehub-id.vercel.app/sitemap.xml

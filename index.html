@@ -15,6 +15,11 @@
   <title>Arcade Hub: Tracker Poin Google Cloud Arcade Fasilitator 2026</title>
   <meta name="description" content="Hitung poin Google Cloud Arcade otomatis dari profil Cloud Skills Boost, pantau milestone fasilitator, tier hadiah, dan leaderboard guild. Gratis untuk komunitas." />
 
+  <!-- Situs ini juga bisa diakses lewat URL deployment Vercel (tracker-*.vercel.app) yang
+       berganti tiap deploy. Tanpa canonical, tiap URL itu berpotensi terindeks sebagai halaman
+       terpisah dengan isi identik. Sengaja menunjuk domain utama, bukan URL saat ini. -->
+  <link rel="canonical" href="https://arcadehub-id.vercel.app/" />
+
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Arcade Hub" />
   <meta property="og:title" content="Arcade Hub: Tracker Poin Google Cloud Arcade 2026" />
@@ -26,6 +31,25 @@
   <meta name="twitter:title" content="Arcade Hub: Tracker Poin Google Cloud Arcade 2026" />
   <meta name="twitter:description" content="Hitung poin Arcade otomatis dari profilmu, pantau milestone, tier hadiah, dan leaderboard." />
   <meta name="twitter:image" content="https://arcadehub-id.vercel.app/img/hero.png" />
+
+  <!-- JSON-LD, bukan <script> berisi kode: CSP di vercel.json memakai script-src 'self' tanpa
+       nonce, dan itu TIDAK menghalangi type="application/ld+json" karena blok ini data, bukan
+       skrip yang dieksekusi. Jangan ubah type-nya jadi text/javascript. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Arcade Hub",
+    "url": "https://arcadehub-id.vercel.app/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web",
+    "inLanguage": "id-ID",
+    "description": "Tracker poin Google Cloud Arcade Fasilitator 2026: hitung poin otomatis dari profil Cloud Skills Boost, pantau milestone, tier hadiah, dan leaderboard guild.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "IDR" },
+    "isAccessibleForFree": true,
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
 </head>
 <body>
   <div id="root"></div>
