@@ -4,17 +4,14 @@
 // `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
 // tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT = {
-  id: '2026-08-03-week2',
-  date: '3 Agustus 2026',
-  title: 'Weekly Challenge Week 2 dimulai',
+  id: '2026-08-04-poin-skill-badge',
+  date: '4 Agustus 2026',
+  title: 'Perubahan cara poin dihitung',
   body: [
-    'Periode: 3 - 7 Agustus 2026, berakhir Jumat 23.59 WIB.',
-    'Cek badge list yang bisa kamu kerjakan di halaman Catalog, dan pantau posisimu di Leaderboard.',
-    'Ada kendala redeem code atau daftar? Office Hour Kamis, 6 Agustus, 19.00 - 20.00 WIB.',
-  ],
-  links: [
-    { label: 'Dokumen Weekly Challenge Player', href: 'https://dicoding.id/Arcade26-WCPlayer' },
-    { label: 'Leaderboard Weekly Challenge Player', href: 'https://dicoding.id/Arcade26-PlayerLeaderboard' },
+    'Mulai hari ini Arcade Hub hanya menghitung Arcade Game dan Badge Keahlian (skill badge). Badge dari course biasa tidak lagi menambah poin.',
+    'Alasannya supaya angka di sini sejalan dengan silabus resmi fasilitator, yang menyebut Badge Keahlian saja. Sebelumnya tracker menghitung semua badge selain game, jadi poinmu di sini bisa terlihat lebih besar daripada yang diakui program.',
+    'Kalau poinmu turun, badge-mu tidak hilang dan tidak ada yang error. Yang berubah cuma badge mana yang dihitung. Buka Poin Saya untuk melihat rinciannya: kalau kamu punya badge yang tidak dihitung, jumlahnya ditampilkan di sana.',
+    'Merasa ada badge keahlian resmi yang seharusnya masuk tapi tidak terhitung? Kabari lewat tombol Masukan di pojok. Katalog badge diperbarui manual, jadi laporanmu benar-benar membantu.',
   ],
   signature: 'R',
 }
