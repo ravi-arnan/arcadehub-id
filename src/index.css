@@ -640,7 +640,11 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
    sehingga width dari Bar.jsx, height:100% di bawah, dan scaleX framer-motion semuanya
    tidak berefek dan barnya selalu tampak kosong. .track kelihatan karena dia grid item
    milik .bar (otomatis diblokifikasi); .fill tidak dapat perlakuan itu. */
-.fill{display:block;position:relative;height:100%;border-radius:6px;background:linear-gradient(90deg,#fcc934,#f7a53b);transform-origin:left;overflow:hidden}
+.fill{display:block;position:relative;height:100%;border-radius:6px;background:linear-gradient(90deg,#fcc934,#f7a53b);overflow:hidden;
+  /* Transisi width menggantikan animasi scaleX framer-motion yang dulu bisa tersangkut di 0.
+     transform-origin dihapus karena tidak ada lagi transform di sini. Lihat Bar.jsx. */
+  transition:width .55s cubic-bezier(.16,1,.3,1)}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
 .ms.done .fill{background:linear-gradient(90deg,#3ad46a,#2bb457)}
 .fill-shine{position:absolute;inset:0;transform:translateX(-120%);
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:barshine 3.4s ease-in-out infinite}
