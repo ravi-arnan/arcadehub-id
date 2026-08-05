@@ -717,7 +717,13 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .lbsummary{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 
 /* Kahoot-style podium (top 3) */
-.podium{display:flex;align-items:flex-end;gap:12px;margin-top:18px}
+/* 32px, bukan 18px, dan angkanya BUKAN dikira-kira: .pod-1 dinaikkan 14px lewat transform,
+   dan transform tidak mengubah layout. Jadi jarak yang benar-benar terlihat di atas kartu juara
+   adalah margin dikurangi 14. Dengan 18px dulu, sisanya cuma 4px dan kartu juara nyaris
+   menempel di baris ringkasan, sementara kartu 2 dan 3 tetap lapang. 32 - 14 = 18px, sama
+   dengan jarak yang memang dimaksud sejak awal.
+   Kalau translateY di .pod-1 diubah, sesuaikan angka ini juga. */
+.podium{display:flex;align-items:flex-end;gap:12px;margin-top:32px}
 .pod{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;
   border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 10px 0;position:relative}
 .pod-1{order:2}.pod-2{order:1}.pod-3{order:3}
@@ -745,7 +751,9 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .pod-2 .pod-plinth{height:54px;background:linear-gradient(180deg,#bb9cff,#8a5cf0)}
 .pod-3 .pod-plinth{height:40px;background:linear-gradient(180deg,#5fe08f,#2fb45f)}
 @media(max-width:560px){
-  .podium{flex-direction:column;align-items:stretch;gap:10px}
+  /* Kembali ke 18px: di lebar ini .pod-1 tidak lagi digeser (transform:none di bawah), jadi
+     kompensasi 14px tadi tidak berlaku dan malah menyisakan ruang kosong berlebih. */
+  .podium{flex-direction:column;align-items:stretch;gap:10px;margin-top:18px}
   .pod{order:0 !important;border-radius:16px;flex-direction:row;flex-wrap:wrap;align-items:center;text-align:left;padding:12px 14px;gap:8px 10px}
   .pod-1{transform:none}
   .pod-medal,.pod-1 .pod-medal{width:30px;height:30px;flex:none}
