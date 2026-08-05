@@ -898,6 +898,10 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .bi{font-size:13.5px;padding:6px 10px;border-radius:8px;margin-bottom:5px;line-height:1.3}
 .bi.g{background:rgba(252,201,52,.12);border-left:3px solid var(--gold)}
 .bi.s{background:rgba(91,155,255,.12);border-left:3px solid #5b9bff}
+/* Badge yang tidak menambah poin. Abu-abu netral dan garis putus-putus, BUKAN merah: badge-nya
+   sah dan tetap milik peserta, cuma tidak dihitung program. Tetap terbaca (opacity tidak
+   diturunkan sampai samar) supaya orang bisa memeriksa daftarnya sendiri. */
+.bi.nc{background:rgba(255,255,255,.045);border-left:3px dashed rgba(255,255,255,.25);color:var(--muted)}
 .bi.none{color:var(--muted);background:transparent;padding-left:0}
 .blnote{font-size:11.5px;color:var(--muted);line-height:1.5}
 
