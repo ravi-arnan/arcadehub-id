@@ -13,7 +13,8 @@ import Bar from '../components/Bar.jsx'
 import MyBadges from '../components/MyBadges.jsx'
 import Collapse from '../components/Collapse.jsx'
 import ArcadeHero from '../components/ArcadeHero.jsx'
-import BonusMilestone from '../components/BonusMilestone.jsx'
+import BonusMilestone, { readBonusClaim } from '../components/BonusMilestone.jsx'
+import PointBreakdown from '../components/PointBreakdown.jsx'
 import { ago } from '../utils/time.js'
 import { guildKey, guildLabel } from '../../lib/guild.js'
 import { IconTrophy } from '../icons.jsx'
@@ -49,6 +50,9 @@ function MyPoints() {
   const [guildInput, setGuildInput] = useState(guild || '')
   const [showBadges, setShowBadges] = useState(false)
   const [showShare, setShowShare] = useState(false)
+  // Klaim bonus AI Agent dipegang di sini supaya Rincian Poin ikut berubah saat checkbox
+  // di kartu Bonus Milestone dicentang. Sumber kebenarannya tetap localStorage di kartu itu.
+  const [bonusDone, setBonusDone] = useState(readBonusClaim)
   const submit = () => { if (input.trim()) fetchScore(input.trim(), guildInput).catch(() => {}) }
   const handleLeave = () => {
     if (!window.confirm('Keluar dari leaderboard? Entrimu dihapus dari papan peringkat publik. Kamu bisa gabung lagi kapan saja dengan menghitung poin.')) return
@@ -90,12 +94,10 @@ function MyPoints() {
         <div className="tier">{score?.tierIdx >= 0 ? 'Milestone ' + (score.tierIdx + 1) : 'Belum ada milestone'}</div>
       </div>
       <div className="breakdown">
-        <span className="chip">Base Arcade: <b>{score?.base || 0}</b></span>
-        {/* "dari Milestone" supaya tidak tertukar dengan kartu Bonus Milestone AI Agent (+10)
-            yang tampil di halaman yang sama tapi hitungannya lain. */}
-        <span className="chip">Bonus dari Milestone: <b>{score?.mbonus || 0}</b></span>
         <span className="chip">Tier: <b>{myTier >= 0 ? TIERS[myTier].n : '-'}</b></span>
       </div>
+
+      <PointBreakdown score={score} bonusDone={bonusDone} />
 
       <div className="grid2">
         <div className="icard"><h3>Arcade Games</h3><div className="hint">total 2026</div><div className="statnum">{score?.games || 0}</div></div>
@@ -133,7 +135,7 @@ function MyPoints() {
       {err && <div className="ferr">{err}</div>}
       {showShare && <Suspense fallback={null}><ShareCard score={score} onClose={() => setShowShare(false)} /></Suspense>}
 
-      <BonusMilestone score={score} />
+      <BonusMilestone score={score} onClaimChange={setBonusDone} />
 
       {score?.seasonBadges?.length ? (
         <div className="badgebox">

@@ -613,6 +613,22 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .chip{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;color:#e7eefc}
 .chip b{color:var(--gold);font-variant-numeric:tabular-nums}
 
+/* rincian poin */
+.pbd{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.pbd-h{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.pbd-rows{list-style:none;margin:0;padding:0}
+.pbd-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.pbd-row:last-child{border-bottom:0;padding-bottom:0}
+.pbd-lab{font-size:14px;font-weight:600;color:#eaf1ff;display:flex;flex-direction:column;gap:2px}
+.pbd-sub{font-size:12px;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
+.pbd-pts{font-family:'PS2P';font-size:15px;color:var(--gold);font-variant-numeric:tabular-nums;flex:none}
+.pbd-row.zero .pbd-lab{color:var(--muted)}
+.pbd-row.zero .pbd-pts{color:var(--muted);opacity:.6}
+.pbd-total{margin-top:2px;padding-top:11px;border-top:1px solid rgba(255,255,255,.16)}
+.pbd-total .pbd-lab{font-weight:800}
+.pbd-total .pbd-pts{color:var(--green);font-size:17px}
+.pbd-extra .pbd-pts{color:var(--green)}
+
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
 @media(max-width:520px){.grid2{grid-template-columns:1fr}}
 .icard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}

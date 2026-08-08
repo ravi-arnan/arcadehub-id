@@ -14,10 +14,12 @@ import ToggleButton from './ToggleButton.jsx'
 import { IconArrowRight, IconTrophy } from '../icons.jsx'
 
 const KEY = 'gcaf2026_bonus_done'
-const read = () => { try { return localStorage.getItem(KEY) === '1' } catch { return false } }
+// Diekspor supaya Rincian Poin bisa memakai nilai awal yang sama tanpa menduplikasi kuncinya.
+export const readBonusClaim = () => { try { return localStorage.getItem(KEY) === '1' } catch { return false } }
+const read = readBonusClaim
 const write = (v) => { try { v ? localStorage.setItem(KEY, '1') : localStorage.removeItem(KEY) } catch { /* private mode: klaim tidak persisten, bukan error */ } }
 
-export default function BonusMilestone({ score }) {
+export default function BonusMilestone({ score, onClaimChange }) {
   const [done, setDone] = useState(read)
   const [open, setOpen] = useState(false)
 
@@ -30,7 +32,7 @@ export default function BonusMilestone({ score }) {
   // Syarat resmi: Milestone 1 sudah terbuka. tierIdx = index milestone tertinggi (-1 = belum ada).
   const msOk = (score?.tierIdx ?? -1) >= 0
 
-  const toggle = () => { const v = !done; setDone(v); write(v) }
+  const toggle = () => { const v = !done; setDone(v); write(v); onClaimChange?.(v) }
 
   return (
     <div className="card bonusms">
