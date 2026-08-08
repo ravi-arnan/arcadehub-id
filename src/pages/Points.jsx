@@ -159,7 +159,9 @@ function MyPoints() {
               variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}>
               <div className="mstop">
                 <span className="name"><span className="mtrophy" aria-hidden="true"><IconTrophy /></span>{ms.n}</span>
-                <span className="pts">{tierTotal} pts</span>
+                {/* "40 pts" sendirian ambigu: itu base minimum + bonus, bukan bonusnya.
+                    Bonus dinaikkan jadi angka utama karena itu yang ditanya orang. */}
+                <span className="pts">+{ms.bonus} bonus<span className="ptot">{tierTotal} pts total</span></span>
               </div>
               <div className="bars">
                 <Bar label="Games" cur={fg} req={ms.g} />

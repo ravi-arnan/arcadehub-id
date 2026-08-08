@@ -56,6 +56,9 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, onS
   const target = MS.find((m) => !(fg >= m.g && fs >= m.s)) || MS[MS.length - 1]
   const daysLeft = Math.max(0, Math.floor((DEADLINE.getTime() - Date.now()) / 864e5))
   const proj = useMemo(() => projectMilestone({ facilGames: fg, facilSkills: fs }), [fg, fs])
+  // Index milestone tertinggi yang sudah tercapai, -1 kalau belum ada. Cara hitungnya sengaja
+  // sama persis dengan scoreProfile() supaya tangga ini tidak pernah beda dari poin asli.
+  const topIdx = MS.reduce((acc, m, i) => (fg >= m.g && fs >= m.s ? i : acc), -1)
   // Shortlist dibatasi 4 walau kebutuhannya lebih banyak: daftar panjang justru
   // mengembalikan masalah "bingung memilih" yang mau dihilangkan.
   const shortlist = pickShortlist(skillTodo, shortOff, Math.min(proj.needSkills, 4))
@@ -91,7 +94,7 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, onS
             <div className="sh-main">
               <div className="sh-title"><IconTarget width="17" height="17" /> Kumpulkan badge keahlian <span className="sh-count">target {target.short}</span></div>
               <p className="sh-desc">
-                Setiap <b>2 badge skill = 1 poin</b>. Kejar target terdekatmu: <b>{target.n}</b> ({target.g} game + {target.s} badge). Belum tahu badge mana? Buka daftar di bawah dan mulai dari topik yang paling kamu minati.
+                Setiap <b>2 badge skill = 1 poin</b>. Kejar target terdekatmu: <b>{target.n}</b> ({target.g} game + {target.s} badge), bonusnya <b>+{target.bonus} poin</b> di luar poin game dan badge. Belum tahu badge mana? Buka daftar di bawah dan mulai dari topik yang paling kamu minati.
               </p>
               <div className="sh-bars">
                 <Bar label="Game" cur={fg} req={target.g} />
@@ -126,17 +129,41 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, onS
           </li>
         </ol>
         <div className="sh-ladder" role="list" aria-label="Tahap milestone">
-          {MS.map((m) => {
+          {MS.map((m, i) => {
             const done = fg >= m.g && fs >= m.s
             const isTarget = m.short === target.short && !done
+            // Hanya milestone tertinggi yang bonusnya dibayar. Tanpa pembedaan ini, M1 yang
+            // sudah lewat ikut tampil hijau "+7 poin bonus" dan terbaca seolah ditumpuk
+            // dengan M2, padahal 7 poin itu tidak pernah masuk total.
+            const paid = done && i === topIdx
+            // Sisa kebutuhan hanya ditampilkan di rung yang sedang dikejar. Di rung yang lebih
+            // jauh angkanya cuma bikin panik, dan di rung yang sudah lewat tidak ada artinya.
+            const kurang = [
+              fg < m.g ? `${m.g - fg} game` : null,
+              fs < m.s ? `${m.s - fs} badge` : null,
+            ].filter(Boolean).join(' + ')
             return (
-              <div key={m.short} role="listitem" className={'sh-rung' + (done ? ' done' : '') + (isTarget ? ' now' : '')}>
-                <span className="sh-dot" aria-hidden>{done ? '✓' : m.short}</span>
-                <span className="sh-rlabel">{m.n}</span>
+              <div key={m.short} role="listitem" className={'sh-rung' + (done ? ' done' : '') + (isTarget ? ' now' : '') + (paid ? ' paid' : '')}>
+                <div className="sh-rtop">
+                  <span className="sh-dot" aria-hidden>{done ? '✓' : m.short}</span>
+                  <span className="sh-rlabel">{m.n}</span>
+                </div>
+                <div className="sh-rreq">{m.g} game + {m.s} badge</div>
+                {/* Angka yang paling sering ditanya: bonusnya berapa. Ini bonus MURNI, di luar
+                    poin dari game dan badge itu sendiri. Lihat scoreProfile di lib/points.js. */}
+                <div className="sh-rbonus">+{m.bonus} poin bonus</div>
+                {isTarget && kurang && <div className="sh-rgap">kurang {kurang}</div>}
+                {paid && <div className="sh-rgap paid">bonus ini yang kamu dapat</div>}
+                {done && !paid && <div className="sh-rgap">tercapai, digantikan {MS[topIdx].short}</div>}
               </div>
             )
           })}
         </div>
+        <p className="sh-lnote">
+          Bonus dibayar dari <b>milestone tertinggi saja</b>, tidak ditumpuk. Kalau kamu sampai
+          Milestone 2, bonusmu {MS[1].bonus} poin, bukan {MS[0].bonus} + {MS[1].bonus}. Poin dari
+          game dan badge tetap dihitung terpisah dan tidak hangus.
+        </p>
       </Collapse>
     </div>
   )

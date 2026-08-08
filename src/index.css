@@ -385,15 +385,29 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-snote{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}
 .sh-cta{display:inline-flex;align-items:center;gap:7px;background:rgba(252,201,52,.14);border:1px solid rgba(252,201,52,.4);color:var(--gold);font-size:13px;font-weight:800;padding:8px 14px;border-radius:10px;cursor:pointer;transition:.14s}
 .sh-cta:hover{background:rgba(252,201,52,.24)}
-.sh-ladder{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
-.sh-rung{display:inline-flex;align-items:center;gap:7px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px}
+/* Tangga milestone: dulu cuma pil berisi nama, jadi "milestone ini dapat bonus berapa"
+   tidak terjawab di mana pun. Sekarang tiap rung membawa syarat + bonusnya sendiri. */
+.sh-ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+@media(max-width:640px){.sh-ladder{grid-template-columns:repeat(2,1fr)}}
+.sh-rung{background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:14px;padding:10px 11px}
+.sh-rtop{display:flex;align-items:center;gap:7px}
 .sh-dot{width:20px;height:20px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:900;color:var(--muted);background:rgba(255,255,255,.06)}
 .sh-rlabel{font-size:12px;font-weight:700;color:var(--muted)}
+.sh-rreq{font-size:11px;color:var(--muted);margin-top:7px;font-variant-numeric:tabular-nums}
+.sh-rbonus{font-size:12.5px;font-weight:800;color:var(--gold);margin-top:2px;font-variant-numeric:tabular-nums}
+.sh-rgap{font-size:11px;color:#ffd98a;margin-top:6px;line-height:1.35;font-variant-numeric:tabular-nums}
+.sh-rgap.paid{color:var(--green)}
 .sh-rung.now{border-color:rgba(252,201,52,.45);background:rgba(252,201,52,.1)}
 .sh-rung.now .sh-dot{color:#1a1400;background:var(--gold)}
 .sh-rung.now .sh-rlabel{color:var(--gold)}
+.sh-rung.done{border-color:rgba(52,201,95,.4);background:rgba(52,201,95,.08)}
 .sh-rung.done .sh-dot{color:#04240f;background:var(--green)}
 .sh-rung.done .sh-rlabel{color:#cfe9d8}
+/* Bonus hijau HANYA di rung yang benar-benar dibayar. Rung lama yang sudah dilewati tetap
+   diredupkan dan dicoret supaya tidak terbaca seolah bonusnya ditumpuk. */
+.sh-rung.paid .sh-rbonus{color:var(--green)}
+.sh-rung.done:not(.paid) .sh-rbonus{color:var(--muted);opacity:.65;text-decoration:line-through}
+.sh-lnote{font-size:12px;color:var(--muted);line-height:1.55;margin-top:10px}
 
 /* catalog: type tabs + view toggle */
 .catcontrols{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap}
@@ -646,7 +660,10 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .ms .mtrophy{width:22px;height:22px;display:grid;place-items:center;flex:none;color:var(--muted);opacity:.55}
 .ms .mtrophy svg{width:20px;height:20px}
 .ms.done .mtrophy{color:var(--gold);opacity:1;filter:drop-shadow(0 1px 4px rgba(252,201,52,.5))}
-.ms .pts{font-family:'PS2P';font-size:14px;color:var(--gold)}
+.ms .pts{font-family:'PS2P';font-size:14px;color:var(--gold);text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+/* PS2P diwariskan dari .pts dan tidak terbaca di ukuran kecil, jadi sub-label balik ke font UI.
+   Pola yang sama sudah dipakai .tc-pts span. */
+.ms .ptot{font-family:'Segoe UI',system-ui,sans-serif;font-size:10.5px;color:var(--muted);font-weight:400;white-space:nowrap}
 .ms.done .pts{color:var(--green)}
 .bars{margin-top:11px;display:grid;gap:7px}
 .bar{display:grid;grid-template-columns:66px 1fr 56px;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
