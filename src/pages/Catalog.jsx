@@ -5,11 +5,12 @@ import { MS, DEADLINE } from '../points.js'
 import { projectMilestone } from '../../lib/projection.js'
 import { pickShortlist } from '../../lib/shortlist.js'
 import { useMyProfile } from '../profile.jsx'
+import { useWishlist } from '../wishlist.js'
 import { shortDate } from '../utils/time.js'
 import Bar from '../components/Bar.jsx'
 import Collapse from '../components/Collapse.jsx'
 import ToggleButton from '../components/ToggleButton.jsx'
-import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget } from '../icons.jsx'
+import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget, IconBookmark } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
 
@@ -48,7 +49,38 @@ function PaceStrip({ p }) {
 }
 
 // Roadmap prioritas untuk pemula: urutan resmi silabus (Game dulu, lalu kejar milestone via badge).
-function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, onShowGames, onShowSkills }) {
+// Daftar target yang ditandai sendiri. Dipotong 6 supaya panduan tidak berubah jadi katalog
+// kedua; sisanya diarahkan ke filter Target di katalog.
+const TARGET_PREVIEW = 6
+
+function MyTargets({ items, onShowSaved }) {
+  const preview = items.slice(0, TARGET_PREVIEW)
+  return (
+    <div className="sh-mine">
+      <div className="sh-shead">
+        <span><IconBookmark width="14" height="14" /> Target kamu <b>{items.length}</b></span>
+        <button className="sh-swap" onClick={onShowSaved}>Buka di katalog</button>
+      </div>
+      <ul className="sh-slist">
+        {preview.map((it) => (
+          <li key={it.key}>
+            {it.url
+              ? <a href={it.url} target="_blank" rel="noreferrer">{it.title} <IconArrowRight width="13" height="13" /></a>
+              : <span>{it.title}</span>}
+            <span className="sh-lvl">{it.type === 'game' ? 'Game' : it.level ? LEVEL_LABEL[it.level] : 'Skill'}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="sh-snote">
+        Badge yang kamu tandai sendiri di katalog, belum selesai
+        {items.length > preview.length && <>, {items.length - preview.length} lagi tidak ditampilkan di sini</>}.
+        Tanda ini <b>catatan pribadi di perangkat ini</b>, tidak ikut ke leaderboard dan tidak menambah poin.
+      </p>
+    </div>
+  )
+}
+
+function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, savedTodo = [], onShowGames, onShowSkills, onShowSaved }) {
   const [open, setOpen] = useState(true)
   const [shortOff, setShortOff] = useState(0)
   const fg = score?.facilGames || 0
@@ -73,6 +105,7 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, onS
         Bingung mulai dari mana? Ikuti urutan ini biar poinmu naik paling cepat.
       </div>
       <Collapse open={open}>
+        {savedTodo.length > 0 && <MyTargets items={savedTodo} onShowSaved={onShowSaved} />}
         <ol className="sh-steps">
           <li className="sh-step">
             <span className="sh-num">1</span>
@@ -204,14 +237,31 @@ function BadgeThumb({ it, onCopy }) {
   )
 }
 
-function BadgeCard({ it }) {
+// Tombol tandai target. Bukan status capaian, jadi label dan warnanya sengaja beda dari centang
+// selesai: yang satu fakta dari profil Google, yang satu niat yang diketik sendiri.
+function SaveButton({ saved, onSave, className }) {
+  return (
+    <button
+      className={className + (saved ? ' on' : '')}
+      onClick={onSave}
+      aria-pressed={saved}
+      title={saved ? 'Hapus dari target saya' : 'Tandai sebagai target saya'}
+      aria-label={saved ? 'Hapus dari target saya' : 'Tandai sebagai target saya'}
+    >
+      <IconBookmark width="15" height="15" fill={saved ? 'currentColor' : 'none'} />
+    </button>
+  )
+}
+
+function BadgeCard({ it, saved, onSave }) {
   const [copied, copy] = useCopyCode(it.code)
   return (
-    <div className={'badgecard' + (it.done ? ' done' : '') + (it.off ? ' off' : '')}>
+    <div className={'badgecard' + (it.done ? ' done' : '') + (it.off ? ' off' : '') + (saved ? ' saved' : '')}>
       <div className="bc-top">
         <span className={'bc-tag ' + it.type}>{TYPE_LABEL[it.type]}</span>
         {it.isNew && <span className="bc-new" title="Badge unggulan batch terbaru">BARU</span>}
         {it.done && <span className="bc-check" title="Selesai">✓</span>}
+        <SaveButton saved={saved} onSave={onSave} className="bc-save" />
         <BadgeThumb it={it} onCopy={copy} />
       </div>
       <div className="bc-body">
@@ -238,10 +288,11 @@ function BadgeCard({ it }) {
   )
 }
 
-function BadgeRow({ it }) {
+function BadgeRow({ it, saved, onSave }) {
   const [copied, copy] = useCopyCode(it.code)
   return (
-    <div className={'badgerow' + (it.done ? ' done' : '')}>
+    <div className={'badgerow' + (it.done ? ' done' : '') + (saved ? ' saved' : '')}>
+      <SaveButton saved={saved} onSave={onSave} className="br-save" />
       <span className={'br-tag ' + it.type}>{TYPE_LABEL[it.type]}</span>
       {it.isNew && <span className="bc-new">BARU</span>}
       {it.url
@@ -311,9 +362,10 @@ function PastGames({ gameBadges }) {
 export default function Catalog() {
   const navigate = useNavigate()
   const { score } = useMyProfile()
+  const [saved, toggleSaved] = useWishlist()
   const [q, setQ] = useState('')
   const [type, setType] = useState('all') // all | game | skill
-  const [status, setStatus] = useState('all') // all | todo | done
+  const [status, setStatus] = useState('all') // all | todo | saved | done
   const [view, setView] = useState('grid') // grid | list
 
   const earned = useMemo(() => new Set((score?.skillList || []).map(norm)), [score])
@@ -364,14 +416,21 @@ export default function Catalog() {
   const doneCount = items.filter((it) => it.done).length
   const gamesDone = items.filter((it) => it.type === 'game' && it.done).length
 
+  // Diturunkan dari katalog yang sedang tampil, bukan dari isi Set target: kunci game bulan lalu
+  // yang sudah keluar dari katalog tidak boleh ikut terhitung. Lihat komentar di src/wishlist.js.
+  const savedItems = useMemo(() => items.filter((it) => saved.has(it.key)), [items, saved])
+  const savedTodo = savedItems.filter((it) => !it.done)
+
   const scrollToCatalog = () => document.getElementById('katalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   const showGames = () => { setType('game'); setStatus('all'); setQ(''); scrollToCatalog() }
   const showSkills = () => { setType('skill'); setStatus('todo'); setQ(''); scrollToCatalog() }
+  const showSaved = () => { setType('all'); setStatus('saved'); setQ(''); scrollToCatalog() }
 
   const shown = items.filter((it) => {
     if (type !== 'all' && it.type !== type) return false
     if (status === 'done' && !it.done) return false
     if (status === 'todo' && it.done) return false
+    if (status === 'saved' && !saved.has(it.key)) return false
     if (q && !it.title.toLowerCase().includes(q.toLowerCase())) return false
     return true
   })
@@ -379,7 +438,7 @@ export default function Catalog() {
 
   return (
     <div>
-      <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} gamesOff={gameOff} skillTodo={skillTodo} onShowGames={showGames} onShowSkills={showSkills} />
+      <StartHere score={score} gamesDone={gamesDone} gamesTotal={gameCount} gamesOff={gameOff} skillTodo={skillTodo} savedTodo={savedTodo} onShowGames={showGames} onShowSkills={showSkills} onShowSaved={showSaved} />
 
       {!score && (
         <div className="lb-invite" style={{ marginTop: 16, marginBottom: 4 }}>
@@ -411,18 +470,24 @@ export default function Catalog() {
         <div className="catbar">
           <input className="fin catsearch" placeholder="Cari badge…" value={q} onChange={(e) => setQ(e.target.value)} />
           <div className="catfilter">
-            {[['all', 'Semua'], ['todo', 'Belum'], ['done', 'Selesai']].map(([k, l]) => (
-              <button key={k} className={status === k ? 'on' : ''} onClick={() => setStatus(k)}>{l}</button>
+            {[['all', 'Semua'], ['todo', 'Belum'], ['saved', 'Target'], ['done', 'Selesai']].map(([k, l]) => (
+              <button key={k} className={status === k ? 'on' : ''} onClick={() => setStatus(k)}>
+                {l}{k === 'saved' && savedItems.length > 0 && <span className="catn">{savedItems.length}</span>}
+              </button>
             ))}
           </div>
         </div>
 
         {shown.length === 0 ? (
-          <div className="card-note" style={{ textAlign: 'center', padding: '18px 0' }}>Tidak ada badge cocok.</div>
+          <div className="card-note" style={{ textAlign: 'center', padding: '18px 0' }}>
+            {status === 'saved' && savedItems.length === 0
+              ? 'Belum ada target. Klik ikon bookmark di badge mana pun untuk menandainya sebagai target kamu.'
+              : 'Tidak ada badge cocok.'}
+          </div>
         ) : view === 'grid' ? (
-          <div className="badgegrid">{shown.map((it) => <BadgeCard key={it.key} it={it} />)}</div>
+          <div className="badgegrid">{shown.map((it) => <BadgeCard key={it.key} it={it} saved={saved.has(it.key)} onSave={() => toggleSaved(it.key)} />)}</div>
         ) : (
-          <div className="badgelist">{shown.map((it) => <BadgeRow key={it.key} it={it} />)}</div>
+          <div className="badgelist">{shown.map((it) => <BadgeRow key={it.key} it={it} saved={saved.has(it.key)} onSave={() => toggleSaved(it.key)} />)}</div>
         )}
 
 

@@ -278,6 +278,7 @@ body{
 .catfilter{display:flex;gap:4px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:11px;padding:4px}
 .catfilter button{background:transparent;border:0;color:var(--muted);font-size:13px;font-weight:700;padding:8px 12px;border-radius:8px;cursor:pointer}
 .catfilter button.on{background:linear-gradient(180deg,#3ad46a,#2bb457);color:#fff}
+.catfilter .catn{margin-left:6px;font-size:11px;font-weight:800;background:rgba(255,255,255,.14);border-radius:999px;padding:1px 6px}
 /* Roadmap */
 .rm-lead{font-size:14px;color:#cdd8ef;line-height:1.6;max-width:640px}
 .rm-intro .card-h{margin-bottom:8px}
@@ -370,8 +371,14 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-verdict.late{color:#ffb3b3;background:rgba(255,107,107,.16)}
 .sh-pdesc{flex:1;min-width:170px;font-size:12px;color:var(--muted);line-height:1.55}
 .sh-pdesc b{color:#e7edfb}
-/* Shortlist "kerjakan selanjutnya" di dalam langkah 2. */
-.sh-short{margin-bottom:11px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.2)}
+/* Shortlist "kerjakan selanjutnya" di dalam langkah 2, dan daftar target pilihan sendiri
+   (.sh-mine) di atas langkah 1. Kotaknya sama, .sh-mine dibedakan garis emas supaya jelas ini
+   pilihan peserta, bukan saran aplikasi. */
+.sh-short,.sh-mine{margin-bottom:11px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.2)}
+.sh-mine{margin-bottom:14px;border-color:rgba(252,201,52,.34);background:rgba(252,201,52,.05)}
+.sh-mine .sh-shead span{display:inline-flex;align-items:center;gap:7px;color:var(--gold)}
+.sh-mine .sh-shead b{color:#e7edfb}
+.sh-slist li>span:first-child{flex:1;min-width:0;font-size:12.5px;font-weight:700;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.04);color:var(--muted)}
 .sh-shead{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;font-weight:800;color:#e7edfb;margin-bottom:8px}
 .sh-swap{flex:none;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer;transition:.14s}
 .sh-swap:hover{background:rgba(255,255,255,.12);color:#fff}
@@ -440,6 +447,17 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-new{flex:none;font-size:10px;font-weight:900;letter-spacing:.06em;padding:3px 7px;border-radius:6px;
   background:linear-gradient(180deg,#ffd75e,#f0ad00);color:#3a2a00;box-shadow:0 2px 8px rgba(240,173,0,.35)}
 .badgecard .bc-new{position:absolute;top:auto;bottom:10px;left:10px}
+/* Tombol target. Sudut bawah-kanan gambar: atas-kiri sudah chip tipe, atas-kanan centang
+   selesai, bawah-kiri penanda BARU. Warnanya emas, bukan hijau, supaya "niat" tidak pernah
+   terbaca sebagai "selesai". */
+.bc-save,.br-save{display:grid;place-items:center;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--muted);border-radius:9px;cursor:pointer;transition:.14s}
+.bc-save:hover,.br-save:hover{color:#fff;border-color:rgba(255,255,255,.28)}
+.bc-save.on,.br-save.on{color:var(--gold);border-color:rgba(252,201,52,.5);background:rgba(252,201,52,.14)}
+.bc-save{position:absolute;bottom:9px;right:10px;width:30px;height:30px}
+.br-save{flex:none;width:28px;height:28px}
+.badgecard.saved{border-color:rgba(252,201,52,.45)}
+.badgerow.saved{border-color:rgba(252,201,52,.45)}
+.badgecard.saved.done,.badgerow.saved.done{border-color:rgba(52,201,95,.5)}
 .bc-check{position:absolute;top:9px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#04240f;display:grid;place-items:center;font-size:13px;font-weight:900}
 .bc-badge{display:block;cursor:pointer;border-radius:9px;transition:transform .15s}
 .bc-badge:hover{transform:scale(1.04)}

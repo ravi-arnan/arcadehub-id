@@ -31,6 +31,11 @@ export const IconList = (p) => (
 export const IconArrowRight = (p) => (
   <svg {...S} {...p}><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
 )
+// Dipakai tombol target di katalog. Saat aktif dipanggil dengan fill="currentColor"
+// (prop di-spread sesudah S, jadi fill:'none' bawaan tertimpa).
+export const IconBookmark = (p) => (
+  <svg {...S} {...p}><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
+)
 export const IconCrown = (p) => (
   <svg {...S} {...p}><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" /><path d="M5 21h14" /></svg>
 )
