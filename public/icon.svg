@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" shape-rendering="crispEdges" role="img" aria-label="Arcade Hub">
+  <!-- Pixel art 16x16 (1 sel = 24px, offset 64) supaya tetap tajam di 16px favicon.
+       Sumber tunggal untuk icon-192/512 dan apple-touch-icon: lihat scripts/gen-icons.sh. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1f4a"/>
+      <stop offset="1" stop-color="#0f1130"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- bola joystick -->
+  <rect x="208" y="112" width="96" height="24" fill="#ff5b5b"/>
+  <rect x="184" y="136" width="144" height="48" fill="#ff5b5b"/>
+  <rect x="208" y="184" width="96" height="24" fill="#ff5b5b"/>
+  <!-- batang -->
+  <rect x="232" y="208" width="48" height="72" fill="#fcc934"/>
+  <!-- base -->
+  <rect x="208" y="280" width="96" height="24" fill="#fcc934"/>
+  <rect x="160" y="304" width="192" height="24" fill="#fcc934"/>
+  <rect x="136" y="328" width="240" height="24" fill="#fcc934"/>
+  <rect x="112" y="352" width="288" height="48" fill="#fcc934"/>
+</svg>
