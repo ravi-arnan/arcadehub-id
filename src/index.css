@@ -1166,3 +1166,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
    merah: profil peserta tidak bermasalah, cuma programnya yang tidak menghitung badge itu. */
 .unknownnote{margin-top:12px;background:rgba(91,155,255,.1);border:1px solid rgba(91,155,255,.32);
   border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;color:#cfe0ff}
+
+/* Banner fast-track di Katalog: challenge lab boleh dikerjakan duluan. */
+.fasttrack{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(252,201,52,.14),rgba(252,201,52,.05));
+  border:1px solid rgba(252,201,52,.34);border-radius:12px;padding:12px 14px}
+.ft-ic{flex:0 0 auto;display:grid;place-items:center;width:32px;height:32px;border-radius:9px;
+  background:rgba(252,201,52,.18);color:var(--gold)}
+.ft-t{font-weight:800;font-size:13.5px;color:var(--gold)}
+.ft-p{font-size:12.5px;line-height:1.6;color:var(--muted);margin-top:4px}
+.ft-p b{color:var(--ink);font-weight:700}
+.ft-warn{color:#e2c98a}
+@media(max-width:560px){.fasttrack{padding:11px 12px}.ft-ic{width:28px;height:28px}}

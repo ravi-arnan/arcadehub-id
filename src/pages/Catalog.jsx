@@ -10,9 +10,33 @@ import { shortDate } from '../utils/time.js'
 import Bar from '../components/Bar.jsx'
 import Collapse from '../components/Collapse.jsx'
 import ToggleButton from '../components/ToggleButton.jsx'
-import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget, IconBookmark } from '../icons.jsx'
+import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget, IconBookmark, IconZap } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
+
+// Fast-track. Setiap skill badge diakhiri challenge lab, dan lab itu bisa langsung dikerjakan
+// tanpa menyelesaikan lab-lab kursusnya dulu: badge tetap terbit. Ditulis sebagai satu banner,
+// bukan penanda per kartu, karena berlaku untuk SEMUA skill badge. Penanda di 93 kartu yang
+// isinya sama persis cuma menambah ramai tanpa menambah informasi.
+function FastTrack() {
+  return (
+    <div className="fasttrack">
+      <span className="ft-ic" aria-hidden><IconZap width="18" height="18" /></span>
+      <div>
+        <div className="ft-t">Sudah bisa materinya? Lompat ke challenge lab</div>
+        <div className="ft-p">
+          Tiap skill badge ditutup satu <b>challenge lab</b>, dan lab itu boleh dikerjakan duluan tanpa
+          menyelesaikan lab kursus di depannya. Selesai challenge lab, badge langsung terbit dan poinnya
+          masuk. Buka course-nya, gulir ke aktivitas paling bawah yang bertanda <b>Challenge Lab</b>.
+        </div>
+        <div className="ft-p ft-warn">
+          Sekali dimulai, waktunya jalan dan percobaan ulang butuh kredit lagi. Kalau belum yakin,
+          kerjakan lab kursusnya dulu.
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // Level resmi dari silabus fasilitator. Badge di luar silabus tidak punya level, ditaruh paling akhir.
 const LEVEL_LABEL = { beginner: 'Pemula', intermediate: 'Menengah', advanced: 'Lanjutan' }
@@ -477,6 +501,8 @@ export default function Catalog() {
             ))}
           </div>
         </div>
+
+        {type !== 'game' && <FastTrack />}
 
         {shown.length === 0 ? (
           <div className="card-note" style={{ textAlign: 'center', padding: '18px 0' }}>
