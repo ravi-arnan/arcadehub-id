@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, isNewSkill, norm } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
+import { LAB_SOLUTIONS, SOLUTION_REPO } from '../../lib/labSolutions.js'
 import { projectMilestone } from '../../lib/projection.js'
 import { pickShortlist } from '../../lib/shortlist.js'
 import { useMyProfile } from '../profile.jsx'
@@ -277,15 +278,27 @@ function BadgeThumb({ it, onCopy }) {
 // folder di dalam repo, sehingga lab baru yang solusinya cuma jadi satu folder pun tetap
 // ketemu. Ikonnya tetap GitHub karena itu tujuan akhirnya; tooltip menyebut lewat Google
 // supaya tidak ada yang merasa dikelabui.
-const solutionUrl = (title) =>
+const searchUrl = (title) =>
   'https://www.google.com/search?q=' + encodeURIComponent(`site:github.com "${title}"`)
 
-function SolutionButton({ title, className }) {
-  const label = 'Cari panduan komunitas untuk ' + title + ' (via Google)'
+const repoUrl = (path) => `https://github.com/${SOLUTION_REPO}/blob/main/${path}`
+
+// Dua tujuan berbeda, dan bedanya ditandai jelas:
+//
+// 1. Badge yang ada di repo solusi fasilitator -> link LANGSUNG ke runbook lab itu, ikon
+//    berwarna. Ini yang dicari peserta, dan penulisnya orang yang sama dengan fasilitatornya.
+// 2. Badge lain -> pencarian, ikon redup. Pemetaan badge ke repo orang lain tidak ada yang
+//    bisa dipercaya, jadi tidak ada link langsung yang jujur bisa dibuat.
+function SolutionButton({ it, className }) {
+  const sol = it.type === 'skill' ? LAB_SOLUTIONS[it.id] : null
+  const href = sol ? repoUrl(sol.path) : searchUrl(it.title)
+  const tip = sol
+    ? `${sol.code} di repo fasilitator${sol.verified ? ', sudah diverifikasi' : ', belum diuji'}`
+    : 'Cari panduan komunitas di GitHub'
   return (
-    <Tip label="Cari panduan komunitas di GitHub">
-      <a className={className} href={solutionUrl(title)} target="_blank" rel="noreferrer noopener"
-        aria-label={label} onClick={(e) => e.stopPropagation()}>
+    <Tip label={tip}>
+      <a className={className + (sol ? ' has' : '')} href={href} target="_blank" rel="noreferrer noopener"
+        aria-label={tip + ': ' + it.title} onClick={(e) => e.stopPropagation()}>
         <IconGithub width="14" height="14" />
       </a>
     </Tip>
@@ -330,7 +343,7 @@ function BadgeCard({ it, saved, onSave }) {
               jadi tiga anak sejajar akan melempar angka poin ke tengah. */}
           <span className="bc-right">
             <span className="bc-pts">{fmtPts(it.points)} Poin</span>
-            <SolutionButton title={it.title} className="bc-gh" />
+            <SolutionButton it={it} className="bc-gh" />
           </span>
         </div>
         {it.off ? (
@@ -357,7 +370,7 @@ function BadgeRow({ it, saved, onSave }) {
         ? <a className="br-title" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>{it.title}</a>
         : <span className="br-title">{it.title}</span>}
       {it.code && <CodeChip code={it.code} copied={copied} onCopy={copy} />}
-      <SolutionButton title={it.title} className="br-gh" />
+      <SolutionButton it={it} className="br-gh" />
       <span className="br-pts">{fmtPts(it.points)} Poin</span>
       <span className={'br-status' + (it.done ? ' ok' : '')}>{it.done ? '✓ Selesai' : it.off ? 'Ditunda' : 'Belum'}</span>
     </div>
@@ -446,6 +459,7 @@ export default function Catalog() {
     }))
     const skills = SKILL_CATALOG.map((s) => ({
       key: 's-' + s.id,
+      id: s.id,
       type: 'skill',
       name: s.name,
       title: s.name,
@@ -553,10 +567,13 @@ export default function Catalog() {
 
 
         <div className="card-note">
-          Ikon GitHub di tiap badge membuka pencarian panduan yang ditulis komunitas. Isinya bukan
-          materi resmi Google dan tidak diverifikasi siapa pun, jadi pakai untuk memahami langkah
-          yang bikin macet, bukan untuk menyalin jawaban. Badge yang didapat tanpa mengerti isinya
-          tidak menolongmu saat challenge lab, karena di sana soalnya diacak.
+          Ikon GitHub di tiap badge membuka panduan lab. Yang <b>berwarna kuning</b> menuju runbook
+          di repo fasilitator (<a href={`https://github.com/${SOLUTION_REPO}`} target="_blank" rel="noreferrer noopener">{SOLUTION_REPO}</a>),
+          lengkap dengan catatan checkpoint mana yang harus manual dan kapan terakhir diuji.
+          Yang <b>redup</b> belum ada di repo itu, jadi tombolnya membuka pencarian panduan komunitas.
+          Panduan komunitas tidak diverifikasi siapa pun. Pakai keduanya untuk memahami langkah yang
+          bikin macet, bukan untuk menyalin jawaban: challenge lab mengacak soalnya, jadi badge yang
+          didapat tanpa mengerti isinya tidak menolongmu di sana.
         </div>
 
         <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill badge: 2 badge = 1 poin. Hanya skill badge resmi yang menambah poin; badge dari course biasa (completion badge) tidak dihitung program, jadi tidak didaftarkan di sini. Access code diperbarui tiap bulan mengikuti rilis Arcade.</div>

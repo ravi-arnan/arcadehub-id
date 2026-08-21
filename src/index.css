@@ -1217,4 +1217,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .bc-gh,.br-gh{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;
   color:var(--muted);border:1px solid transparent;transition:color .15s,background .15s,border-color .15s}
 .bc-gh:hover,.br-gh:hover{color:var(--ink);background:rgba(255,255,255,.09);border-color:var(--line)}
+/* .has = ada runbook fasilitator untuk badge ini, bukan sekadar pencarian. */
+.bc-gh.has,.br-gh.has{color:var(--gold);background:rgba(252,201,52,.12);border-color:rgba(252,201,52,.32)}
+.bc-gh.has:hover,.br-gh.has:hover{color:#fff;background:rgba(252,201,52,.26)}
 .bc-right{display:inline-flex;align-items:center;gap:2px}
