@@ -787,8 +787,12 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .pod-3{background:linear-gradient(180deg,rgba(52,201,95,.18),rgba(52,201,95,.03));border-color:rgba(52,201,95,.5)}
 .pod-1{transform:translateY(-14px)}
 .pod.me{box-shadow:0 0 0 2px var(--gold) inset}
-.pod-medal{width:34px;height:34px}
-.pod-1 .pod-medal{width:42px;height:42px}
+.pod-face{position:relative;display:inline-grid;place-items:center}
+/* Medali jadi lencana di pojok foto. Sebelum ada foto, medali yang berdiri sendiri di
+   posisi ini; sekarang foto yang jadi jangkar identitas dan medali yang menempel padanya. */
+.pod-medal{position:absolute;right:-6px;bottom:-4px;width:26px;height:26px;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+.pod-1 .pod-medal{width:30px;height:30px}
 .pod-name{font-weight:800;font-size:15px;line-height:1.25;margin-top:8px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pod-1 .pod-name{font-size:17px}
 .pod-guild{margin:6px 0 0}
@@ -812,7 +816,8 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
   .podium{flex-direction:column;align-items:stretch;gap:10px;margin-top:18px}
   .pod{order:0 !important;border-radius:16px;flex-direction:row;flex-wrap:wrap;align-items:center;text-align:left;padding:12px 14px;gap:8px 10px}
   .pod-1{transform:none}
-  .pod-medal,.pod-1 .pod-medal{width:30px;height:30px;flex:none}
+  .pod-medal,.pod-1 .pod-medal{width:22px;height:22px;flex:none}
+  .pod-face{flex:none}
   /* Baris 1 = medali, nama, poin. Nama boleh dua baris: memaksanya satu baris membuat
      hampir semua nama terpotong jadi "Alfa..." di layar 390px. Sisanya (guild, statistik,
      tombol) dibiarkan wrap ke baris 2 karena nama sudah memakan sisa ruang baris 1. */
@@ -832,16 +837,16 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 /* Area 'del' dipakai .pacts (namanya sisa dari tombol hapus yang sudah tidak ada).
    Baris kedua 'ctrl' dihapus: tidak ada lagi yang mengisinya sejak form leaderboard
    dicabut, dan baris kosong itu tetap memakan row-gap 6px di tiap baris. */
-.lbrow{display:grid;grid-template-columns:auto 1fr auto auto;
-  grid-template-areas:'rank info score del';align-items:center;gap:6px 12px;
+.lbrow{display:grid;grid-template-columns:auto auto 1fr auto auto;
+  grid-template-areas:'rank av info score del';align-items:center;gap:6px 12px;
   background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 15px}
 .lbrow.hasms{border-color:rgba(52,201,95,.4)}
 /* Mobile: 4 kolom sejajar menyisakan sekitar 120px untuk nama, jadi hampir semua nama
    terpotong. Dijadikan dua baris: poin di kanan atas, tombol di kanan bawah, nama dapat
    sisa lebar penuh dan boleh turun ke baris kedua. */
 @media(max-width:560px){
-  .lbrow{grid-template-columns:auto 1fr auto;
-    grid-template-areas:'rank info score' 'rank info pacts';align-items:start;gap:8px 10px;padding:12px 13px}
+  .lbrow{grid-template-columns:auto auto 1fr auto;
+    grid-template-areas:'rank av info score' 'rank av info pacts';align-items:start;gap:8px 10px;padding:12px 13px}
   .lbrow .pname{white-space:normal;font-size:15.5px;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .lbrow .ptier{font-size:12px;line-height:1.5}
@@ -1221,3 +1226,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .bc-gh.has,.br-gh.has{color:var(--gold);background:rgba(252,201,52,.12);border-color:rgba(252,201,52,.32)}
 .bc-gh.has:hover,.br-gh.has:hover{color:#fff;background:rgba(252,201,52,.26)}
 .bc-right{display:inline-flex;align-items:center;gap:2px}
+
+/* Foto profil peserta (dari halaman public profile Cloud Skills Boost). */
+.avat{flex:none;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.07);
+  border:1px solid var(--line)}
+/* Inisial, dipakai kalau foto tidak ada atau gagal muat. */
+.avat-i{display:grid;place-items:center;font-weight:800;font-size:13px;letter-spacing:.5px;
+  color:hsl(var(--ah) 70% 82%);background:hsl(var(--ah) 55% 30%);border-color:hsl(var(--ah) 60% 45%)}
+.lb-av{grid-area:av}
+.pod-av{width:64px;height:64px}
+.pod-1 .pod-av{width:76px;height:76px}
+.pod-face .avat-i{font-size:22px}
+@media(max-width:560px){
+  .pod-av,.pod-1 .pod-av{width:44px;height:44px}
+  .pod-face .avat-i{font-size:16px}
+}

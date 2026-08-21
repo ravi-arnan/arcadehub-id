@@ -6,6 +6,7 @@ import { nextTotalAbove } from '../../lib/rank.js'
 import { useMyProfile } from '../profile.jsx'
 import Tip from '../Tip.jsx'
 import Medal from '../Medal.jsx'
+import Avatar from '../components/Avatar.jsx'
 import Collapse from '../components/Collapse.jsx'
 import { ago, dayMonth } from '../utils/time.js'
 import { guildKey, guildLabel, DEFAULT_GUILD } from '../../lib/guild.js'
@@ -35,7 +36,10 @@ const IconSearch = () => <svg className="lbs-ico" viewBox="0 0 24 24" fill="none
 function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }) {
   return (
     <div className={`pod pod-${place}${isMe ? ' me' : ''}`}>
-      <Medal i={rank} className="pod-medal" />
+      <div className="pod-face">
+        <Avatar src={p.avatar} name={p.name} size={64} className="pod-av" />
+        <Medal i={rank} className="pod-medal" />
+      </div>
       <div className="pod-name" title={p.name}>{p.name}{isMe && <span className="youtag">kamu</span>}</div>
       <span className="gtag pod-guild">{guildLabel(p.guild)}</span>
       <div className="pod-score">{p.total}<span>poin</span></div>
@@ -66,6 +70,7 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }) {
   return (
     <div className={'lbrow' + (p.tier_idx >= 0 ? ' hasms' : '') + (isMe ? ' me' : '')}>
       <div className="rank"><Rank i={rank} /></div>
+      <Avatar src={p.avatar} name={p.name} size={34} className="lb-av" />
       <div className="pinfo">
         <div className="pname">{p.name}{isMe && <span className="youtag">kamu</span>}</div>
         <div className="ptier">

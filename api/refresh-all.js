@@ -35,7 +35,7 @@ export default async function handler(req, res) {
           await sql`
             UPDATE members SET games = ${s.games}, skills = ${s.skills}, facil_games = ${s.facilGames},
               facil_skills = ${s.facilSkills}, base = ${s.base}, mbonus = ${s.mbonus}, total = ${s.total},
-              tier_idx = ${s.tierIdx}, last_earned = ${s.lastEarned}, last_synced = now()
+              tier_idx = ${s.tierIdx}, last_earned = ${s.lastEarned}, avatar = ${s.avatar}, last_synced = now()
             WHERE id = ${m.id}`
           ok++
         } catch { failed++ } // profil privat/tak terjangkau, biarkan data lama, lanjut

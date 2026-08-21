@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     // NULLS LAST buat baris yang belum tersinkron ulang sejak kolomnya ada. Tidak diketahui
     // bukan berarti duluan, jadi mereka ditaruh di belakang yang tanggalnya jelas.
     const rows = await sql`
-      SELECT id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, last_earned, last_synced
+      SELECT id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, last_earned, avatar, last_synced
       FROM members
       ORDER BY total DESC, last_earned ASC NULLS LAST, skills DESC, name ASC`
     // Cache di edge: load ulang cepat (LCP). Stale-while-revalidate menyajikan cache lama
