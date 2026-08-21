@@ -4,14 +4,17 @@
 // `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
 // tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT = {
-  id: '2026-08-04-poin-skill-badge',
-  date: '4 Agustus 2026',
-  title: 'Perubahan cara poin dihitung',
+  id: '2026-08-21-re-trail',
+  date: '21 Agustus 2026',
+  title: 'Game bonus: Arcade Re-Trail',
   body: [
-    'Mulai hari ini Arcade Hub hanya menghitung Arcade Game dan Badge Keahlian (skill badge). Badge dari course biasa tidak lagi menambah poin.',
-    'Alasannya supaya angka di sini sejalan dengan silabus resmi fasilitator, yang menyebut Badge Keahlian saja. Sebelumnya tracker menghitung semua badge selain game, jadi poinmu di sini bisa terlihat lebih besar daripada yang diakui program.',
-    'Kalau poinmu turun, badge-mu tidak hilang dan tidak ada yang error. Yang berubah cuma badge mana yang dihitung. Buka Poin Saya untuk melihat rinciannya: kalau kamu punya badge yang tidak dihitung, jumlahnya ditampilkan di sana.',
-    'Merasa ada badge keahlian resmi yang seharusnya masuk tapi tidak terhitung? Kabari lewat tombol Masukan di pojok. Katalog badge diperbarui manual, jadi laporanmu benar-benar membantu.',
+    'Google membuka satu game tambahan di luar enam game reguler Agustus: Arcade Re-Trail: Vaults & Vectors. Nilainya 1 poin, sama seperti game Arcade lain.',
+    'Ini game penambal. Arcade Trail bulan Juli ditutup lebih awal dari jadwal, jadi yang kehilangan poin di situ bisa mengambilnya kembali lewat game ini. Yang sudah lengkap pun tetap boleh ikut, poinnya tetap masuk.',
+    'Isinya Cloud Storage (bucket, API, Bucket Lock) lalu Cloud Run Functions dan Pub/Sub, ditutup dua challenge lab.',
+    'Tutup 1 September 2026 dan kuotanya terbatas (sekitar 7.500 slot saat pengumuman ini dibuat). Kartunya sudah ada di Poin Saya lengkap dengan access code, jadi ambil sekarang selagi slotnya ada.',
+  ],
+  links: [
+    { label: 'Buka game', href: 'https://www.skills.google/games/7426' },
   ],
   signature: 'R',
 }
