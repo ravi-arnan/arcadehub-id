@@ -1188,3 +1188,27 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .lbmore:hover{background:rgba(252,201,52,.1);border-color:rgba(252,201,52,.34)}
 .lbmore-sub{font-weight:500;font-size:11.5px;color:var(--muted)}
 .lbless{margin-top:8px}
+
+/* Peringkat berbagi (poin seri) + kartu posisi sendiri di leaderboard. */
+.rtie{color:var(--muted);font-weight:600;margin-right:1px}
+.mystand{display:flex;align-items:center;gap:14px;margin-top:12px;padding:12px 16px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(52,201,95,.14),rgba(52,201,95,.04));
+  border:1px solid rgba(52,201,95,.34)}
+.ms-rank{flex:0 0 auto;font-family:'PS2P';font-size:18px;color:var(--green);line-height:1.2}
+.ms-hash{font-size:12px;opacity:.7;margin-right:1px}
+.ms-of{display:block;font-family:inherit;font-size:11px;color:var(--muted);margin-top:5px}
+.ms-body{min-width:0}
+.ms-t{font-size:13.5px;font-weight:700}
+.ms-p{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.55}
+.ms-t b,.ms-p b{color:var(--ink)}
+@media(max-width:560px){.mystand{gap:11px;padding:11px 13px}.ms-rank{font-size:15px}}
+
+/* Jarak ke milestone berikutnya di Poin Saya. */
+.msgap{display:flex;align-items:flex-start;gap:10px;margin:10px 0 4px;padding:10px 13px;border-radius:11px;
+  background:rgba(252,201,52,.1);border:1px solid rgba(252,201,52,.3);font-size:13px;line-height:1.5}
+.msgap b{color:var(--gold)}
+.msgap.done{background:rgba(52,201,95,.1);border-color:rgba(52,201,95,.3)}
+.mg-ic{flex:0 0 auto;color:var(--gold);margin-top:1px}
+.msgap.done .mg-ic{color:var(--green)}
+.mg-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.ms-tie{font-weight:500;color:var(--muted)}

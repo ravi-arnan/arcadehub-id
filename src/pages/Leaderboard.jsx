@@ -2,15 +2,20 @@ import { useEffect, useState, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { MS } from '../points.js'
 import { searchMembers } from '../../lib/searchMembers.js'
+import { competitionRanks, tieCounts, nextTotalAbove } from '../../lib/rank.js'
 import { useMyProfile } from '../profile.jsx'
 import Tip from '../Tip.jsx'
 import Medal from '../Medal.jsx'
 import Collapse from '../components/Collapse.jsx'
 import { ago } from '../utils/time.js'
-import { guildKey, guildLabel } from '../../lib/guild.js'
+import { guildKey, guildLabel, DEFAULT_GUILD } from '../../lib/guild.js'
 import { IconGamepad } from '../icons.jsx'
 
-const Rank = ({ i }) => (i > 2 ? <span className="rnum">{i + 1}</span> : <Medal i={i} className="rmedal" />)
+// `tied` menandai peringkat yang dibagi beberapa orang. Tanpa tanda itu, dua peserta
+// berpoin sama tampak seperti yang satu mengalahkan yang lain.
+const Rank = ({ i, tied }) => (i > 2
+  ? <span className="rnum">{tied && <span className="rtie" aria-hidden>=</span>}{i + 1}</span>
+  : <Medal i={i} className="rmedal" />)
 const IconGame = () => <IconGamepad className="mini" />
 // Sengaja TIDAK diganti IconAward dari icons.jsx: glif-nya beda (pita polos vs pita berlekuk),
 // jadi menukarnya itu perubahan tampilan, bukan dedup. Dipakai dua kali di file ini saja.
@@ -18,10 +23,13 @@ const IconBadge = () => <svg className="mini" viewBox="0 0 24 24" fill="none" st
 const IconFilter = () => <svg className="gf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
 const IconSearch = () => <svg className="lbs-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
 
-function PodiumCard({ p, place, isMe, refreshing, onRefresh }) {
+// `place` = posisi slot di layout (1 kiri, 2 tengah, 3 kanan), `rank` = peringkat
+// sebenarnya. Dua hal berbeda begitu ada poin seri: 12 peserta sama-sama 99 poin, jadi
+// slot kedua dan ketiga dua-duanya peringkat 2 dan dua-duanya berhak medali perak.
+function PodiumCard({ p, place, rank, tied, isMe, refreshing, onRefresh }) {
   return (
     <div className={`pod pod-${place}${isMe ? ' me' : ''}`}>
-      <Medal i={place - 1} className="pod-medal" />
+      <Medal i={rank} className="pod-medal" />
       <div className="pod-name" title={p.name}>{p.name}{isMe && <span className="youtag">kamu</span>}</div>
       <span className="gtag pod-guild">{guildLabel(p.guild)}</span>
       <div className="pod-score">{p.total}<span>poin</span></div>
@@ -40,7 +48,7 @@ function PodiumCard({ p, place, isMe, refreshing, onRefresh }) {
           <button className="miniref" disabled={refreshing} onClick={onRefresh} aria-label={'Sinkronkan ulang ' + p.name}>{refreshing ? '…' : '↻'}</button>
         </Tip>
       </div>
-      <div className="pod-plinth">{place}</div>
+      <div className="pod-plinth">{tied && <span className="rtie" aria-hidden>=</span>}{rank + 1}</div>
     </div>
   )
 }
@@ -48,10 +56,10 @@ function PodiumCard({ p, place, isMe, refreshing, onRefresh }) {
 // rank dilewatkan dari luar, bukan dihitung dari urutan render: hasil pencarian
 // harus tetap menunjukkan peringkat asli peserta di leaderboard, bukan nomor
 // urut di daftar hasil.
-function MemberRow({ p, rank, isMe, refreshing, onRefresh }) {
+function MemberRow({ p, rank, tied, isMe, refreshing, onRefresh }) {
   return (
     <div className={'lbrow' + (p.tier_idx >= 0 ? ' hasms' : '') + (isMe ? ' me' : '')}>
-      <div className="rank"><Rank i={rank} /></div>
+      <div className="rank"><Rank i={rank} tied={tied} /></div>
       <div className="pinfo">
         <div className="pname">{p.name}{isMe && <span className="youtag">kamu</span>}</div>
         <div className="ptier">
@@ -78,6 +86,45 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }) {
 // itu batas orang masih mau menggulir; sisanya hampir selalu peserta 0 poin yang belum mulai,
 // dan menggulirinya tidak memberi informasi apa pun.
 const TOP_N = 50
+
+// Peringkat sendiri, ditulis sebagai konteks, bukan vonis. Nomor peringkat mentah
+// menyesatkan di data serapat ini: cuma ada 68 nilai poin unik untuk 209 peserta, jadi
+// selisih beberapa poin melompati puluhan orang sekaligus.
+function MyStanding({ shown, me, rank, tiedWith }) {
+  const beat = shown.filter((p) => p.total < me.total).length
+  const pct = shown.length > 1 ? Math.round((beat / (shown.length - 1)) * 100) : 100
+  // Nilai poin unik terdekat di atas: itu lompatan peringkat berikutnya yang tersedia.
+  const nextTotal = nextTotalAbove(shown, me.total)
+  const nextRank = nextTotal === null ? null : shown.filter((p) => p.total > nextTotal).length
+
+  return (
+    <div className="mystand">
+      <div className="ms-rank">
+        <span className="ms-hash">#</span>{tiedWith > 0 && <span className="rtie" aria-hidden>=</span>}{rank + 1}
+        <span className="ms-of">dari {shown.length}</span>
+      </div>
+      <div className="ms-body">
+        {/* Peserta di dasar klasemen tidak diberi baris ini: "unggul dari 0 peserta"
+            cuma menegaskan yang sudah ia tahu. Buat mereka, kalimat lompatan di
+            bawahnya yang jadi pesan utama, dan itu justru kabar baik. */}
+        {beat > 0 && (
+          <div className="ms-t">
+            Kamu unggul dari <b>{beat}</b> peserta ({pct}%).
+            {tiedWith > 0 && <span className="ms-tie"> Seri dengan {tiedWith} peserta lain.</span>}
+          </div>
+        )}
+        {nextTotal !== null ? (
+          <div className="ms-p">
+            Tambah <b>{nextTotal - me.total} poin</b> dan peringkatmu naik ke <b>{nextRank + 1}</b>
+            {rank - nextRank > 1 && <>, melompati {rank - nextRank} posisi sekaligus</>}.
+          </div>
+        ) : (
+          <div className="ms-p">Kamu di puncak leaderboard.</div>
+        )}
+      </div>
+    </div>
+  )
+}
 
 export default function Leaderboard() {
   const { profileUrl, memberId } = useMyProfile()
@@ -137,12 +184,35 @@ export default function Leaderboard() {
   const reached = MS.map((_, i) => shown.filter((p) => p.tier_idx >= i).length)
   const isMe = (p) => (memberId && p.id === memberId) || (profileUrl && p.profile_url === profileUrl)
 
+  // Sekali saja setelah data masuk: kalau peserta punya guild sungguhan, mulai dari
+  // guild itu. Bukan untuk 'Umum', karena hampir semua orang ada di sana sehingga
+  // menyaringnya tidak memangkas apa pun. Ambang 5 anggota supaya peserta guild
+  // berisi 2 orang tidak mendarat di leaderboard dua baris, yang lebih buruk daripada
+  // daftar penuh.
+  const [autoFiltered, setAutoFiltered] = useState(false)
+  useEffect(() => {
+    if (autoFiltered || urlGuild || members.length === 0) return
+    setAutoFiltered(true)
+    const mine = members.find(isMe)
+    if (!mine) return
+    const key = guildKey(mine.guild)
+    if (key === DEFAULT_GUILD) return
+    if (members.filter((x) => guildKey(x.guild) === key).length < 5) return
+    setFilter(key)
+  }, [members, autoFiltered, urlGuild])
+
   const searching = query.trim() !== ''
   const results = useMemo(() => searchMembers(shown, query), [shown, query])
   // Peringkat asli tiap peserta dalam tampilan sekarang, dipetakan sebelum
   // pencarian menyaring. Tanpa ini, hasil cari akan menampilkan medali emas
   // untuk siapa pun yang kebetulan jadi baris pertama.
-  const rankOf = useMemo(() => new Map(shown.map((p, i) => [p.id, i])), [shown])
+  // Peringkat kompetisi: poin sama berarti peringkat sama, dan peserta berikutnya
+  // melompat sebanyak jumlah yang seri. Sebelumnya peringkat diambil dari posisi array,
+  // jadi 12 peserta berpoin 99 mendapat nomor 2 sampai 13 dan yang di nomor 13 terlihat
+  // kalah padahal poinnya identik.
+  const rankOf = useMemo(() => competitionRanks(shown), [shown])
+  const tiedTotals = useMemo(() => tieCounts(shown), [shown])
+  const isTied = (p) => (tiedTotals.get(p.total) || 0) > 1
 
   // Daftar di bawah podium, dipotong di TOP_N kecuali diminta lengkap.
   const rest = shown.slice(3)
@@ -225,6 +295,11 @@ export default function Leaderboard() {
             <button className="miniref" onClick={() => load(true)} aria-label="Muat ulang leaderboard">↻ Muat ulang</button>
           </div>
 
+          {myIdx >= 0 && (
+            <MyStanding shown={shown} me={shown[myIdx]} rank={rankOf.get(shown[myIdx].id)}
+              tiedWith={(tiedTotals.get(shown[myIdx].total) || 1) - 1} />
+          )}
+
           {/* Saat mencari, podium dilewati: menaruh hasil cari di atas podium
               bakal memasangkan medali emas ke orang yang sebenarnya peringkat 50.
               Hasilnya jadi daftar datar dengan peringkat aslinya masing-masing. */}
@@ -234,7 +309,7 @@ export default function Leaderboard() {
             ) : (
               <div className="lblist">
                 {results.map((p) => (
-                  <MemberRow key={p.id} p={p} rank={rankOf.get(p.id)} isMe={isMe(p)}
+                  <MemberRow key={p.id} p={p} rank={rankOf.get(p.id)} tied={isTied(p)} isMe={isMe(p)}
                     refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
                 ))}
               </div>
@@ -244,15 +319,16 @@ export default function Leaderboard() {
               {shown.length > 0 && (
                 <div className="podium">
                   {shown.slice(0, 3).map((p, i) => (
-                    <PodiumCard key={p.id} p={p} place={i + 1} isMe={isMe(p)} refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
+                    <PodiumCard key={p.id} p={p} place={i + 1} rank={rankOf.get(p.id)} tied={isTied(p)}
+                      isMe={isMe(p)} refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
                   ))}
                 </div>
               )}
 
               {visible.length > 0 && (
                 <div className="lblist">
-                  {visible.map((p, i) => (
-                    <MemberRow key={p.id} p={p} rank={i + 3} isMe={isMe(p)}
+                  {visible.map((p) => (
+                    <MemberRow key={p.id} p={p} rank={rankOf.get(p.id)} tied={isTied(p)} isMe={isMe(p)}
                       refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
                   ))}
 
@@ -261,7 +337,7 @@ export default function Leaderboard() {
                   {meHidden && (
                     <>
                       <div className="lbgap" aria-hidden>· · ·</div>
-                      <MemberRow p={shown[myIdx]} rank={myIdx} isMe
+                      <MemberRow p={shown[myIdx]} rank={rankOf.get(shown[myIdx].id)} tied={isTied(shown[myIdx])} isMe
                         refreshing={refreshingId === shown[myIdx].id} onRefresh={() => refresh(shown[myIdx].id)} />
                     </>
                   )}

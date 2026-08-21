@@ -17,7 +17,8 @@ import BonusMilestone, { readBonusClaim } from '../components/BonusMilestone.jsx
 import PointBreakdown from '../components/PointBreakdown.jsx'
 import { ago } from '../utils/time.js'
 import { guildKey, guildLabel } from '../../lib/guild.js'
-import { IconTrophy } from '../icons.jsx'
+import { IconTrophy, IconTarget } from '../icons.jsx'
+import { projectMilestone } from '../../lib/projection.js'
 
 // Guild tampil/ubah di tampilan tersinkron. Kosongkan lalu simpan tidak menghapus guild lama (backend COALESCE).
 function GuildRow() {
@@ -149,6 +150,7 @@ function MyPoints() {
       <div className="ladder">
         <div className="hd">Milestone Fasilitator</div>
         <div className="mnote">Hanya menghitung badge sejak program fasilitator dibuka (13 Jul 2026). Badge sebelum itu tetap masuk total poin, tapi tidak mengisi milestone.</div>
+        <MilestoneGap fg={fg} fs={fs} />
         <m.div className="msgrid" initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }}
           variants={{ show: { transition: { staggerChildren: 0.08 } } }}>
         {MS.map((ms) => {
@@ -182,6 +184,35 @@ function MyPoints() {
           <MonthlyGames badges={score.seasonBadges} />
         </>
       )}
+    </div>
+  )
+}
+
+// Jarak ke milestone berikutnya, dalam satuan yang bisa langsung dikerjakan.
+// Tangga milestone di bawahnya menampilkan empat target sekaligus lewat bar; berguna untuk
+// gambaran besar, tapi tidak pernah menyebut angka yang dicari peserta: kurang berapa lagi.
+// projectMilestone() sudah menghitungnya sejak dipakai halaman Katalog, jadi ini memakai
+// fungsi yang sama supaya dua halaman tidak mungkin memberi angka berbeda.
+function MilestoneGap({ fg, fs }) {
+  const proj = projectMilestone({ facilGames: fg, facilSkills: fs })
+  if (proj.done) {
+    return (
+      <div className="msgap done">
+        <span className="mg-ic" aria-hidden><IconTarget width="16" height="16" /></span>
+        <div>Semua milestone tercapai. Badge berikutnya tetap menambah poin dasar.</div>
+      </div>
+    )
+  }
+  const parts = []
+  if (proj.needGames > 0) parts.push(`${proj.needGames} game`)
+  if (proj.needSkills > 0) parts.push(`${proj.needSkills} skill badge`)
+  return (
+    <div className="msgap">
+      <span className="mg-ic" aria-hidden><IconTarget width="16" height="16" /></span>
+      <div>
+        <b>{proj.target.n}</b> tinggal {parts.join(' dan ')} lagi.
+        <div className="mg-sub">Sisa {proj.daysLeft} hari sampai penutupan.</div>
+      </div>
     </div>
   )
 }
