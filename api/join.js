@@ -25,12 +25,13 @@ export default async function handler(req, res) {
     // xmax=0 hanya pada baris hasil INSERT (bukan UPDATE via ON CONFLICT); dipakai untuk
     // memutuskan apakah token boleh dikembalikan. Token TIDAK di-set ulang saat re-sync.
     const rows = await sql`
-      INSERT INTO members (id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, remove_token, last_synced)
-      VALUES (${id}, ${guild ?? DEFAULT_GUILD}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, ${token}, now())
+      INSERT INTO members (id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, last_earned, remove_token, last_synced)
+      VALUES (${id}, ${guild ?? DEFAULT_GUILD}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, ${s.lastEarned}, ${token}, now())
       ON CONFLICT (profile_url) DO UPDATE SET
         guild = COALESCE(${guild}, members.guild), name = EXCLUDED.name, games = EXCLUDED.games, skills = EXCLUDED.skills,
         facil_games = EXCLUDED.facil_games, facil_skills = EXCLUDED.facil_skills,
-        base = EXCLUDED.base, mbonus = EXCLUDED.mbonus, total = EXCLUDED.total, tier_idx = EXCLUDED.tier_idx, last_synced = now()
+        base = EXCLUDED.base, mbonus = EXCLUDED.mbonus, total = EXCLUDED.total, tier_idx = EXCLUDED.tier_idx,
+        last_earned = EXCLUDED.last_earned, last_synced = now()
       RETURNING id, guild, (xmax = 0) AS inserted, remove_token`
     const row = rows[0] || {}
     res.status(200).json({
