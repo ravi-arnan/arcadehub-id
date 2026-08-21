@@ -74,6 +74,11 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }) {
   )
 }
 
+// Berapa peringkat teratas yang tampil sebelum tombol "tampilkan sisanya". 50 dipilih karena
+// itu batas orang masih mau menggulir; sisanya hampir selalu peserta 0 poin yang belum mulai,
+// dan menggulirinya tidak memberi informasi apa pun.
+const TOP_N = 50
+
 export default function Leaderboard() {
   const { profileUrl, memberId } = useMyProfile()
   // ?guild=KODE dibaca lewat useSearchParams, BUKAN sekali di level modul seperti dulu.
@@ -90,6 +95,7 @@ export default function Leaderboard() {
   const [filter, setFilter] = useState(urlGuild || 'ALL')
   const [filterOpen, setFilterOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const [showAll, setShowAll] = useState(false)
 
   // bust=true melewati cache edge (dipakai tombol Muat ulang & setelah sync) agar data terbaru.
   const load = useCallback(async (bust) => {
@@ -103,6 +109,10 @@ export default function Leaderboard() {
   }, [])
 
   useEffect(() => { load() }, [load])
+
+  // Ganti guild artinya daftarnya beda; kalau "tampilkan semua" ikut terbawa, peserta
+  // mendarat di daftar 200 baris yang tidak pernah ia minta.
+  useEffect(() => { setShowAll(false) }, [filter])
 
   const refresh = async (id) => {
     setRefreshingId(id); setErr('')
@@ -134,9 +144,18 @@ export default function Leaderboard() {
   // untuk siapa pun yang kebetulan jadi baris pertama.
   const rankOf = useMemo(() => new Map(shown.map((p, i) => [p.id, i])), [shown])
 
+  // Daftar di bawah podium, dipotong di TOP_N kecuali diminta lengkap.
+  const rest = shown.slice(3)
+  const visible = showAll ? rest : rest.slice(0, Math.max(0, TOP_N - 3))
+  const hidden = rest.length - visible.length
+  // Peringkat sendiri dicari di seluruh daftar, bukan cuma yang tampil: justru saat
+  // posisimu ada di luar potongan itulah baris ini paling dibutuhkan.
+  const myIdx = shown.findIndex(isMe)
+  const meHidden = myIdx >= TOP_N && !showAll
+
   return (
     <div>
-      <div className="lb-note">
+      <div className="lb-note" id="lb-top">
         <span>Poin otomatis tersinkron dari tab <b>Poin Saya</b>. Masukkan link profil di sana, kamu langsung muncul di sini.</span>
         {!profileUrl && <Link className="joinbtn lb-note-btn" to="/points">Masuk lewat Poin Saya</Link>}
       </div>
@@ -230,13 +249,36 @@ export default function Leaderboard() {
                 </div>
               )}
 
-              {shown.length > 3 && (
+              {visible.length > 0 && (
                 <div className="lblist">
-                  {shown.slice(3).map((p, i) => (
+                  {visible.map((p, i) => (
                     <MemberRow key={p.id} p={p} rank={i + 3} isMe={isMe(p)}
                       refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
                   ))}
+
+                  {/* Posisi sendiri diselipkan di ujung potongan supaya tidak perlu
+                      menggulir 150 baris cuma untuk melihat peringkat sendiri. */}
+                  {meHidden && (
+                    <>
+                      <div className="lbgap" aria-hidden>· · ·</div>
+                      <MemberRow p={shown[myIdx]} rank={myIdx} isMe
+                        refreshing={refreshingId === shown[myIdx].id} onRefresh={() => refresh(shown[myIdx].id)} />
+                    </>
+                  )}
                 </div>
+              )}
+
+              {hidden > 0 && (
+                <button className="lbmore" onClick={() => setShowAll(true)}>
+                  Tampilkan {hidden} peserta lainnya
+                  <span className="lbmore-sub">peringkat {TOP_N + 1} sampai {shown.length}</span>
+                </button>
+              )}
+
+              {showAll && rest.length > TOP_N - 3 && (
+                <button className="lbmore lbless" onClick={() => { setShowAll(false); document.getElementById('lb-top')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }}>
+                  Ringkas lagi ke {TOP_N} teratas
+                </button>
               )}
             </>
           )}
