@@ -283,14 +283,22 @@ const searchUrl = (title) =>
 
 const repoUrl = (path) => `https://github.com/${SOLUTION_REPO}/blob/main/${path}`
 
-// Dua tujuan berbeda, dan bedanya ditandai jelas:
+// HANYA untuk skill badge.
+//
+// Game sengaja tidak dapat tombol ini. Satu game Arcade berisi beberapa lab yang masing-masing
+// punya kode sendiri, jadi tidak ada satu berkas pun yang benar untuk judul game, dan
+// pencariannya memang kosong: `site:github.com "Arcade Adventure: Data Vault"` nol hasil.
+// Tombol yang selalu mentok lebih buruk daripada tidak ada tombol.
+//
+// Untuk skill badge ada dua tujuan, dan bedanya ditandai jelas:
 //
 // 1. Badge yang ada di repo solusi fasilitator -> link LANGSUNG ke runbook lab itu, ikon
 //    berwarna. Ini yang dicari peserta, dan penulisnya orang yang sama dengan fasilitatornya.
 // 2. Badge lain -> pencarian, ikon redup. Pemetaan badge ke repo orang lain tidak ada yang
 //    bisa dipercaya, jadi tidak ada link langsung yang jujur bisa dibuat.
 function SolutionButton({ it, className }) {
-  const sol = it.type === 'skill' ? LAB_SOLUTIONS[it.id] : null
+  if (it.type !== 'skill') return null
+  const sol = LAB_SOLUTIONS[it.id]
   const href = sol ? repoUrl(sol.path) : searchUrl(it.title)
   const tip = sol
     ? `${sol.code} di repo fasilitator${sol.verified ? ', sudah diverifikasi' : ', belum diuji'}`
@@ -567,13 +575,14 @@ export default function Catalog() {
 
 
         <div className="card-note">
-          Ikon GitHub di tiap badge membuka panduan lab. Yang <b>berwarna kuning</b> menuju runbook
+          Ikon GitHub di tiap <b>skill badge</b> membuka panduan lab. Yang <b>berwarna kuning</b> menuju runbook
           di repo fasilitator (<a href={`https://github.com/${SOLUTION_REPO}`} target="_blank" rel="noreferrer noopener">{SOLUTION_REPO}</a>),
           lengkap dengan catatan checkpoint mana yang harus manual dan kapan terakhir diuji.
           Yang <b>redup</b> belum ada di repo itu, jadi tombolnya membuka pencarian panduan komunitas.
           Panduan komunitas tidak diverifikasi siapa pun. Pakai keduanya untuk memahami langkah yang
           bikin macet, bukan untuk menyalin jawaban: challenge lab mengacak soalnya, jadi badge yang
-          didapat tanpa mengerti isinya tidak menolongmu di sana.
+          didapat tanpa mengerti isinya tidak menolongmu di sana. Game tidak punya tombol ini karena
+          satu game berisi beberapa lab, jadi tidak ada satu panduan yang mewakilinya.
         </div>
 
         <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill badge: 2 badge = 1 poin. Hanya skill badge resmi yang menambah poin; badge dari course biasa (completion badge) tidak dihitung program, jadi tidak didaftarkan di sini. Access code diperbarui tiap bulan mengikuti rilis Arcade.</div>

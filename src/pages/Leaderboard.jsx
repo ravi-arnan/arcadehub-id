@@ -13,9 +13,14 @@ import { IconGamepad } from '../icons.jsx'
 
 // `tied` menandai peringkat yang dibagi beberapa orang. Tanpa tanda itu, dua peserta
 // berpoin sama tampak seperti yang satu mengalahkan yang lain.
-const Rank = ({ i, tied }) => (i > 2
-  ? <span className="rnum">{tied && <span className="rtie" aria-hidden>=</span>}{i + 1}</span>
-  : <Medal i={i} className="rmedal" />)
+// Angka, bukan medali. Medali disediakan podium saja.
+//
+// Dulu baris daftar ikut memberi medali untuk peringkat <= 3, dan itu pecah begitu peringkat
+// kembar masuk: 12 peserta sama-sama peringkat 2, jadi selusin baris berturut-turut memakai
+// medali perak yang sama dan nomor peringkatnya hilang sama sekali.
+const Rank = ({ i, tied }) => (
+  <span className="rnum">{tied && <span className="rtie" aria-hidden>=</span>}{i + 1}</span>
+)
 const IconGame = () => <IconGamepad className="mini" />
 // Sengaja TIDAK diganti IconAward dari icons.jsx: glif-nya beda (pita polos vs pita berlekuk),
 // jadi menukarnya itu perubahan tampilan, bukan dedup. Dipakai dua kali di file ini saja.
@@ -26,7 +31,7 @@ const IconSearch = () => <svg className="lbs-ico" viewBox="0 0 24 24" fill="none
 // `place` = posisi slot di layout (1 kiri, 2 tengah, 3 kanan), `rank` = peringkat
 // sebenarnya. Dua hal berbeda begitu ada poin seri: 12 peserta sama-sama 99 poin, jadi
 // slot kedua dan ketiga dua-duanya peringkat 2 dan dua-duanya berhak medali perak.
-function PodiumCard({ p, place, rank, tied, isMe, refreshing, onRefresh }) {
+function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }) {
   return (
     <div className={`pod pod-${place}${isMe ? ' me' : ''}`}>
       <Medal i={rank} className="pod-medal" />
@@ -48,7 +53,7 @@ function PodiumCard({ p, place, rank, tied, isMe, refreshing, onRefresh }) {
           <button className="miniref" disabled={refreshing} onClick={onRefresh} aria-label={'Sinkronkan ulang ' + p.name}>{refreshing ? '…' : '↻'}</button>
         </Tip>
       </div>
-      <div className="pod-plinth">{tied && <span className="rtie" aria-hidden>=</span>}{rank + 1}</div>
+      <div className="pod-plinth">{rank + 1}</div>
     </div>
   )
 }
@@ -100,7 +105,7 @@ function MyStanding({ shown, me, rank, tiedWith }) {
   return (
     <div className="mystand">
       <div className="ms-rank">
-        <span className="ms-hash">#</span>{tiedWith > 0 && <span className="rtie" aria-hidden>=</span>}{rank + 1}
+        <span className="ms-hash">#</span>{rank + 1}
         <span className="ms-of">dari {shown.length}</span>
       </div>
       <div className="ms-body">
@@ -319,7 +324,7 @@ export default function Leaderboard() {
               {shown.length > 0 && (
                 <div className="podium">
                   {shown.slice(0, 3).map((p, i) => (
-                    <PodiumCard key={p.id} p={p} place={i + 1} rank={rankOf.get(p.id)} tied={isTied(p)}
+                    <PodiumCard key={p.id} p={p} place={i + 1} rank={rankOf.get(p.id)}
                       isMe={isMe(p)} refreshing={refreshingId === p.id} onRefresh={() => refresh(p.id)} />
                   ))}
                 </div>

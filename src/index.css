@@ -800,7 +800,8 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .pod-stats .mini{width:13px;height:13px;opacity:.85}
 .pod-acts{display:flex;gap:6px;margin-top:10px}
 .pod-break{display:none}
-.pod-plinth{width:100%;margin-top:12px;display:grid;place-items:center;font-family:'PS2P';font-size:24px;color:#10132a;
+.pod-plinth{width:100%;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:2px;
+  font-family:'PS2P';font-size:24px;color:#10132a;
   border-radius:12px 12px 0 0;box-shadow:inset 0 3px 0 rgba(255,255,255,.35)}
 .pod-1 .pod-plinth{height:76px;font-size:30px;background:linear-gradient(180deg,#fcd452,#f0a92a)}
 .pod-2 .pod-plinth{height:54px;background:linear-gradient(180deg,#bb9cff,#8a5cf0)}
@@ -849,9 +850,8 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
   .lbrow .pscore small{display:inline;margin-left:4px}
   .lbrow .pacts{grid-area:pacts;justify-content:flex-end;align-self:end}
 }
-.rank{grid-area:rank;min-width:34px;display:flex;align-items:center;justify-content:center}
+.rank{grid-area:rank;min-width:46px;display:flex;align-items:center;justify-content:center}
 .rank .rnum{font-size:20px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
-.medal.rmedal{width:26px;height:26px}
 .ptier .pstat{display:inline-flex;align-items:center;gap:3px}
 .ptier .mini{width:13px;height:13px;opacity:.85;vertical-align:-2px}
 .pinfo{grid-area:info;min-width:0}
