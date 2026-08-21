@@ -7,10 +7,11 @@ import { pickShortlist } from '../../lib/shortlist.js'
 import { useMyProfile } from '../profile.jsx'
 import { useWishlist } from '../wishlist.js'
 import { shortDate } from '../utils/time.js'
+import Tip from '../Tip.jsx'
 import Bar from '../components/Bar.jsx'
 import Collapse from '../components/Collapse.jsx'
 import ToggleButton from '../components/ToggleButton.jsx'
-import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget, IconBookmark, IconZap } from '../icons.jsx'
+import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget, IconBookmark, IconZap, IconGithub } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
 
@@ -263,6 +264,34 @@ function BadgeThumb({ it, onCopy }) {
 
 // Tombol tandai target. Bukan status capaian, jadi label dan warnanya sengaja beda dari centang
 // selesai: yang satu fakta dari profil Google, yang satu niat yang diketik sendiri.
+// Tombol cari panduan komunitas.
+//
+// Sengaja pencarian, BUKAN link langsung ke satu repo, karena tidak ada pemetaan
+// badge -> repo yang bisa dipercaya. Sudah diuji ke API GitHub: pencarian repo dengan
+// judul badge dalam tanda kutip mengembalikan NOL hasil untuk sebagian badge ("Privileged
+// Access with IAM", "Connecting Cloud Networks with NCC"), tanpa kutip hasilnya ada tapi
+// tiga teratasnya sering repo yang tidak berhubungan, dan pencarian kode GitHub, satu-satunya
+// yang benar-benar menemukan lab di dalam monorepo, mewajibkan login.
+//
+// Jadi yang dipakai Google dengan site:github.com. Google mengindeks isi README dan nama
+// folder di dalam repo, sehingga lab baru yang solusinya cuma jadi satu folder pun tetap
+// ketemu. Ikonnya tetap GitHub karena itu tujuan akhirnya; tooltip menyebut lewat Google
+// supaya tidak ada yang merasa dikelabui.
+const solutionUrl = (title) =>
+  'https://www.google.com/search?q=' + encodeURIComponent(`site:github.com "${title}"`)
+
+function SolutionButton({ title, className }) {
+  const label = 'Cari panduan komunitas untuk ' + title + ' (via Google)'
+  return (
+    <Tip label="Cari panduan komunitas di GitHub">
+      <a className={className} href={solutionUrl(title)} target="_blank" rel="noreferrer noopener"
+        aria-label={label} onClick={(e) => e.stopPropagation()}>
+        <IconGithub width="14" height="14" />
+      </a>
+    </Tip>
+  )
+}
+
 function SaveButton({ saved, onSave, className }) {
   return (
     <button
@@ -297,7 +326,12 @@ function BadgeCard({ it, saved, onSave }) {
             ? <CodeChip code={it.code} copied={copied} onCopy={copy} />
             : it.level ? <span className={'bc-lvl ' + it.level}>{LEVEL_LABEL[it.level]}</span>
             : <span />}
-          <span className="bc-pts">{fmtPts(it.points)} Poin</span>
+          {/* Poin + tombol panduan dibungkus satu grup: .bc-meta memakai space-between,
+              jadi tiga anak sejajar akan melempar angka poin ke tengah. */}
+          <span className="bc-right">
+            <span className="bc-pts">{fmtPts(it.points)} Poin</span>
+            <SolutionButton title={it.title} className="bc-gh" />
+          </span>
         </div>
         {it.off ? (
           <span className="bc-start off">Belum bisa dikerjakan</span>
@@ -323,6 +357,7 @@ function BadgeRow({ it, saved, onSave }) {
         ? <a className="br-title" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>{it.title}</a>
         : <span className="br-title">{it.title}</span>}
       {it.code && <CodeChip code={it.code} copied={copied} onCopy={copy} />}
+      <SolutionButton title={it.title} className="br-gh" />
       <span className="br-pts">{fmtPts(it.points)} Poin</span>
       <span className={'br-status' + (it.done ? ' ok' : '')}>{it.done ? '✓ Selesai' : it.off ? 'Ditunda' : 'Belum'}</span>
     </div>
@@ -516,6 +551,13 @@ export default function Catalog() {
           <div className="badgelist">{shown.map((it) => <BadgeRow key={it.key} it={it} saved={saved.has(it.key)} onSave={() => toggleSaved(it.key)} />)}</div>
         )}
 
+
+        <div className="card-note">
+          Ikon GitHub di tiap badge membuka pencarian panduan yang ditulis komunitas. Isinya bukan
+          materi resmi Google dan tidak diverifikasi siapa pun, jadi pakai untuk memahami langkah
+          yang bikin macet, bukan untuk menyalin jawaban. Badge yang didapat tanpa mengerti isinya
+          tidak menolongmu saat challenge lab, karena di sana soalnya diacak.
+        </div>
 
         <div className="card-note">Game: klik badge atau Mulai Challenge untuk buka di Google Skills (access code otomatis tersalin, tinggal tempel). Skill badge: 2 badge = 1 poin. Hanya skill badge resmi yang menambah poin; badge dari course biasa (completion badge) tidak dihitung program, jadi tidak didaftarkan di sini. Access code diperbarui tiap bulan mengikuti rilis Arcade.</div>
       </div>

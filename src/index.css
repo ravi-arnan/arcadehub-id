@@ -1212,3 +1212,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .msgap.done .mg-ic{color:var(--green)}
 .mg-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
 .ms-tie{font-weight:500;color:var(--muted)}
+
+/* Tombol panduan komunitas (GitHub) di katalog. */
+.bc-gh,.br-gh{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;
+  color:var(--muted);border:1px solid transparent;transition:color .15s,background .15s,border-color .15s}
+.bc-gh:hover,.br-gh:hover{color:var(--ink);background:rgba(255,255,255,.09);border-color:var(--line)}
+.bc-right{display:inline-flex;align-items:center;gap:2px}
