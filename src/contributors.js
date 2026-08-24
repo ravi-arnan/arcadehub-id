@@ -26,4 +26,11 @@ export const CONTRIBUTORS = [
     bio: 'Peserta Google Cloud Arcade 2026 yang bantu Arcade Hub lewat laporan bug.',
     tags: ['Bug Report'],
   },
+  {
+    name: 'Fathahazz',
+    github: 'fathahazz',
+    web: 'https://fathahazz.github.io/',
+    bio: 'Peserta Google Cloud Arcade 2026 yang bantu Arcade Hub lewat laporan bug.',
+    tags: ['Bug Report', 'Software Tester/QA'],
+    core: true,
 ]
