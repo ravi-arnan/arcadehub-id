@@ -16,6 +16,7 @@ export const ANNOUNCEMENT = {
   links: [
     { label: 'Cek poin saya', href: '/points' },
     { label: 'Lihat katalog badge', href: '/catalog' },
+    { label: 'Weekly Challenge Player', href: 'https://dicoding.id/Arcade26-WCPlayer' },
   ],
   signature: 'R',
 }
