@@ -4,17 +4,18 @@
 // `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
 // tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT = {
-  id: '2026-08-21-re-trail',
-  date: '21 Agustus 2026',
-  title: 'Game bonus: Arcade Re-Trail',
+  id: '2026-08-31-h14-week8',
+  date: '31 Agustus 2026',
+  title: '👾 WEEK 8 — H-14! Tinggal 2 Minggu Lagi!',
   body: [
-    'Google membuka satu game tambahan di luar enam game reguler Agustus: Arcade Re-Trail: Vaults & Vectors. Nilainya 1 poin, sama seperti game Arcade lain.',
-    'Ini game penambal. Arcade Trail bulan Juli ditutup lebih awal dari jadwal, jadi yang kehilangan poin di situ bisa mengambilnya kembali lewat game ini. Yang sudah lengkap pun tetap boleh ikut, poinnya tetap masuk.',
-    'Isinya Cloud Storage (bucket, API, Bucket Lock) lalu Cloud Run Functions dan Pub/Sub, ditutup dua challenge lab.',
-    'Tutup 1 September 2026 dan kuotanya terbatas (sekitar 7.500 slot saat pengumuman ini dibuat). Kartunya sudah ada di Poin Saya lengkap dengan access code, jadi ambil sekarang selagi slotnya ada.',
+    'Program Google Cloud Arcade Fasilitator 2026 berakhir 14 September 2026. Artinya tinggal 2 minggu lagi untuk menyelesaikan lab, ngumpulin badge, dan kunci poinmu!',
+    'Week 8 ini (31 Agustus – 4 September) adalah momen terakhir buat push sebelum closing. Kalau deket milestone, buruan selipin sisa badge-nya. Bonus milestone +10 poin juga masih bisa dikejar.',
+    'Jangan lupa: Arcade Game kuotanya terbatas & game bisa kedaluwarsa tiap bulan. Mainkan dulu kalau belum. Slot hadiah bersifat waterfall & first-come — makin cepat kunci poin, makin aman.',
+    'Butuh bantuan? Office Hour tiap Kamis 19.00-20.00 WIB, atau tanya langsung di grup WhatsApp.',
   ],
   links: [
-    { label: 'Buka game', href: 'https://www.skills.google/games/7426' },
+    { label: 'Cek poin saya', href: '/points' },
+    { label: 'Lihat katalog badge', href: '/catalog' },
   ],
   signature: 'R',
 }
