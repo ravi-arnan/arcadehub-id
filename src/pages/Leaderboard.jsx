@@ -9,7 +9,7 @@ import Medal from '../Medal.jsx'
 import Avatar from '../components/Avatar.jsx'
 import Collapse from '../components/Collapse.jsx'
 import { ago, dayMonth } from '../utils/time.js'
-import { guildKey, guildLabel, DEFAULT_GUILD } from '../../lib/guild.js'
+import { guildKey, guildLabel } from '../../lib/guild.js'
 import { IconGamepad } from '../icons.jsx'
 
 // Nomor urut biasa: 1, 2, 3, 4, dan seterusnya, tanpa nomor kembar.
@@ -193,22 +193,6 @@ export default function Leaderboard() {
   const reached = MS.map((_, i) => shown.filter((p) => p.tier_idx >= i).length)
   const isMe = (p) => (memberId && p.id === memberId) || (profileUrl && p.profile_url === profileUrl)
 
-  // Sekali saja setelah data masuk: kalau peserta punya guild sungguhan, mulai dari
-  // guild itu. Bukan untuk 'Umum', karena hampir semua orang ada di sana sehingga
-  // menyaringnya tidak memangkas apa pun. Ambang 5 anggota supaya peserta guild
-  // berisi 2 orang tidak mendarat di leaderboard dua baris, yang lebih buruk daripada
-  // daftar penuh.
-  const [autoFiltered, setAutoFiltered] = useState(false)
-  useEffect(() => {
-    if (autoFiltered || urlGuild || members.length === 0) return
-    setAutoFiltered(true)
-    const mine = members.find(isMe)
-    if (!mine) return
-    const key = guildKey(mine.guild)
-    if (key === DEFAULT_GUILD) return
-    if (members.filter((x) => guildKey(x.guild) === key).length < 5) return
-    setFilter(key)
-  }, [members, autoFiltered, urlGuild])
 
   const searching = query.trim() !== ''
   const results = useMemo(() => searchMembers(shown, query), [shown, query])
