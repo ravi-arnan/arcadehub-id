@@ -14,7 +14,7 @@ Aturan wajib untuk AI agent (Codebuff, Claude, Codex, dll) yang bekerja di repo 
 
 ## Wajib lakukan sebelum commit
 
-1. `npm test` — semua test harus pass (132 test saat ini).
+1. `npm test` — semua test harus pass (134 test saat ini).
 2. `npm run build` — build harus sukses tanpa error.
 3. Review `git diff` — pastikan hanya file yang relevan yang berubah.
 4. Gunakan [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`.

@@ -33,7 +33,7 @@ Vercel Serverless Functions · Neon Postgres · Vercel Cron.
 npm install
 npm run dev     # dev server
 npm run build   # build produksi
-npm test        # 64 unit test (poin, parser profil, katalog, proyeksi)
+npm test        # 134 unit test (poin, parser profil, katalog, proyeksi)
 npm run check:arcade   # bandingkan katalog dengan halaman Arcade resmi
 ```
 
