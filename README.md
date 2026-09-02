@@ -14,7 +14,7 @@ leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 - **Poin Saya**, hitung poin otomatis dari profil (base Arcade + bonus milestone),
   rincian per-badge, tier hadiah, chart aktivitas 7 hari, kategori badge.
 - **Leaderboard**, terbuka & multi-guild, ranking real-time, sinkron otomatis harian.
-- **Katalog**, 93 skill badge (51 dari silabus resmi + tambahan) dan 7 game bulan
+- **Katalog**, 93 skill badge (51 dari silabus resmi + tambahan) dan 6 game bulan
   berjalan, tandai selesai/belum, plus arsip game bulan-bulan sebelumnya.
 - **Hadiah**, tier Arcade Player 2026 (Trooper / Ranger / Champion / Legend).
 - **Info**, kode referral, jadwal, panduan, FAQ, pengumuman yang sedang berjalan.

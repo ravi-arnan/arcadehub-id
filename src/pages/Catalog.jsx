@@ -457,7 +457,7 @@ export default function Catalog() {
       type: 'game',
       name: g.name,
       title: g.sub ? `${g.name}: ${g.sub}` : g.name,
-      img: g.img + '?v=4',
+      img: g.img + '?v=5',
       code: g.code || null,
       // Game yang ditarik Google tidak dilink: halamannya tidak bisa dimasuki lagi.
       url: g.off || !g.game ? null : gameUrl(g.game),

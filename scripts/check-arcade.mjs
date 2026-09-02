@@ -62,8 +62,13 @@ if (arcade.status !== 200) {
 }
 const page = dec(arcade.body)
 
-const codes = [...new Set(page.match(/1q-[a-z0-9-]+/g) || [])]
-const gameIds = [...new Set((page.match(/games\/(\d+)/g) || []).map((s) => s.split('/')[1]))]
+// Buang komentar HTML dulu. Halaman resmi mengarsipkan kartu game bulan lalu sebagai komentar
+// (mis. blok Re-Trail Agustus yang masih memuat access code-nya); tanpa ini, access code game
+// yang sudah "Game over!" ikut terdeteksi sebagai kode asing bulan berjalan.
+const pageLive = page.replace(/<!--[\s\S]*?-->/g, '')
+
+const codes = [...new Set(pageLive.match(/1q-[a-z0-9-]+/g) || [])]
+const gameIds = [...new Set((pageLive.match(/games\/(\d+)/g) || []).map((s) => s.split('/')[1]))]
 const featured = [...page.matchAll(/<a[^>]+href="[^"]*course_templates\/(\d+)[^"]*"[^>]*>([\s\S]*?)<\/a>/g)]
   .map((m) => ({ id: Number(m[1]), name: m[2].replace(/<[^>]+>/g, '').trim() }))
   .filter((x, i, a) => a.findIndex((y) => y.id === x.id) === i)
