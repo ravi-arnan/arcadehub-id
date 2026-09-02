@@ -11,6 +11,7 @@ import { GAME_CATALOG } from '../lib/gameCatalog.js'
 
 export { SKILL_CATALOG, norm, skillIdByTitle }
 export { isSkillBadge, skillEarned } from '../lib/skillCatalog.js'
+export { skillProblem, PROBLEM_BADGES } from '../lib/skillCatalog.js'
 
 // Batch terbaru di katalog. Dihitung dari data, bukan dari tanggal hari ini: tanda "BARU" ikut
 // isi katalog, tidak akan hilang cuma karena bulan berganti sementara katalog belum diperbarui.

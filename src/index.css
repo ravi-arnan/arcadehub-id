@@ -447,6 +447,13 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-new{flex:none;font-size:10px;font-weight:900;letter-spacing:.06em;padding:3px 7px;border-radius:6px;
   background:linear-gradient(180deg,#ffd75e,#f0ad00);color:#3a2a00;box-shadow:0 2px 8px rgba(240,173,0,.35)}
 .badgecard .bc-new{position:absolute;top:auto;bottom:10px;left:10px}
+/* Penanda badge bermasalah (challenge lab error/deprecated). Di kartu: inline di samping judul.
+   Warna merah-amber, beda dari centang hijau (selesai) dan emas (target) supaya tidak tertukar. */
+.bc-problem,.br-problem{flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;vertical-align:-3px;
+  color:#ffb4a9;background:rgba(234,67,53,.14);border:1px solid rgba(234,67,53,.4)}
+.bc-problem svg,.br-problem svg{width:13px;height:13px}
+.bc-title .bc-problem{margin-left:6px}
+.bc-problem:hover,.br-problem:hover{color:#fff;background:rgba(234,67,53,.3)}
 /* Tombol target. Sudut bawah-kanan gambar: atas-kiri sudah chip tipe, atas-kanan centang
    selesai, bawah-kiri penanda BARU. Warnanya emas, bukan hijau, supaya "niat" tidak pernah
    terbaca sebagai "selesai". */

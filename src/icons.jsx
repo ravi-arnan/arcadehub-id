@@ -13,6 +13,11 @@ export const IconTarget = (p) => (
 export const IconHelp = (p) => (
   <svg {...S} {...p}><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
 )
+// Segitiga peringatan (Lucide alert-triangle). Dipakai kartu badge yang challenge lab-nya
+// bermasalah/deprecated; warnanya dikontrol lewat CSS (stroke currentColor).
+export const IconAlert = (p) => (
+  <svg {...S} {...p}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+)
 export const IconAward = (p) => (
   <svg {...S} {...p}><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" /><circle cx="12" cy="8" r="6" /></svg>
 )

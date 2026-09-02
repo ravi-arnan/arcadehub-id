@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, isNewSkill, norm } from '../catalog.js'
+import { SKILL_CATALOG, GAME_CATALOG, PAST_GAMES, pastGameImg, pastGameEarned, courseUrl, gameUrl, skillImg, skillEarned, isNewSkill, norm, skillProblem } from '../catalog.js'
 import { MS, DEADLINE } from '../points.js'
 import { LAB_SOLUTIONS, SOLUTION_REPO } from '../../lib/labSolutions.js'
 import { projectMilestone } from '../../lib/projection.js'
@@ -12,7 +12,7 @@ import Tip from '../Tip.jsx'
 import Bar from '../components/Bar.jsx'
 import Collapse from '../components/Collapse.jsx'
 import ToggleButton from '../components/ToggleButton.jsx'
-import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget, IconBookmark, IconZap, IconGithub } from '../icons.jsx'
+import { IconGrid, IconList, IconArrowRight, IconAward, IconGamepad, IconTarget, IconBookmark, IconZap, IconGithub, IconAlert } from '../icons.jsx'
 
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
 
@@ -327,6 +327,19 @@ function SaveButton({ saved, onSave, className }) {
   )
 }
 
+// Tanda badge yang challenge lab-nya bermasalah/deprecated. Dipasang di kartu (mode grid) dan
+// baris (mode list). Badge ini TIDAK disarankan di shortlist "Mulai dari sini" (lihat skillTodo),
+// tapi tetap tampil supaya yang mau mengerjakannya tahu risikonya lebih dulu.
+function ProblemTag({ why, className }) {
+  return (
+    <Tip label={'Badge bermasalah — ' + why}>
+      <span className={className} role="img" aria-label="Badge bermasalah">
+        <IconAlert width="13" height="13" />
+      </span>
+    </Tip>
+  )
+}
+
 function BadgeCard({ it, saved, onSave }) {
   const [copied, copy] = useCopyCode(it.code)
   return (
@@ -339,7 +352,10 @@ function BadgeCard({ it, saved, onSave }) {
         <BadgeThumb it={it} onCopy={copy} />
       </div>
       <div className="bc-body">
-        <div className="bc-title">{it.title}</div>
+        <div className="bc-title">
+          {it.title}
+          {it.problem && <ProblemTag why={it.problem} className="bc-problem" />}
+        </div>
         <div className="bc-meta">
           {/* Chip level ditaruh di baris meta, bukan di atas gambar: art badge Google punya
               garis warna di tepi bawah, chip melayang di sana jadi bertabrakan. */}
@@ -374,6 +390,7 @@ function BadgeRow({ it, saved, onSave }) {
       <SaveButton saved={saved} onSave={onSave} className="br-save" />
       <span className={'br-tag ' + it.type}>{TYPE_LABEL[it.type]}</span>
       {it.isNew && <span className="bc-new">BARU</span>}
+      {it.problem && <ProblemTag why={it.problem} className="br-problem" />}
       {it.url
         ? <a className="br-title" href={it.url} target="_blank" rel="noreferrer" onClick={copy}>{it.title}</a>
         : <span className="br-title">{it.title}</span>}
@@ -478,14 +495,19 @@ export default function Catalog() {
       points: 0.5,
       done: skillEarned(s.id, s.name, earned),
       isNew: isNewSkill(s),
+      problem: skillProblem(s.id),
     }))
     return [...games, ...skills]
   }, [gameBadges, earned])
 
   // Diurutkan Pemula -> Menengah -> Lanjutan -> di luar silabus, supaya shortlist "kerjakan
   // selanjutnya" mulai dari yang paling ringan, bukan dari posisi acak di katalog.
+  // Badge bermasalah (challenge lab-nya error/deprecated) sengaja TIDAK masuk: menyarankan badge
+  // yang lab-nya tidak bisa diselesaikan cuma membuang waktu peserta yang tinggal menghitung hari.
   const skillTodo = useMemo(
-    () => items.filter((it) => it.type === 'skill' && !it.done).sort((a, b) => levelRank(a.level) - levelRank(b.level)),
+    () => items
+      .filter((it) => it.type === 'skill' && !it.done && !it.problem)
+      .sort((a, b) => levelRank(a.level) - levelRank(b.level)),
     [items],
   )
 
