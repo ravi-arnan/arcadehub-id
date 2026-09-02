@@ -26,4 +26,11 @@ export const CONTRIBUTORS = [
     bio: 'Peserta Google Cloud Arcade 2026 yang bantu Arcade Hub lewat laporan bug.',
     tags: ['Bug Report'],
   },
+  {
+    name: 'Edi Pamungkas',
+    github: '',
+    web: '',
+    bio: 'Mahasiswa FMIPA Universitas Negeri Makassar & Peserta Google Cloud Arcade 2026.',
+    tags: ['Programing', 'Teacher'],
+  },
 ]
