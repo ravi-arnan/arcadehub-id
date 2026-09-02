@@ -28,9 +28,9 @@ export const CONTRIBUTORS = [
   },
   {
     name: 'Edi Pamungkas',
-    github: '',
+    github: 'arcadetracker',
     web: '',
     bio: 'Mahasiswa FMIPA Universitas Negeri Makassar & Peserta Google Cloud Arcade 2026.',
-    tags: ['Programing', 'Teacher'],
+    tags: ['Programming', 'Teacher'],
   },
 ]
