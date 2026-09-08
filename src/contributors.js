@@ -33,4 +33,11 @@ export const CONTRIBUTORS = [
     bio: 'Mahasiswa FMIPA Universitas Negeri Makassar & Peserta Google Cloud Arcade 2026.',
     tags: ['Programming', 'Teacher'],
   },
+  {
+    name: 'Tama Dio',
+    github: '',
+    web: '',
+    bio: 'Peserta Google Cloud Arcade 2026 yang bantu Arcade Hub lewat laporan badge keahlian yang selesai tapi tidak menambah poin.',
+    tags: ['Bug Report'],
+  },
 ]
