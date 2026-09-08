@@ -4,13 +4,14 @@
 // `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
 // tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT = {
-  id: '2026-08-31-h14-week8',
-  date: '31 Agustus 2026',
-  title: '👾 WEEK 8 — H-14! Tinggal 2 Minggu Lagi!',
+  id: '2026-09-08-week9',
+  date: '8 September 2026',
+  title: '👾 [WEEK 9: 7 September - 11 September 2026] 👾',
   body: [
-    'Program Google Cloud Arcade Fasilitator 2026 berakhir 14 September 2026. Artinya tinggal 2 minggu lagi untuk menyelesaikan lab, ngumpulin badge, dan kunci poinmu!',
-    'Week 8 ini (31 Agustus – 4 September) adalah momen terakhir buat push sebelum closing. Kalau deket milestone, buruan selipin sisa badge-nya. Bonus milestone +10 poin juga masih bisa dikejar.',
-    'Jangan lupa: Arcade Game kuotanya terbatas & game bisa kedaluwarsa tiap bulan. Mainkan dulu kalau belum. Slot hadiah bersifat waterfall & first-come — makin cepat kunci poin, makin aman.',
+    'Program Google Cloud Arcade Fasilitator 2026 berakhir 14 September 2026. Week 9 ini adalah minggu terakhir penuh sebelum closing, tinggal kurang dari seminggu lagi!',
+    'Kalau masih ada badge yang belum kelar, kerjakan lab-nya sekarang. Ini momen terakhir buat push: selesaikan lab, kumpulkan badge, dan kunci poinmu.',
+    'Bonus milestone +10 poin masih bisa dikejar kalau belum dikirim. Pastikan AI Agent pertamamu sudah dikumpulkan sebelum penutupan.',
+    'Jangan lupa: Arcade Game kuotanya terbatas & game bisa kedaluwarsa tiap bulan. Mainkan dulu kalau belum. Slot hadiah bersifat waterfall & first-come, makin cepat kunci poin, makin aman.',
     'Butuh bantuan? Office Hour tiap Kamis 19.00-20.00 WIB, atau tanya langsung di grup WhatsApp.',
   ],
   links: [
