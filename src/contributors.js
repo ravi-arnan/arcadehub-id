@@ -40,4 +40,11 @@ export const CONTRIBUTORS = [
     bio: 'Peserta Google Cloud Arcade 2026 yang bantu Arcade Hub lewat laporan badge keahlian yang selesai tapi tidak menambah poin.',
     tags: ['Bug Report'],
   },
+  {
+    name: 'Leontinus',
+    github: '',
+    web: '',
+    bio: 'Peserta Google Cloud Arcade 2026 yang melaporkan 11 game Arcade tidak terbaca di kalkulator, membantu perbaikan deteksi badge game.',
+    tags: ['Bug Report'],
+  },
 ]
