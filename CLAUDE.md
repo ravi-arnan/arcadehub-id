@@ -7,7 +7,7 @@ React + Vite, deployed di Vercel. Repo: github.com/ravi-arnan/arcadehub-id
 ## Commands
 - `npm run dev` — dev server
 - `npm run build` — build produksi (vite build + prerender)
-- `npm test` — unit test (139 test)
+- `npm test` — unit test (140 test)
 - `npm run gen:solutions` — generate labSolutions.js dari repo gsp_lab_solutions
 
 ## Agent Rules (WAJIB)
