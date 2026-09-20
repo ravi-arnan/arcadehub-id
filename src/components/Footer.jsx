@@ -110,7 +110,6 @@ export default function Footer() {
           </div>
           <div className="fcol">
             <h4>Program</h4>
-            <a className="flink" href={CONFIG.registerUrl} target="_blank" rel="noreferrer">Daftar Program ↗</a>
             <a className="flink" href={CONFIG.arcadeUrl} target="_blank" rel="noreferrer">Halaman Arcade resmi ↗</a>
             <a className="flink" href={CONFIG.catalogUrl} target="_blank" rel="noreferrer">Katalog badge ↗</a>
           </div>
@@ -122,7 +121,6 @@ export default function Footer() {
       </div>
 
       <div className="foot-bottom">
-        <div className="fcode"><span>Kode referral</span><b>{CONFIG.referralCode}</b></div>
         <div className="fcopy">
           © 2026 Arcade Hub · Dibuat untuk komunitas Google Cloud Arcade Fasilitator 2026
           {/* Tanggal build, disuntik vite.config.js. <time dateTime> dipakai supaya mesin

@@ -14,21 +14,6 @@ function FaqItem({ q, a }) {
   )
 }
 
-function CopyCode() {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    navigator.clipboard?.writeText(CONFIG.referralCode).then(() => {
-      setCopied(true); setTimeout(() => setCopied(false), 1500)
-    }).catch(() => {})
-  }
-  return (
-    <button className="codecopy" onClick={copy}>
-      <span className="cc-code">{CONFIG.referralCode}</span>
-      <span className="cc-btn">{copied ? 'Tersalin ✓' : 'Salin'}</span>
-    </button>
-  )
-}
-
 const STEPS = [
   ['Set profil jadi Public', 'Buka Cloud Skills Boost → menu profil → Edit profile → aktifkan "Make profile public".'],
   ['Buka halaman profil publikmu', 'Di menu profil, klik "View public profile".'],
@@ -76,18 +61,6 @@ export default function Info() {
           {ANNOUNCEMENT.signature && <div className="ann-sign">{ANNOUNCEMENT.signature}</div>}
         </div>
       )}
-
-      <div className="infocard hero">
-        <div className="ic-t">Daftar Program</div>
-        <p className="ic-p">Belum daftar? Gunakan kode referral guild ini saat mengisi formulir pendaftaran.</p>
-        <div className="ic-lab">Kode Referral</div>
-        <CopyCode />
-        <a className="bigcta" href={CONFIG.registerUrl} target="_blank" rel="noreferrer">Daftar Sekarang ↗</a>
-        <div className="ic-dates">
-          <div><span>Buka</span><b>{CONFIG.regOpen}</b></div>
-          <div><span>Tutup</span><b>{CONFIG.regClose}</b></div>
-        </div>
-      </div>
 
       <div className="infocard">
         <div className="ic-t">Gabung Komunitas</div>
