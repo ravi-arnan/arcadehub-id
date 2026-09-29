@@ -1,4 +1,5 @@
 import { ensureSchema } from '../lib/db.js'
+import { dbApiError } from '../lib/dbError.js'
 
 export default async function handler(req, res) {
   try {
@@ -20,6 +21,7 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate=60')
     res.status(200).json({ members: rows })
   } catch (e) {
-    res.status(500).json({ error: e.message })
+    const { status, message } = dbApiError(e, 500)
+    res.status(status).json({ error: message })
   }
 }

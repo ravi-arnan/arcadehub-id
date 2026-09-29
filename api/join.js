@@ -1,6 +1,7 @@
 import { ensureSchema } from '../lib/db.js'
 import { fetchAndScore, normalizeProfileUrl } from '../lib/fetchProfile.js'
 import { rateLimit, clientIp } from '../lib/ratelimit.js'
+import { dbApiError } from '../lib/dbError.js'
 
 const DEFAULT_GUILD = 'UMUM'
 
@@ -41,6 +42,7 @@ export default async function handler(req, res) {
       member: { ...s, name: displayName, profileUrl: url, guild: row.guild },
     })
   } catch (e) {
-    res.status(400).json({ error: e.message || 'Gagal memproses.' })
+    const { status, message } = dbApiError(e, 400)
+    res.status(status).json({ error: message })
   }
 }

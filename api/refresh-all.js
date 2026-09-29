@@ -1,5 +1,6 @@
 import { ensureSchema } from '../lib/db.js'
 import { fetchAndScore } from '../lib/fetchProfile.js'
+import { dbApiError } from '../lib/dbError.js'
 
 // Sinkron ulang semua peserta leaderboard. Dipanggil otomatis oleh Vercel Cron (harian),
 // atau manual dengan ?adminKey=<ADMIN_KEY>.
@@ -66,6 +67,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ ok: true, total: rows.length, refreshed: ok, failed, skipped, snapshot, snapshotError, ms: Date.now() - startedAt })
   } catch (e) {
-    res.status(500).json({ error: e.message || 'Gagal refresh-all.' })
+    const { status, message } = dbApiError(e, 500)
+    res.status(status).json({ error: message })
   }
 }

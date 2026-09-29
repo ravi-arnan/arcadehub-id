@@ -1,5 +1,6 @@
 import { ensureSchema } from '../lib/db.js'
 import { rateLimit, clientIp } from '../lib/ratelimit.js'
+import { dbApiError } from '../lib/dbError.js'
 
 // Self-service: peserta menghapus entri LEADERBOARD-nya sendiri. Otorisasi via remove_token
 // rahasia (dibuat saat join pertama, hanya dipegang pemilik). id & profile_url publik jadi
@@ -15,6 +16,7 @@ export default async function handler(req, res) {
     if (!rows.length) return res.status(403).json({ error: 'Tidak bisa memverifikasi kepemilikan entri ini.' })
     res.status(200).json({ ok: true })
   } catch (e) {
-    res.status(400).json({ error: e.message || 'Gagal keluar dari leaderboard.' })
+    const { status, message } = dbApiError(e, 400)
+    res.status(status).json({ error: message })
   }
 }
