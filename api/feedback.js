@@ -46,6 +46,7 @@ export default async function handler(req, res) {
 
     const cleanName = (name ? String(name).trim() : '').slice(0, 60) || null
     const cleanPage = page ? String(page).slice(0, 40) : null
+    // created_at tidak ikut diisi: kolomnya punya DEFAULT ISO-8601 UTC di lib/schema.js.
     await sql`INSERT INTO feedback (id, message, name, page)
       VALUES (${crypto.randomUUID()}, ${msg.slice(0, 1000)}, ${cleanName}, ${cleanPage})`
     await notifyEmail({ message: msg.slice(0, 1000), name: cleanName, page: cleanPage })

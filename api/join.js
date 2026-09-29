@@ -2,6 +2,7 @@ import { ensureSchema } from '../lib/db.js'
 import { fetchAndScore, normalizeProfileUrl } from '../lib/fetchProfile.js'
 import { rateLimit, clientIp } from '../lib/ratelimit.js'
 import { dbApiError } from '../lib/dbError.js'
+import { NOW } from '../lib/schema.js'
 
 const DEFAULT_GUILD = 'UMUM'
 
@@ -23,22 +24,32 @@ export default async function handler(req, res) {
     const sql = await ensureSchema()
     const id = crypto.randomUUID()
     const token = crypto.randomUUID()
-    // xmax=0 hanya pada baris hasil INSERT (bukan UPDATE via ON CONFLICT); dipakai untuk
-    // memutuskan apakah token boleh dikembalikan. Token TIDAK di-set ulang saat re-sync.
+    // remove_token sengaja TIDAK ikut di-set di cabang DO UPDATE, supaya token tetap milik
+    // pemilik pertama. Itu sekaligus cara kita tahu baris ini INSERT atau UPDATE.
     const rows = await sql`
       INSERT INTO members (id, guild, name, profile_url, games, skills, facil_games, facil_skills, base, mbonus, total, tier_idx, last_earned, avatar, remove_token, last_synced)
-      VALUES (${id}, ${guild ?? DEFAULT_GUILD}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, ${s.lastEarned}, ${s.avatar}, ${token}, now())
+      VALUES (${id}, ${guild ?? DEFAULT_GUILD}, ${displayName}, ${url}, ${s.games}, ${s.skills}, ${s.facilGames}, ${s.facilSkills}, ${s.base}, ${s.mbonus}, ${s.total}, ${s.tierIdx}, ${s.lastEarned}, ${s.avatar}, ${token}, ${NOW})
       ON CONFLICT (profile_url) DO UPDATE SET
-        guild = COALESCE(${guild}, members.guild), name = EXCLUDED.name, games = EXCLUDED.games, skills = EXCLUDED.skills,
-        facil_games = EXCLUDED.facil_games, facil_skills = EXCLUDED.facil_skills,
-        base = EXCLUDED.base, mbonus = EXCLUDED.mbonus, total = EXCLUDED.total, tier_idx = EXCLUDED.tier_idx,
-        last_earned = EXCLUDED.last_earned, avatar = EXCLUDED.avatar, last_synced = now()
-      RETURNING id, guild, (xmax = 0) AS inserted, remove_token`
+        guild = COALESCE(${guild}, members.guild), name = excluded.name, games = excluded.games, skills = excluded.skills,
+        facil_games = excluded.facil_games, facil_skills = excluded.facil_skills,
+        base = excluded.base, mbonus = excluded.mbonus, total = excluded.total, tier_idx = excluded.tier_idx,
+        last_earned = excluded.last_earned, avatar = excluded.avatar, last_synced = ${NOW}
+      RETURNING id, guild, remove_token`
     const row = rows[0] || {}
     res.status(200).json({
       ok: true, id: row.id, guild: row.guild,
-      // Hanya kembalikan token pada join pertama; re-sync/join oleh orang lain atas profil publik tidak dapat token.
-      removeToken: row.inserted ? row.remove_token : null,
+      // Token HANYA dikembalikan kalau baris ini benar-benar hasil INSERT.
+      //
+      // Postgres bisa menanyakannya langsung lewat (xmax = 0). SQLite tidak punya xmax, jadi
+      // caranya membandingkan remove_token yang tersimpan dengan token yang BARU dibuat di
+      // request ini: pada INSERT baris itu memakai token kita, sehingga cocok. Pada
+      // ON CONFLICT DO UPDATE remove_token tidak di-set, jadi nilainya tetap milik pemilik lama
+      // (atau NULL) dan perbandingannya false.
+      //
+      // JANGAN dilonggarkan jadi `row.remove_token == null || row.remove_token === token`:
+      // itu membuat siapa pun yang me-resync profil orang lain bisa mengklaim token
+      // "keluar dari leaderboard" miliknya.
+      removeToken: row.remove_token === token ? token : null,
       member: { ...s, name: displayName, profileUrl: url, guild: row.guild },
     })
   } catch (e) {

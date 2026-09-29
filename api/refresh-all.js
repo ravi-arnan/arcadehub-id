@@ -1,6 +1,7 @@
 import { ensureSchema } from '../lib/db.js'
 import { fetchAndScore } from '../lib/fetchProfile.js'
 import { dbApiError } from '../lib/dbError.js'
+import { NOW, TODAY_JAKARTA } from '../lib/schema.js'
 
 // Sinkron ulang semua peserta leaderboard. Dipanggil otomatis oleh Vercel Cron (harian),
 // atau manual dengan ?adminKey=<ADMIN_KEY>.
@@ -36,7 +37,7 @@ export default async function handler(req, res) {
           await sql`
             UPDATE members SET games = ${s.games}, skills = ${s.skills}, facil_games = ${s.facilGames},
               facil_skills = ${s.facilSkills}, base = ${s.base}, mbonus = ${s.mbonus}, total = ${s.total},
-              tier_idx = ${s.tierIdx}, last_earned = ${s.lastEarned}, avatar = ${s.avatar}, last_synced = now()
+              tier_idx = ${s.tierIdx}, last_earned = ${s.lastEarned}, avatar = ${s.avatar}, last_synced = ${NOW}
             WHERE id = ${m.id}`
           ok++
         } catch { failed++ } // profil privat/tak terjangkau, biarkan data lama, lanjut
@@ -49,6 +50,11 @@ export default async function handler(req, res) {
     // dari Google, sedangkan histori harus lengkap tiap hari supaya selisih mingguan tidak
     // bolong untuk peserta yang kebetulan tidak kebagian batch hari itu.
     //
+    // `WHERE true` di situ BUKAN sisa kode dan tidak boleh dihapus: kalau INSERT mengambil
+    // nilainya dari SELECT, parser SQLite tidak bisa membedakan "ON" milik upsert dari "ON"
+    // milik klausa join, dan statement-nya ditolak sebagai ambigu. Dokumentasi SQLite
+    // (lang_upsert.html, "Parsing Ambiguity") menyebut WHERE true sebagai jalan keluarnya.
+    //
     // try terpisah: menyinkron poin adalah tugas utama dan sudah berhasil di titik ini.
     // Snapshot gagal tidak boleh membuat cron dilaporkan merah dan memicu retry sia-sia.
     let snapshot = 0
@@ -56,9 +62,10 @@ export default async function handler(req, res) {
     try {
       const snap = await sql`
         INSERT INTO point_history (member_id, day, total, games, skills)
-        SELECT id, (now() AT TIME ZONE 'Asia/Jakarta')::date, total, games, skills FROM members
+        SELECT id, ${TODAY_JAKARTA}, total, games, skills FROM members
+        WHERE true
         ON CONFLICT (member_id, day) DO UPDATE
-          SET total = EXCLUDED.total, games = EXCLUDED.games, skills = EXCLUDED.skills
+          SET total = excluded.total, games = excluded.games, skills = excluded.skills
         RETURNING member_id`
       snapshot = snap.length
     } catch (e) {

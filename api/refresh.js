@@ -2,6 +2,7 @@ import { ensureSchema } from '../lib/db.js'
 import { fetchAndScore } from '../lib/fetchProfile.js'
 import { rateLimit, clientIp } from '../lib/ratelimit.js'
 import { dbApiError } from '../lib/dbError.js'
+import { NOW } from '../lib/schema.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
@@ -17,7 +18,7 @@ export default async function handler(req, res) {
     await sql`
       UPDATE members SET games = ${s.games}, skills = ${s.skills}, facil_games = ${s.facilGames}, facil_skills = ${s.facilSkills},
         base = ${s.base}, mbonus = ${s.mbonus}, total = ${s.total}, tier_idx = ${s.tierIdx},
-        last_earned = ${s.lastEarned}, avatar = ${s.avatar}, last_synced = now()
+        last_earned = ${s.lastEarned}, avatar = ${s.avatar}, last_synced = ${NOW}
       WHERE id = ${id}`
     res.status(200).json({ ok: true, member: s })
   } catch (e) {

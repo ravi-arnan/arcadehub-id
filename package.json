@@ -13,7 +13,7 @@
     "gen:solutions": "node scripts/gen-lab-solutions.mjs"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0",
+    "@libsql/client": "^0.18.0",
     "@radix-ui/react-dialog": "^1.1.19",
     "@radix-ui/react-popover": "^1.1.19",
     "@radix-ui/react-tooltip": "^1.2.12",
@@ -25,6 +25,7 @@
     "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@vitejs/plugin-react": "^4.3.4",
     "vite": "^6.0.7"
   }

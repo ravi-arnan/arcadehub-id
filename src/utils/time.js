@@ -2,6 +2,10 @@
 export const shortDate = (t) => new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
 
 // Waktu relatif singkat dalam Bahasa Indonesia (mis. "3 mnt lalu").
+//
+// Tergantung `new Date(t)`, jadi timestamp dari API WAJIB ISO-8601 dengan akhiran Z
+// (lihat lib/schema.js NOW). "2026-09-29 14:00:00" tanpa Z diurai sebagai waktu LOKAL,
+// sehingga baris yang baru saja disinkron tampil "8 jam lalu" di mesin WITA.
 export function ago(t) {
   const d = (Date.now() - (typeof t === 'number' ? t : new Date(t).getTime())) / 1000
   if (d < 60) return 'baru saja'
@@ -12,7 +16,7 @@ export function ago(t) {
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
 
-// Tanggal-bulan dari 'YYYY-MM-DD' (kolom `date` Postgres) atau ISO string.
+// Tanggal-bulan dari 'YYYY-MM-DD' (kolom `last_earned`, TEXT di Turso) atau ISO string.
 //
 // Sengaja TIDAK lewat new Date(): string tanggal-saja diurai sebagai UTC tengah malam, dan
 // di zona waktu barat itu tergeser mundur satu hari. Tanggal badge memang cuma tanggal,
