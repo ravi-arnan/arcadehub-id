@@ -1,6 +1,9 @@
 // Hero animasi arcade 8-bit (pengganti hero.png): starfield berkedip, bulan mengambang,
 // judul "THE ARCADE" glow, sparkle, laser jatuh. Motion transform/opacity; stop saat reduced-motion.
 // (Pesawat dihapus dari card ini; kartu fokus ke judul.)
+// Selama HALLOWEEN, bulan di kanan-atas diganti jack-o'-lantern dan ditambah hantu kecil.
+import { HALLOWEEN } from '../config.js'
+import { Ghost, Pumpkin } from '../halloween.jsx'
 
 // Bintang deterministik (seed tetap), kecil & halus seperti referensi.
 const STARS = (() => {
@@ -17,7 +20,7 @@ const Spark = ({ cls }) => <span className={'ah-spark ' + cls} />
 
 export default function ArcadeHero() {
   return (
-    <div className="ahero" role="img" aria-label="Google Cloud Arcade">
+    <div className={'ahero' + (HALLOWEEN ? ' hw' : '')} role="img" aria-label="Google Cloud Arcade">
       <div className="ah-stars">
         {STARS.map((st, i) => (
           <span key={i} className={'ah-star' + (st.big ? ' big' : '')}
@@ -25,7 +28,8 @@ export default function ArcadeHero() {
         ))}
       </div>
 
-      <div className="ah-moon" />
+      {HALLOWEEN ? <Pumpkin className="ah-jack" /> : <div className="ah-moon" />}
+      {HALLOWEEN && <Ghost className="ah-ghost" />}
       <Spark cls="sp1" />
       <Spark cls="sp2" />
       <Spark cls="sp3" />

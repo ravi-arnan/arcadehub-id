@@ -25,7 +25,7 @@ body{
   background-attachment:fixed;background-repeat:no-repeat;background-size:cover;
 }
 
-/* dekorasi background arcade (starfield + pixel invader) */
+/* dekorasi background arcade (starfield) */
 .spacefx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .stars{position:absolute;inset:-20%}
 .stars-a{background-image:
@@ -42,14 +42,42 @@ body{
     radial-gradient(1.2px 1.2px at 30px 300px,rgba(255,255,255,.8),transparent);
   background-size:420px 420px;animation:twinkle 4.5s ease-in-out infinite alternate}
 @keyframes twinkle{from{opacity:.35}to{opacity:1}}
-.inv{position:absolute;width:44px;height:32px;opacity:.5;will-change:transform}
-.inv1{top:14%;left:6%;width:52px;height:38px;animation:drift1 13s ease-in-out infinite}
-.inv2{top:64%;right:8%;width:38px;height:28px;animation:drift2 17s ease-in-out infinite}
-.inv3{top:38%;right:16%;width:30px;height:22px;opacity:.4;animation:drift1 21s ease-in-out infinite}
-@keyframes drift1{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(14px,-20px,0)}}
-@keyframes drift2{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-16px,18px,0)}}
-@media (max-width:640px){.inv3{display:none}.inv{opacity:.38}}
-@media (prefers-reduced-motion:reduce){.stars-b,.inv{animation:none}}
+@media (prefers-reduced-motion:reduce){.stars-b{animation:none}}
+
+/* dekorasi Halloween (Oktober 2026), hidup selama HALLOWEEN di src/config.js.
+   Hantu yang melintas ditaruh di luar layar oleh keyframes-nya, jadi saat reduced-motion
+   (animasi dimatikan) dua hantu itu disembunyikan dan yang tetap tinggal cuma hantu
+   mengambang + labu, yang posisinya statis. */
+.hw-glow{position:absolute;inset:0;background:
+  radial-gradient(60% 38% at 50% -4%,rgba(255,117,24,.16),transparent 70%),
+  radial-gradient(46% 34% at 10% 104%,rgba(160,107,255,.13),transparent 72%)}
+.hw-ghost{position:absolute;left:0;color:#fff;opacity:.5;will-change:transform;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.5)) drop-shadow(0 0 18px rgba(170,200,255,.35))}
+.hwg1{width:46px;height:53px;top:15%;animation:hw-across 26s linear infinite}
+.hwg2{width:38px;height:44px;top:56%;opacity:.42;animation:hw-reverse 31s linear infinite 5s}
+.hwg3{width:31px;height:36px;bottom:13%;left:8%;opacity:.4;animation:hw-float 6.5s ease-in-out infinite alternate}
+.hw-pumpkin{position:absolute;will-change:transform,opacity;
+  filter:drop-shadow(0 0 10px rgba(255,117,24,.55));animation:hw-flicker 2.8s ease-in-out infinite}
+.hwp1{width:54px;height:50px;bottom:7%;right:8%}
+.hwp2{width:34px;height:31px;top:22%;right:20%;opacity:.85;animation-delay:1.1s}
+@keyframes hw-across{
+  0%{transform:translateX(-80px) translateY(0) rotate(3deg);opacity:0}
+  8%{opacity:.5}
+  50%{transform:translateX(52vw) translateY(-24px) rotate(-4deg)}
+  92%{opacity:.5}
+  100%{transform:translateX(calc(100vw + 80px)) translateY(0) rotate(3deg);opacity:0}}
+@keyframes hw-reverse{
+  0%{transform:translateX(calc(100vw + 80px)) translateY(0) rotate(-3deg);opacity:0}
+  8%{opacity:.42}
+  50%{transform:translateX(48vw) translateY(22px) rotate(4deg)}
+  92%{opacity:.42}
+  100%{transform:translateX(-80px) translateY(0) rotate(-3deg);opacity:0}}
+@keyframes hw-float{0%{transform:translateY(0) rotate(-2deg)}100%{transform:translateY(-16px) rotate(2deg)}}
+@keyframes hw-flicker{
+  0%,100%{opacity:.7;filter:drop-shadow(0 0 8px rgba(255,90,0,.5))}
+  50%{opacity:1;filter:drop-shadow(0 0 17px rgba(255,140,0,.8))}}
+@media (max-width:640px){.hwg3{display:none}.hw-ghost{opacity:.34}}
+@media (prefers-reduced-motion:reduce){.hw-ghost,.hw-pumpkin{animation:none}.hwg1,.hwg2{display:none}}
 
 /* top nav bar + centered content */
 /* relative: jangkar untuk .topbar-sentinel. */
@@ -239,6 +267,15 @@ body{
 .ah-laser.lc{left:71%;animation-duration:1.7s;animation-delay:.3s}
 .ah-laser.ld{left:73%;animation-duration:2.05s;animation-delay:1s}
 @media(prefers-reduced-motion:reduce){.ahero *{animation:none!important}}
+/* Varian hero saat HALLOWEEN: bulan diganti jack-o'-lantern + hantu kecil, glow judul jadi oranye.
+   Aturan reduced-motion di atas sudah mematikan animasinya karena memakai selektor .ahero *. */
+.ah-jack{position:absolute;right:9%;top:11%;width:8%;height:auto;animation:ah-float 9s ease-in-out infinite;
+  filter:drop-shadow(0 0 10px rgba(255,117,24,.55))}
+.ah-ghost{position:absolute;left:9%;top:15%;width:5%;height:auto;color:#fff;opacity:.85;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.5));animation:ah-ghostfloat 7s ease-in-out infinite alternate}
+@keyframes ah-ghostfloat{0%{transform:translateY(0) rotate(-3deg)}100%{transform:translateY(-10px) rotate(3deg)}}
+.ahero.hw .ah-arcade{animation:ah-glow-hw 2.6s ease-in-out infinite}
+@keyframes ah-glow-hw{0%,100%{filter:drop-shadow(0 0 0 rgba(255,140,0,0))}50%{filter:drop-shadow(0 0 11px rgba(255,140,0,.55))}}
 
 /* weekly line chart */
 .lchart{width:100%;height:auto;display:block}

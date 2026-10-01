@@ -1,23 +1,27 @@
+// Tema Halloween (Oktober 2026): menghidupkan hiasan hantu + labu di background dan hero,
+// mengikuti halaman Arcade resmi Google yang bulan ini bertema Halloween.
+// Setel `false` begitu bulan berganti supaya hiasannya tidak nyangkut.
+export const HALLOWEEN = true
+
 // Pengumuman admin, muncul sekali per pengunjung saat buka web.
 // Cara pakai: ganti `id` tiap bikin pengumuman baru (itu yang bikin modal muncul
 // lagi buat semua orang). Set `id: null` kalau lagi tidak ada pengumuman.
 // `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
 // tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT = {
-  id: '2026-09-29-deadline',
-  date: '14 September 2026',
-  title: '📢 Pendaftaran ditutup 14 Sep, deadline milestone 29 September 2026',
+  id: '2026-10-01-halloween',
+  date: '1 Oktober 2026',
+  title: 'Game Arcade Oktober + spesial Halloween sudah rilis',
   body: [
-    'Pendaftaran program fasilitator sudah ditutup 14 September 2026. Deadline pengumpulan milestone diperpanjang sampai 29 September 2026. Manfaatkan waktu yang tersisa!',
-    'Kalau masih ada badge yang belum kelar, kerjakan lab-nya sekarang. Deadline 29 September adalah batas akhir semua milestone.',
-    'Bonus milestone +10 poin masih bisa dikejar kalau belum dikirim. Pastikan AI Agent pertamamu sudah dikumpulkan sebelum 29 September.',
-    'Jangan lupa: Arcade Game kuotanya terbatas & game bisa kedaluwarsa tiap bulan. Mainkan dulu kalau belum. Slot hadiah bersifat waterfall & first-come, makin cepat kunci poin, makin aman.',
-    'Butuh bantuan? Office Hour tiap Kamis 19.00-20.00 WIB, atau tanya langsung di grup WhatsApp.',
+    'Enam game Arcade Oktober 2026 sudah tayang, termasuk game spesial Halloween Trick-or-Metric. Mainkan dulu selagi kuotanya ada: game Arcade bisa kedaluwarsa dan digantikan tiap bulan.',
+    'Buka tab Katalog untuk access code tiap game; klik kartunya dan kode otomatis tersalin. Tiap game bernilai 1 poin dan mengisi hitungan game untuk milestone.',
+    'Badge keahlian tetap menambah poin Season 2026: setiap 2 badge skill = 1 poin. Kejar tier hadiah lebih awal karena slotnya bersifat waterfall dan first-come.',
+    'Ada pertanyaan atau badge yang belum terdeteksi? Tanya di grup WhatsApp atau lewat tombol Masukan.',
   ],
   links: [
     { label: 'Cek poin saya', href: '/points' },
     { label: 'Lihat katalog badge', href: '/catalog' },
-    { label: 'Weekly Challenge Player', href: 'https://dicoding.id/Arcade26-WCPlayer' },
+    { label: 'Halaman Arcade resmi', href: 'https://go.cloudskillsboost.google/arcade' },
   ],
   signature: 'R',
 }
