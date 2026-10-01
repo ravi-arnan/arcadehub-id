@@ -8,7 +8,12 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { ProfileProvider } from './profile.jsx'
+import { HALLOWEEN } from './config.js'
 import './index.css'
+
+// Tema Halloween mengganti palet lewat class di <html> (lihat blok html.halloween di index.css).
+// Dipasang sebelum render supaya tidak ada kedipan warna lama.
+if (HALLOWEEN) document.documentElement.classList.add('halloween')
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

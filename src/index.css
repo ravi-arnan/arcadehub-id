@@ -1,10 +1,59 @@
 @font-face{font-family:'PS2P';src:url('/PressStart2P.woff2') format('woff2');font-display:swap}
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --gold:#fcc934;--green:#34c95f;--wa:#25d366;--blue:#5b8bff;--purple:#a06bff;--ink:#fff;--muted:#aebbd6;
+  --gold:#fcc934;--gold-rgb:252,201,52;--green:#34c95f;--wa:#25d366;--blue:#5b8bff;--purple:#a06bff;--ink:#fff;--muted:#aebbd6;
   --card:rgba(255,255,255,.055);--line:rgba(255,255,255,.12);
 }
 html,body,#root{min-height:100%}
+
+/* ===== Tema Halloween (Oktober 2026) ===== */
+/* Palet disamakan dengan halaman Arcade resmi Google yang bulan ini bertema Halloween: latar plum
+   gelap (#110a1c, #150d24, #0b0713), aksen oranye labu (#ffa726, #ff7518), ungu (#ab47bc), hijau
+   (#66bb6a). Aktif selama HALLOWEEN di src/config.js, yang menambahkan class `halloween` ke <html>
+   sebelum React dirender.
+   Semua turunan yang memakai var(--gold) ikut berubah. Tint emas yang dulu ditulis langsung sebagai
+   rgba(252,201,52,a) sudah diganti rgba(var(--gold-rgb),a), jadi ikut berubah juga tanpa perlu
+   ditimpa satu per satu. Medali di Medal.jsx sengaja TETAP emas (medali memang emas), dan kartu
+   Bagikan (ShareCard.jsx) juga belum ikut karena itu kanvas terpisah. */
+html.halloween{
+  --gold:#ffa726;--gold-rgb:255,167,38;
+  --green:#66bb6a;--blue:#699df7;--purple:#ab47bc;
+  --muted:#c9bcd8;
+  --card:rgba(46,26,74,.5);--line:rgba(255,150,70,.2);
+}
+html.halloween body{
+  background-color:#110a1c;
+  background-image:
+    radial-gradient(900px 520px at 80% -6%,rgba(255,117,24,.22),transparent 62%),
+    radial-gradient(760px 480px at 6% 4%,rgba(142,36,170,.22),transparent 66%),
+    linear-gradient(180deg,#150d24 0%,#130c1e 42%,#110a1c 74%,#0b0713 100%);
+}
+html.halloween .topbar::before{background:rgba(24,13,38,.85)}
+html.halloween .ahero{background:radial-gradient(120% 130% at 50% -8%,#2b1742 0%,#1d1132 32%,#150c26 58%,#0e0819 80%,#080510 100%)}
+html.halloween .ah-laser{background:linear-gradient(#ffdcb0,#ff8c00 60%,transparent)}
+html.halloween .ah-gc{color:#f0e6fb}
+/* Tombol aksi (Hitung, Kirim, Gabung, Masuk Leaderboard) dan bubble Masukan tidak lagi hijau:
+   dibuat gradien labu ke ungu, persis tombol START! di halaman Arcade resmi
+   (linear-gradient(45deg,#ff6f00,#8e24aa)). Hijau tetap dipakai untuk status "selesai". */
+html.halloween .joinbtn,
+html.halloween .fab{background:linear-gradient(45deg,#ff6f00,#8e24aa);
+  box-shadow:0 8px 22px rgba(142,36,170,.4)}
+html.halloween .joinbtn:hover,
+html.halloween .fab:hover{box-shadow:0 0 22px rgba(255,111,0,.55)}
+html.halloween .fabpanel{background:#1c1230}
+html.halloween .fp-h svg{color:var(--gold)}
+/* Sisa hijau pada elemen interaktif: pil nav aktif, chip filter aktif (Katalog dan Leaderboard),
+   kartu Total Poin, dan tombol Gabung Grup WhatsApp (Info + Footer). Sama gradiennya dengan
+   tombol aksi di atas. Hijau kecil untuk status "selesai" (centang, bar milestone) sengaja
+   dibiarkan: itu sinyal status, bukan hiasan. */
+html.halloween .topnav .navpill,
+html.halloween .catfilter button.on,
+html.halloween .gfilter button.on,
+html.halloween .total{background:linear-gradient(180deg,#ff6f00,#8e24aa)}
+html.halloween .total{box-shadow:0 14px 34px rgba(142,36,170,.45),inset 0 2px 0 rgba(255,255,255,.45)}
+html.halloween .fc-btn,
+html.halloween .wabtn{background:linear-gradient(45deg,#ff6f00,#8e24aa);
+  box-shadow:0 8px 20px rgba(142,36,170,.4)}
 
 /* scrollbar bertema arcade */
 *{scrollbar-width:thin;scrollbar-color:rgba(120,140,200,.55) transparent}
@@ -36,7 +85,7 @@ body{
     radial-gradient(1.4px 1.4px at 260px 200px,rgba(255,255,255,.85),transparent);
   background-size:300px 300px}
 .stars-b{background-image:
-    radial-gradient(1.6px 1.6px at 70px 120px,rgba(252,201,52,.85),transparent),
+    radial-gradient(1.6px 1.6px at 70px 120px,rgba(var(--gold-rgb),.85),transparent),
     radial-gradient(1.2px 1.2px at 180px 40px,rgba(255,255,255,.9),transparent),
     radial-gradient(1.6px 1.6px at 320px 260px,rgba(140,180,255,.9),transparent),
     radial-gradient(1.2px 1.2px at 30px 300px,rgba(255,255,255,.8),transparent);
@@ -204,7 +253,7 @@ body{
 .tw-link:hover{text-decoration:underline}
 .top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .topcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 12px;text-align:center}
-.topcard.r0{border-color:rgba(252,201,52,.5);background:rgba(252,201,52,.07)}
+.topcard.r0{border-color:rgba(var(--gold-rgb),.5);background:rgba(var(--gold-rgb),.07)}
 .tc-medal{line-height:1}
 .tc-medal .medal{width:30px;height:30px}
 .tc-name{font-weight:800;font-size:15px;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -220,7 +269,7 @@ body{
 /* generic card (insights) */
 .card{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
 .card-h{font-weight:800;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.card-tag{font-family:'PS2P';font-size:11px;color:var(--gold);background:rgba(252,201,52,.12);padding:4px 8px;border-radius:8px}
+.card-tag{font-family:'PS2P';font-size:11px;color:var(--gold);background:rgba(var(--gold-rgb),.12);padding:4px 8px;border-radius:8px}
 .card-note{font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.5}
 
 /* ===== Hero arcade animasi 8-bit (pengganti hero.png) ===== */
@@ -258,7 +307,7 @@ body{
 .ah-title{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);text-align:center;padding:0 6%;z-index:4}
 .ah-arcade{font-family:'PS2P';color:var(--gold);font-size:clamp(14px,5cqw,38px);line-height:1;letter-spacing:1px;
   text-shadow:0 3px 0 rgba(0,0,0,.5);animation:ah-glow 2.6s ease-in-out infinite}
-@keyframes ah-glow{0%,100%{filter:drop-shadow(0 0 0 rgba(252,201,52,0))}50%{filter:drop-shadow(0 0 9px rgba(252,201,52,.45))}}
+@keyframes ah-glow{0%,100%{filter:drop-shadow(0 0 0 rgba(var(--gold-rgb),0))}50%{filter:drop-shadow(0 0 9px rgba(var(--gold-rgb),.45))}}
 .ah-gc{margin-top:clamp(7px,2.2cqw,16px);font-size:clamp(10px,2.4cqw,19px);font-weight:500;color:#dfe6f4;letter-spacing:.6px}
 .ah-laser{position:absolute;top:0;width:2px;height:14px;background:linear-gradient(#bcd4ff,#5b8bff 60%,transparent);opacity:.9;z-index:1;animation:ah-fall linear infinite}
 @keyframes ah-fall{0%{transform:translateY(-20px);opacity:0}12%{opacity:.9}100%{transform:translateY(700px);opacity:0}}
@@ -325,7 +374,7 @@ body{
 .rm-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
 .rm-badge{font-size:12.5px;font-weight:800;padding:5px 11px;border-radius:999px}
 .rm-badge.done{color:#8fe6b6;background:rgba(52,201,95,.16);border:1px solid rgba(52,201,95,.4)}
-.rm-badge.now{color:var(--gold);background:rgba(252,201,52,.14);border:1px solid rgba(252,201,52,.4)}
+.rm-badge.now{color:var(--gold);background:rgba(var(--gold-rgb),.14);border:1px solid rgba(var(--gold-rgb),.4)}
 .rm-badge.plan{color:#c7ccff;background:rgba(160,107,255,.16);border:1px solid rgba(160,107,255,.4)}
 .rm-count{font-size:12px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.06);border-radius:999px;padding:2px 9px}
 .rm-note{font-size:12px;color:var(--muted);flex-basis:100%}
@@ -353,17 +402,17 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-toggle:hover{background:rgba(255,255,255,.12)}
 .sh-chev{transition:transform .18s;font-size:11px}
 .sh-chev.up{transform:rotate(180deg)}
-.starthere{position:relative;overflow:hidden;border-color:rgba(252,201,52,.28);background:linear-gradient(180deg,rgba(252,201,52,.07),rgba(255,255,255,.03))}
+.starthere{position:relative;overflow:hidden;border-color:rgba(var(--gold-rgb),.28);background:linear-gradient(180deg,rgba(var(--gold-rgb),.07),rgba(255,255,255,.03))}
 .starthere::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
 .sh-badge{font-weight:800;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#1a1400;background:var(--gold);padding:5px 10px;border-radius:7px;white-space:nowrap}
 .sh-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
 .sh-step{position:relative;display:flex;gap:13px;align-items:flex-start}
 .sh-step:first-child::after{content:'';position:absolute;left:15px;top:34px;bottom:-14px;width:2px;background:linear-gradient(var(--line),transparent);z-index:0}
-.sh-num{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:'PS2P';font-size:12px;color:var(--gold);background:rgba(252,201,52,.12);border:1px solid rgba(252,201,52,.4);z-index:1}
+.sh-num{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:'PS2P';font-size:12px;color:var(--gold);background:rgba(var(--gold-rgb),.12);border:1px solid rgba(var(--gold-rgb),.4);z-index:1}
 .sh-main{flex:1;min-width:0}
 .sh-title{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;line-height:1.3}
 .sh-title svg{flex:none;color:var(--gold)}
-.sh-count{margin-left:auto;font-family:'PS2P';font-size:10px;color:var(--gold);background:rgba(252,201,52,.12);padding:4px 8px;border-radius:8px;white-space:nowrap}
+.sh-count{margin-left:auto;font-family:'PS2P';font-size:10px;color:var(--gold);background:rgba(var(--gold-rgb),.12);padding:4px 8px;border-radius:8px;white-space:nowrap}
 .sh-desc{font-size:12.5px;color:var(--muted);line-height:1.55;margin:6px 0 10px}
 .sh-desc b{color:#e7edfb}
 /* Catatan game yang ditarik Google: dibedakan supaya tidak terbaca sebagai instruksi biasa. */
@@ -371,7 +420,7 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 
 /* Bonus Milestone (+10 poin, klaim manual) */
 .bonusms{margin-top:14px}
-.bm-pts{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold);background:rgba(252,201,52,.12);border:1px solid rgba(252,201,52,.35);border-radius:999px;padding:3px 9px}
+.bm-pts{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold);background:rgba(var(--gold-rgb),.12);border:1px solid rgba(var(--gold-rgb),.35);border-radius:999px;padding:3px 9px}
 .bm-req{display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 0 10px;font-size:12.5px;color:var(--muted)}
 .bm-rrow{display:flex;align-items:center;gap:7px}
 .bm-dot{width:16px;height:16px;border-radius:50%;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex:none}
@@ -404,7 +453,7 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-pace.late{border-left-color:#ff6b6b}
 .sh-verdict{flex:none;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:6px}
 .sh-verdict.ok{color:#8fe6b6;background:rgba(52,201,95,.16)}
-.sh-verdict.behind{color:#ffdf8a;background:rgba(252,201,52,.16)}
+.sh-verdict.behind{color:#ffdf8a;background:rgba(var(--gold-rgb),.16)}
 .sh-verdict.late{color:#ffb3b3;background:rgba(255,107,107,.16)}
 .sh-pdesc{flex:1;min-width:170px;font-size:12px;color:var(--muted);line-height:1.55}
 .sh-pdesc b{color:#e7edfb}
@@ -412,7 +461,7 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
    (.sh-mine) di atas langkah 1. Kotaknya sama, .sh-mine dibedakan garis emas supaya jelas ini
    pilihan peserta, bukan saran aplikasi. */
 .sh-short,.sh-mine{margin-bottom:11px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.2)}
-.sh-mine{margin-bottom:14px;border-color:rgba(252,201,52,.34);background:rgba(252,201,52,.05)}
+.sh-mine{margin-bottom:14px;border-color:rgba(var(--gold-rgb),.34);background:rgba(var(--gold-rgb),.05)}
 .sh-mine .sh-shead span{display:inline-flex;align-items:center;gap:7px;color:var(--gold)}
 .sh-mine .sh-shead b{color:#e7edfb}
 .sh-slist li>span:first-child{flex:1;min-width:0;font-size:12.5px;font-weight:700;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.04);color:var(--muted)}
@@ -427,8 +476,8 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-slist a:hover{background:rgba(91,139,255,.14);color:#c3d3ff}
 .sh-slist svg{flex:none;opacity:.7}
 .sh-snote{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}
-.sh-cta{display:inline-flex;align-items:center;gap:7px;background:rgba(252,201,52,.14);border:1px solid rgba(252,201,52,.4);color:var(--gold);font-size:13px;font-weight:800;padding:8px 14px;border-radius:10px;cursor:pointer;transition:.14s}
-.sh-cta:hover{background:rgba(252,201,52,.24)}
+.sh-cta{display:inline-flex;align-items:center;gap:7px;background:rgba(var(--gold-rgb),.14);border:1px solid rgba(var(--gold-rgb),.4);color:var(--gold);font-size:13px;font-weight:800;padding:8px 14px;border-radius:10px;cursor:pointer;transition:.14s}
+.sh-cta:hover{background:rgba(var(--gold-rgb),.24)}
 /* Tangga milestone: dulu cuma pil berisi nama, jadi "milestone ini dapat bonus berapa"
    tidak terjawab di mana pun. Sekarang tiap rung membawa syarat + bonusnya sendiri. */
 .sh-ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
@@ -441,7 +490,7 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .sh-rbonus{font-size:12.5px;font-weight:800;color:var(--gold);margin-top:2px;font-variant-numeric:tabular-nums}
 .sh-rgap{font-size:11px;color:#ffd98a;margin-top:6px;line-height:1.35;font-variant-numeric:tabular-nums}
 .sh-rgap.paid{color:var(--green)}
-.sh-rung.now{border-color:rgba(252,201,52,.45);background:rgba(252,201,52,.1)}
+.sh-rung.now{border-color:rgba(var(--gold-rgb),.45);background:rgba(var(--gold-rgb),.1)}
 .sh-rung.now .sh-dot{color:#1a1400;background:var(--gold)}
 .sh-rung.now .sh-rlabel{color:var(--gold)}
 .sh-rung.done{border-color:rgba(52,201,95,.4);background:rgba(52,201,95,.08)}
@@ -477,7 +526,7 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 /* Level silabus resmi (Pemula/Menengah/Lanjutan). Badge di luar silabus tidak punya chip ini. */
 .bc-lvl{font-size:10.5px;font-weight:800;letter-spacing:.02em;padding:3px 9px;border-radius:7px;color:var(--muted);background:rgba(255,255,255,.06);border:1px solid var(--line)}
 .bc-lvl.beginner{color:#8fe6b6;border-color:rgba(52,201,95,.35)}
-.bc-lvl.intermediate{color:#f2d16b;border-color:rgba(252,201,52,.35)}
+.bc-lvl.intermediate{color:#f2d16b;border-color:rgba(var(--gold-rgb),.35)}
 .bc-lvl.advanced{color:#f2a3a3;border-color:rgba(234,67,53,.35)}
 /* Penanda batch terbaru. Di kartu diletakkan di sudut bawah-kiri gambar: sudut atas sudah
    dipakai chip tipe (kiri) dan centang selesai (kanan). Di mode list tampil inline. */
@@ -496,11 +545,11 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
    terbaca sebagai "selesai". */
 .bc-save,.br-save{display:grid;place-items:center;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--muted);border-radius:9px;cursor:pointer;transition:.14s}
 .bc-save:hover,.br-save:hover{color:#fff;border-color:rgba(255,255,255,.28)}
-.bc-save.on,.br-save.on{color:var(--gold);border-color:rgba(252,201,52,.5);background:rgba(252,201,52,.14)}
+.bc-save.on,.br-save.on{color:var(--gold);border-color:rgba(var(--gold-rgb),.5);background:rgba(var(--gold-rgb),.14)}
 .bc-save{position:absolute;bottom:9px;right:10px;width:30px;height:30px}
 .br-save{flex:none;width:28px;height:28px}
-.badgecard.saved{border-color:rgba(252,201,52,.45)}
-.badgerow.saved{border-color:rgba(252,201,52,.45)}
+.badgecard.saved{border-color:rgba(var(--gold-rgb),.45)}
+.badgerow.saved{border-color:rgba(var(--gold-rgb),.45)}
 .badgecard.saved.done,.badgerow.saved.done{border-color:rgba(52,201,95,.5)}
 .bc-check{position:absolute;top:9px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#04240f;display:grid;place-items:center;font-size:13px;font-weight:900}
 .bc-badge{display:block;cursor:pointer;border-radius:9px;transition:transform .15s}
@@ -509,7 +558,7 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
 .bc-badge img{width:112px;height:112px;object-fit:contain;display:block}
 .bc-badge-skill{width:100%;max-width:210px}
 .bc-badge-skill img{width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.3)}
-.bc-skillthumb{width:112px;height:112px;display:grid;place-items:center;color:var(--gold);background:radial-gradient(circle at 50% 40%,rgba(252,201,52,.14),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:14px}
+.bc-skillthumb{width:112px;height:112px;display:grid;place-items:center;color:var(--gold);background:radial-gradient(circle at 50% 40%,rgba(var(--gold-rgb),.14),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:14px}
 .bc-body{display:flex;flex-direction:column;gap:10px;padding:13px 14px 15px;flex:1}
 .bc-title{font-weight:700;font-size:14.5px;line-height:1.32}
 .bc-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
@@ -714,14 +763,14 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 /* milestone ladder */
 .ladder{margin-top:22px}
 .ladder .hd{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.mnote{font-size:12.5px;color:var(--muted);line-height:1.5;margin:-4px 0 12px;background:rgba(252,201,52,.08);border:1px solid rgba(252,201,52,.25);border-radius:10px;padding:10px 13px}
+.mnote{font-size:12.5px;color:var(--muted);line-height:1.5;margin:-4px 0 12px;background:rgba(var(--gold-rgb),.08);border:1px solid rgba(var(--gold-rgb),.25);border-radius:10px;padding:10px 13px}
 .ms{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;transition:.15s}
 .ms.done{border-color:rgba(52,201,95,.55);background:rgba(52,201,95,.10)}
 .mstop{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .ms .name{font-weight:800;font-size:15px;display:flex;align-items:center;gap:9px}
 .ms .mtrophy{width:22px;height:22px;display:grid;place-items:center;flex:none;color:var(--muted);opacity:.55}
 .ms .mtrophy svg{width:20px;height:20px}
-.ms.done .mtrophy{color:var(--gold);opacity:1;filter:drop-shadow(0 1px 4px rgba(252,201,52,.5))}
+.ms.done .mtrophy{color:var(--gold);opacity:1;filter:drop-shadow(0 1px 4px rgba(var(--gold-rgb),.5))}
 .ms .pts{font-family:'PS2P';font-size:14px;color:var(--gold);text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
 /* PS2P diwariskan dari .pts dan tidak terbaca di ukuran kecil, jadi sub-label balik ke font UI.
    Pola yang sama sudah dipakai .tc-pts span. */
@@ -826,7 +875,7 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .pod{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;
   border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 10px 0;position:relative}
 .pod-1{order:2}.pod-2{order:1}.pod-3{order:3}
-.pod-1{background:linear-gradient(180deg,rgba(252,201,52,.20),rgba(252,201,52,.03));border-color:rgba(252,201,52,.55)}
+.pod-1{background:linear-gradient(180deg,rgba(var(--gold-rgb),.20),rgba(var(--gold-rgb),.03));border-color:rgba(var(--gold-rgb),.55)}
 .pod-2{background:linear-gradient(180deg,rgba(160,107,255,.18),rgba(160,107,255,.03));border-color:rgba(160,107,255,.5)}
 .pod-3{background:linear-gradient(180deg,rgba(52,201,95,.18),rgba(52,201,95,.03));border-color:rgba(52,201,95,.5)}
 .pod-1{transform:translateY(-14px)}
@@ -972,7 +1021,7 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .ps-ex-icons .ps-game{width:34px;height:34px}
 .ps-desc{font-size:13.5px;color:var(--muted)}
 .ps-desc b{color:var(--gold);font-weight:800}
-.ps-example{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(252,201,52,.35);
+.ps-example{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(var(--gold-rgb),.35);
   display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .ps-ex-label{font-family:'PS2P';font-size:11px;color:var(--gold)}
 .ps-ex-icons{display:flex;align-items:center;gap:9px}
@@ -1013,7 +1062,7 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .bt-chev{display:inline-block;transition:transform .25s cubic-bezier(.4,0,.2,1)}
 .badgetoggle.open .bt-chev{transform:rotate(90deg)}
 .bi{font-size:13.5px;padding:6px 10px;border-radius:8px;margin-bottom:5px;line-height:1.3}
-.bi.g{background:rgba(252,201,52,.12);border-left:3px solid var(--gold)}
+.bi.g{background:rgba(var(--gold-rgb),.12);border-left:3px solid var(--gold)}
 .bi.s{background:rgba(91,155,255,.12);border-left:3px solid #5b9bff}
 /* Badge yang tidak menambah poin. Abu-abu netral dan garis putus-putus, BUKAN merah: badge-nya
    sah dan tetap milik peserta, cuma tidak dihitung program. Tetap terbaca (opacity tidak
@@ -1069,7 +1118,7 @@ h1{font-family:'PS2P';color:var(--gold);font-size:25px;line-height:1.25;text-sha
 .nextnote b{color:var(--gold)}
 .tierrow{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);
   border-radius:16px;padding:14px 16px;margin-bottom:10px;transition:.15s}
-.tierrow.done{border-color:rgba(252,201,52,.5);background:rgba(252,201,52,.08)}
+.tierrow.done{border-color:rgba(var(--gold-rgb),.5);background:rgba(var(--gold-rgb),.08)}
 .tierrow.cur{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
 .ticon{width:40px;display:flex;align-items:center;justify-content:center;flex:none;color:var(--muted)}
 .ticon svg{width:26px;height:26px}
@@ -1105,7 +1154,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 
 .ch-ways{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:26px 0 30px}
 .wayc{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;transition:.14s}
-.wayc:hover{border-color:rgba(252,201,52,.5);transform:translateY(-2px);background:rgba(252,201,52,.06)}
+.wayc:hover{border-color:rgba(var(--gold-rgb),.5);transform:translateY(-2px);background:rgba(var(--gold-rgb),.06)}
 .wayc-h{font-weight:800;font-size:14px;color:#fff;margin-bottom:4px}
 .wayc-p{font-size:12.5px;color:var(--muted);line-height:1.5}
 .wayc-p code{font-size:11.5px;background:rgba(0,0,0,.3);padding:1px 5px;border-radius:5px;color:var(--gold)}
@@ -1114,7 +1163,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .ct-card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;transition:.16s}
 .ct-card:hover{border-color:rgba(91,139,255,.5);transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.3)}
 .ct-core{position:absolute;top:12px;right:12px;font-family:'PS2P';font-size:8px;color:var(--gold);
-  background:rgba(252,201,52,.13);border:1px solid rgba(252,201,52,.4);padding:4px 7px;border-radius:7px;letter-spacing:.05em}
+  background:rgba(var(--gold-rgb),.13);border:1px solid rgba(var(--gold-rgb),.4);padding:4px 7px;border-radius:7px;letter-spacing:.05em}
 .ct-av{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--line);transition:transform .2s,border-color .2s}
 .ct-card:hover .ct-av{transform:scale(1.04);border-color:rgba(91,139,255,.6)}
 .ct-fallback{display:grid;place-items:center;font-family:'PS2P';font-size:20px;color:#fff}
@@ -1142,7 +1191,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 @media (prefers-reduced-motion:reduce){.tip{animation:none}}
 
 /* Bagikan progress card */
-.miniref.accent{color:var(--gold);border-color:rgba(252,201,52,.4)}
+.miniref.accent{color:var(--gold);border-color:rgba(var(--gold-rgb),.4)}
 .sc-overlay{position:fixed;inset:0;z-index:60;background:rgba(6,8,22,.78);backdrop-filter:blur(4px)}
 .sc-modal{position:fixed;inset:0;margin:auto;z-index:61;width:min(420px,calc(100vw - 36px));height:max-content;max-height:calc(100vh - 36px);overflow:auto;
   background:var(--panel,#171a34);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
@@ -1161,7 +1210,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .ann-body p{font-size:13.5px;line-height:1.6;color:#dbe6fb;margin:0 0 10px}
 .ann-body p:last-child{margin-bottom:0}
 .ann-links{display:flex;flex-direction:column;gap:7px;margin-top:13px}
-.ann-links a{font-size:13px;font-weight:700;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(252,201,52,.3);align-self:flex-start;padding-bottom:1px;transition:.14s}
+.ann-links a{font-size:13px;font-weight:700;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(var(--gold-rgb),.3);align-self:flex-start;padding-bottom:1px;transition:.14s}
 .ann-links a:hover{border-bottom-color:var(--gold)}
 .ann-sign{margin-top:16px;text-align:right;font-family:'PS2P';font-size:10px;color:var(--gold);opacity:.85}
 /* Kartu pengumuman di halaman Info, judulnya ikut gaya PS2P seperti .psys .ic-t */
@@ -1185,7 +1234,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
    guild besar tidak menggencet nama. */
 .gl-card{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:'rank main nums' 'open open open';
   align-items:center;gap:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
-.gl-card.me{border-color:rgba(252,201,52,.5);background:rgba(252,201,52,.06)}
+.gl-card.me{border-color:rgba(var(--gold-rgb),.5);background:rgba(var(--gold-rgb),.06)}
 .gl-rank{grid-area:rank;min-width:34px;display:flex;align-items:center;justify-content:center}
 .gl-rank .rnum{font-size:20px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
 .gl-main{grid-area:main;min-width:0}
@@ -1218,10 +1267,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 
 /* Banner fast-track di Katalog: challenge lab boleh dikerjakan duluan. */
 .fasttrack{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;
-  background:linear-gradient(135deg,rgba(252,201,52,.14),rgba(252,201,52,.05));
-  border:1px solid rgba(252,201,52,.34);border-radius:12px;padding:12px 14px}
+  background:linear-gradient(135deg,rgba(var(--gold-rgb),.14),rgba(var(--gold-rgb),.05));
+  border:1px solid rgba(var(--gold-rgb),.34);border-radius:12px;padding:12px 14px}
 .ft-ic{flex:0 0 auto;display:grid;place-items:center;width:32px;height:32px;border-radius:9px;
-  background:rgba(252,201,52,.18);color:var(--gold)}
+  background:rgba(var(--gold-rgb),.18);color:var(--gold)}
 .ft-t{font-weight:800;font-size:13.5px;color:var(--gold)}
 .ft-p{font-size:12.5px;line-height:1.6;color:var(--muted);margin-top:4px}
 .ft-p b{color:var(--ink);font-weight:700}
@@ -1234,7 +1283,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
   padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:700;font-size:13.5px;
   background:var(--card);border:1px solid var(--line);color:var(--ink);
   transition:background .15s,border-color .15s}
-.lbmore:hover{background:rgba(252,201,52,.1);border-color:rgba(252,201,52,.34)}
+.lbmore:hover{background:rgba(var(--gold-rgb),.1);border-color:rgba(var(--gold-rgb),.34)}
 .lbmore-sub{font-weight:500;font-size:11.5px;color:var(--muted)}
 .lbless{margin-top:8px}
 
@@ -1254,7 +1303,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 
 /* Jarak ke milestone berikutnya di Poin Saya. */
 .msgap{display:flex;align-items:flex-start;gap:10px;margin:10px 0 4px;padding:10px 13px;border-radius:11px;
-  background:rgba(252,201,52,.1);border:1px solid rgba(252,201,52,.3);font-size:13px;line-height:1.5}
+  background:rgba(var(--gold-rgb),.1);border:1px solid rgba(var(--gold-rgb),.3);font-size:13px;line-height:1.5}
 .msgap b{color:var(--gold)}
 .msgap.done{background:rgba(52,201,95,.1);border-color:rgba(52,201,95,.3)}
 .mg-ic{flex:0 0 auto;color:var(--gold);margin-top:1px}
@@ -1267,8 +1316,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
   color:var(--muted);border:1px solid transparent;transition:color .15s,background .15s,border-color .15s}
 .bc-gh:hover,.br-gh:hover{color:var(--ink);background:rgba(255,255,255,.09);border-color:var(--line)}
 /* .has = ada runbook fasilitator untuk badge ini, bukan sekadar pencarian. */
-.bc-gh.has,.br-gh.has{color:var(--gold);background:rgba(252,201,52,.12);border-color:rgba(252,201,52,.32)}
-.bc-gh.has:hover,.br-gh.has:hover{color:#fff;background:rgba(252,201,52,.26)}
+.bc-gh.has,.br-gh.has{color:var(--gold);background:rgba(var(--gold-rgb),.12);border-color:rgba(var(--gold-rgb),.32)}
+.bc-gh.has:hover,.br-gh.has:hover{color:#fff;background:rgba(var(--gold-rgb),.26)}
 .bc-right{display:inline-flex;align-items:center;gap:2px}
 
 /* Foto profil peserta (dari halaman public profile Cloud Skills Boost). */

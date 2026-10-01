@@ -1,5 +1,11 @@
 import { IconGamepad, IconTent, IconTarget, IconHelp, IconAward } from './icons.jsx'
 import { GAME_CATALOG } from './catalog.js'
+import { HALLOWEEN } from './config.js'
+
+// Warna aksen grafik. SVG tidak bisa memakai var(--gold) sebagai nilai atribut, jadi dipilih di
+// sini mengikuti tema supaya garis grafik tidak tetap emas saat palet Halloween aktif.
+const ACCENT = HALLOWEEN ? '#ffa726' : '#fcc934'
+const DOT0 = HALLOWEEN ? '#7c6b95' : '#5b6b93'
 
 const DOW = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
 const fmtPts = (n) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
@@ -30,17 +36,17 @@ export function WeeklyChart({ badges }) {
       <svg className="lchart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Grafik garis aktivitas badge 7 hari terakhir">
         <defs>
           <linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#fcc934" stopOpacity="0.32" />
-            <stop offset="100%" stopColor="#fcc934" stopOpacity="0" />
+            <stop offset="0%" stopColor={ACCENT} stopOpacity="0.32" />
+            <stop offset="100%" stopColor={ACCENT} stopOpacity="0" />
           </linearGradient>
         </defs>
         <line x1={PL} y1={PT + ih} x2={PL + iw} y2={PT + ih} stroke="rgba(255,255,255,.12)" strokeWidth="1" />
         <path d={area} fill="url(#wgrad)" />
-        <path d={line} fill="none" stroke="#fcc934" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" />
+        <path d={line} fill="none" stroke={ACCENT} strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" />
         {pts.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x} cy={p.y} r={p.c > 0 ? 3.5 : 2.5} fill={p.c > 0 ? '#fcc934' : '#5b6b93'} />
-            {p.c > 0 && <text x={p.x} y={p.y - 7} textAnchor="middle" fill="#fcc934" fontSize="11" fontWeight="700">{p.c}</text>}
+            <circle cx={p.x} cy={p.y} r={p.c > 0 ? 3.5 : 2.5} fill={p.c > 0 ? ACCENT : DOT0} />
+            {p.c > 0 && <text x={p.x} y={p.y - 7} textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700">{p.c}</text>}
           </g>
         ))}
       </svg>
