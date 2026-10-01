@@ -51,8 +51,11 @@ console.log(`Koneksi dibaca dari env var: ${ketemu.nama}`)
 const conn = ketemu.conn
 
 const sql = neon(conn)
-if (typeof sql.unsafe !== 'function') {
-  console.error('Driver Neon tidak punya .unsafe(); versi @neondatabase/serverless-nya tidak sesuai.')
+// JANGAN pakai sql.unsafe(): di @neondatabase/serverless versi ini .unsafe() mengembalikan
+// builder UnsafeRawSql (bukan baris), jadi await-nya tidak menghasilkan array. sql.query()
+// yang benar-benar mengeksekusi dan mengembalikan array baris.
+if (typeof sql.query !== 'function') {
+  console.error('Driver Neon tidak punya .query(); versi @neondatabase/serverless-nya tidak sesuai.')
   process.exit(2)
 }
 
@@ -81,7 +84,7 @@ for (const { table_name: nama } of daftar) {
     SELECT column_name, data_type FROM information_schema.columns
     WHERE table_schema = 'public' AND table_name = ${nama}
     ORDER BY ordinal_position`
-  const rows = await sql.unsafe(`SELECT * FROM ${ident(nama)}`)
+  const rows = await sql.query(`SELECT * FROM ${ident(nama)}`)
   dump[nama] = { columns: kolom.map((k) => ({ name: k.column_name, dataType: k.data_type })), rows }
   writeFileSync(join(out, `${nama}.json`), JSON.stringify(dump[nama]))
 }
