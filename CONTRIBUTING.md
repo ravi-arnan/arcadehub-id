@@ -24,7 +24,7 @@ npm test               # unit test logika poin
 
 Frontend (tab **Poin Saya**, **Katalog**, **Hadiah**, **Info**, **Kontribusi**)
 jalan tanpa backend. Fitur **Leaderboard** & **feedback** butuh env
-(`DATABASE_URL`, dll, lihat `.env.example`).
+(`TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, dll, lihat `.env.example`).
 
 ## Alur Pull Request
 

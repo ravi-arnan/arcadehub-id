@@ -25,7 +25,7 @@ leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 ## Stack
 
 Vite + React · React Router v6 · Framer Motion · Radix UI ·
-Vercel Serverless Functions · Neon Postgres · Vercel Cron.
+Vercel Serverless Functions · Turso (libSQL) · Vercel Cron.
 
 ## Mulai
 
@@ -55,6 +55,7 @@ src/
 lib/              logika poin + parser profil + DB + rate limit (backend)
 api/              serverless functions (join, leave, remove, leaderboard, refresh, refresh-all, feedback)
 public/img/       aset gambar (hero, badge game, hadiah)
+scripts/          skrip build & migrasi (backup-neon, migrate-to-turso, verify-migration)
 ```
 
 Rute: `/points` (home) `/leaderboard` `/catalog` `/prizes` `/info` `/contribute`,
