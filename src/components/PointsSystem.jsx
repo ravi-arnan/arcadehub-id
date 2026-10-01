@@ -2,6 +2,7 @@
 // tiap Arcade GAME badge = 1 poin; 2 Skill Badge = 1 poin.
 // Game diambil dari GAME_CATALOG (sumber kebenaran) + gambar badge asli.
 import { GAME_CATALOG } from '../catalog.js'
+import { IconGamepad } from '../icons.jsx'
 
 function Badge() {
   return (
@@ -28,13 +29,22 @@ export default function PointsSystem() {
     <div className="infocard psys">
       <div className="ic-t">Sistem Poin</div>
       <div className="ps-rows">
-        {GAME_CATALOG.map((g) => (
+        {GAME_CATALOG.length > 0 ? GAME_CATALOG.map((g) => (
           <div key={g.name} className="ps-row">
             <span className="ps-label">{g.name}</span>
             <span className="ps-ico"><GameImg g={g} /></span>
             <span className="ps-desc">×1 game badge = <b>1 poin</b></span>
           </div>
-        ))}
+        )) : (
+          // Katalog game bulan berjalan bisa kosong saat Google belum merilis bulan baru. Barisnya
+          // tetap ditampilkan tanpa foto supaya aturan "1 game = 1 poin" tidak hilang dari
+          // infografik ini; kalau barisnya ikut hilang, kartunya cuma menyisakan skill badge.
+          <div className="ps-row">
+            <span className="ps-label">Game / Trivia / Level</span>
+            <span className="ps-ico"><IconGamepad width="40" height="40" /></span>
+            <span className="ps-desc">×1 badge = <b>1 poin</b></span>
+          </div>
+        )}
         <div className="ps-row">
           <span className="ps-label">Skill Badge</span>
           <span className="ps-ico"><Badge /></span>

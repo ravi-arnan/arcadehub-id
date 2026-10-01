@@ -113,6 +113,9 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, sav
   const fs = score?.facilSkills || 0
   const target = MS.find((m) => !(fg >= m.g && fs >= m.s)) || MS[MS.length - 1]
   const daysLeft = Math.max(0, Math.floor((DEADLINE.getTime() - Date.now()) / 864e5))
+  // `closed` sengaja dihitung dari timestamp, bukan dari `daysLeft === 0`: dibulatkan ke bawah,
+  // hari terakhir penutupan sudah terbaca 0 padahal periodenya masih berjalan sampai 23:59.
+  const closed = DEADLINE.getTime() <= Date.now()
   const proj = useMemo(() => projectMilestone({ facilGames: fg, facilSkills: fs }), [fg, fs])
   // Index milestone tertinggi yang sudah tercapai, -1 kalau belum ada. Cara hitungnya sengaja
   // sama persis dengan scoreProfile() supaya tangga ini tidak pernah beda dari poin asli.
@@ -128,7 +131,9 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, sav
         <ToggleButton open={open} onToggle={() => setOpen((o) => !o)} />
       </div>
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
-        Bingung mulai dari mana? Ikuti urutan ini biar poinmu naik paling cepat.
+        {closed
+          ? <>Program fasilitator sudah ditutup. Badge keahlian tetap menambah poin Season 2026.</>
+          : <>Bingung mulai dari mana? Ikuti urutan ini biar poinmu naik paling cepat.</>}
       </div>
       <Collapse open={open}>
         {savedTodo.length > 0 && <MyTargets items={savedTodo} onShowSaved={onShowSaved} />}
@@ -155,15 +160,29 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, sav
           <li className="sh-step">
             <span className="sh-num">{gamesTotal > 0 ? 2 : 1}</span>
             <div className="sh-main">
-              <div className="sh-title"><IconTarget width="17" height="17" /> Kumpulkan badge keahlian <span className="sh-count">target {target.short}</span></div>
-              <p className="sh-desc">
-                Setiap <b>2 badge skill = 1 poin</b>. Kejar target terdekatmu: <b>{target.n}</b> ({target.g} game + {target.s} badge), bonusnya <b>+{target.bonus} poin</b> di luar poin game dan badge. Belum tahu badge mana? Buka daftar di bawah dan mulai dari topik yang paling kamu minati.
-              </p>
-              <div className="sh-bars">
-                <Bar label="Game" cur={fg} req={target.g} />
-                <Bar label="Badge" cur={fs} req={target.s} />
-              </div>
-              {score && <PaceStrip p={proj} />}
+              <div className="sh-title"><IconTarget width="17" height="17" /> Kumpulkan badge keahlian {!closed && <span className="sh-count">target {target.short}</span>}</div>
+              {closed ? (
+                // Target milestone tidak lagi ditampilkan setelah program tutup: bonusnya sudah
+                // tidak bisa dikejar, jadi menyebut "kurang 6 game + 14 badge" cuma menyesatkan.
+                <p className="sh-desc">
+                  Setiap <b>2 badge skill = 1 poin</b> Season. Bonus milestone fasilitator sudah tidak
+                  bisa dikejar lagi, jadi badge di sini murni penambah poin dasar. Belum tahu badge
+                  mana? Buka daftar di bawah dan mulai dari topik yang paling kamu minati.
+                </p>
+              ) : (
+                <p className="sh-desc">
+                  Setiap <b>2 badge skill = 1 poin</b>. Kejar target terdekatmu: <b>{target.n}</b> ({target.g} game + {target.s} badge), bonusnya <b>+{target.bonus} poin</b> di luar poin game dan badge. Belum tahu badge mana? Buka daftar di bawah dan mulai dari topik yang paling kamu minati.
+                </p>
+              )}
+              {!closed && (
+                <div className="sh-bars">
+                  {/* Bar Game disembunyikan saat belum ada game bulan berjalan: angkanya tidak akan
+                      bergerak, dan itu terbaca seperti peserta yang tertinggal. */}
+                  {gamesTotal > 0 && <Bar label="Game" cur={fg} req={target.g} />}
+                  <Bar label="Badge" cur={fs} req={target.s} />
+                </div>
+              )}
+              {score && !closed && <PaceStrip p={proj} />}
               {/* Tanpa profil tersinkron, badge "belum" tidak bisa dipercaya, jadi
                   shortlist hanya muncul setelah poin dihitung. */}
               {score && shortlist.length > 0 && (
@@ -186,11 +205,15 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, sav
                 </div>
               )}
               <button className="sh-cta" onClick={onShowSkills}>
-                {score && proj.needSkills > 0 ? `Lihat ${proj.needSkills} badge yang dibutuhkan` : 'Lihat badge yang belum'} <IconArrowRight width="14" height="14" />
+                {score && !closed && proj.needSkills > 0 ? `Lihat ${proj.needSkills} badge yang dibutuhkan` : 'Lihat badge yang belum'} <IconArrowRight width="14" height="14" />
               </button>
             </div>
           </li>
         </ol>
+        {/* Tangga milestone disembunyikan setelah program fasilitator tutup: angkanya tidak bisa
+            dikejar lagi, jadi menampilkannya cuma menuntun ke target yang mustahil. */}
+        {!closed && (
+        <>
         <div className="sh-ladder" role="list" aria-label="Tahap milestone">
           {MS.map((m, i) => {
             const done = fg >= m.g && fs >= m.s
@@ -227,6 +250,8 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, sav
           Milestone 2, bonusmu {MS[1].bonus} poin, bukan {MS[0].bonus} + {MS[1].bonus}. Poin dari
           game dan badge tetap dihitung terpisah dan tidak hangus.
         </p>
+        </>
+        )}
       </Collapse>
     </div>
   )
