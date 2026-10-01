@@ -133,6 +133,9 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, sav
       <Collapse open={open}>
         {savedTodo.length > 0 && <MyTargets items={savedTodo} onShowSaved={onShowSaved} />}
         <ol className="sh-steps">
+          {/* Tanpa game bulan berjalan (saat Google belum merilis bulan baru) langkah ini tidak
+              ditampilkan sama sekali, daripada menampilkan "Kerjakan Game dulu 0/0". */}
+          {gamesTotal > 0 && (
           <li className="sh-step">
             <span className="sh-num">1</span>
             <div className="sh-main">
@@ -148,8 +151,9 @@ function StartHere({ score, gamesDone, gamesTotal, gamesOff = [], skillTodo, sav
               <button className="sh-cta" onClick={onShowGames}>Lihat {gamesTotal} Game <IconArrowRight width="14" height="14" /></button>
             </div>
           </li>
+          )}
           <li className="sh-step">
-            <span className="sh-num">2</span>
+            <span className="sh-num">{gamesTotal > 0 ? 2 : 1}</span>
             <div className="sh-main">
               <div className="sh-title"><IconTarget width="17" height="17" /> Kumpulkan badge keahlian <span className="sh-count">target {target.short}</span></div>
               <p className="sh-desc">
@@ -402,9 +406,11 @@ function BadgeRow({ it, saved, onSave }) {
   )
 }
 
-const PG_MONTHS = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli']
+// Indeks = `m` di PAST_GAMES. WAJIB memuat SETIAP bulan yang dipakai PAST_GAMES: daftar ini dulu
+// berhenti di Juli, jadi grup Agustus tampil sebagai "undefined 2026" tanpa error apa pun.
+const PG_MONTHS = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
 
-// Arsip game Jan-Jul 2026. Tidak bisa dikerjakan lagi (halaman game-nya ditutup), tapi poinnya
+// Arsip game Jan-Sep 2026. Tidak bisa dikerjakan lagi (halaman game-nya ditutup), tapi poinnya
 // TETAP masuk total Season, jadi ini penjelasan dari mana poin peserta lama datang.
 function PastGames({ gameBadges }) {
   const [open, setOpen] = useState(false)
@@ -427,7 +433,7 @@ function PastGames({ gameBadges }) {
         <ToggleButton open={open} onToggle={() => setOpen((o) => !o)} />
       </div>
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
-        Game Arcade Januari–Juli 2026 yang sudah ditutup. Tidak bisa dikerjakan lagi, tapi kalau kamu
+        Game Arcade Januari–September 2026 yang sudah ditutup. Tidak bisa dikerjakan lagi, tapi kalau kamu
         sempat main, poinnya tetap dihitung di total Season 2026
         {mine.length > 0 && <> — punyamu <b>{mine.length} game = {minePts} poin</b></>}.
       </div>
@@ -447,7 +453,7 @@ function PastGames({ gameBadges }) {
           </div>
         ))}
         <div className="blnote">
-          Sumber: bagian “Game over!” di halaman resmi Google Skills Arcade (arsip 1 Agu 2026).
+          Sumber: bagian “Game over!” di halaman resmi Google Skills Arcade (arsip 1 Okt 2026).
           Game spesial bernilai 2–3 poin, sisanya 1 poin. “Arcade Skill Up Summer” dan “Arcade
           Expressive Efficiency” berjalan dua bulan (Mei–Juni) jadi hanya dihitung sekali.
         </div>
@@ -558,7 +564,9 @@ export default function Catalog() {
 
         <div className="catcontrols">
           <div className="cattabs">
-            {[['all', 'Semua', items.length], ['game', 'Game', gameCount], ['skill', 'Skill', skillCount]].map(([k, l, n]) => (
+            {[['all', 'Semua', items.length], ['game', 'Game', gameCount], ['skill', 'Skill', skillCount]]
+              .filter(([k]) => k !== 'game' || gameCount > 0)
+              .map(([k, l, n]) => (
               <button key={k} className={type === k ? 'on' : ''} onClick={() => setType(k)}>
                 {l} <span className="tabn">{n}</span>
               </button>

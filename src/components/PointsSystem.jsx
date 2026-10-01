@@ -20,7 +20,10 @@ function Badge() {
 const GameImg = ({ g }) => <img className="ps-game" src={g.img} alt="" loading="lazy" width="40" height="40" />
 
 export default function PointsSystem() {
-  const example = GAME_CATALOG[1] || GAME_CATALOG[0] // 1 game untuk contoh
+  // GAME_CATALOG bisa kosong saat Google belum merilis game bulan baru. Dulu baris contoh di
+  // bawah memakai GAME_CATALOG[0] tanpa penjagaan, jadi `g.img` melempar TypeError dan seluruh
+  // halaman Info ikut blank. Baris "Contoh" sekarang hanya muncul kalau ada game.
+  const example = GAME_CATALOG[1] || GAME_CATALOG[0]
   return (
     <div className="infocard psys">
       <div className="ic-t">Sistem Poin</div>
@@ -38,11 +41,13 @@ export default function PointsSystem() {
           <span className="ps-desc">×2 badge = <b>1 poin</b></span>
         </div>
       </div>
-      <div className="ps-example">
-        <span className="ps-ex-label">Contoh</span>
-        <span className="ps-ex-icons"><Badge /><Badge /><GameImg g={example} /></span>
-        <span className="ps-ex-eq">= <b>2 poin</b></span>
-      </div>
+      {example && (
+        <div className="ps-example">
+          <span className="ps-ex-label">Contoh</span>
+          <span className="ps-ex-icons"><Badge /><Badge /><GameImg g={example} /></span>
+          <span className="ps-ex-eq">= <b>2 poin</b></span>
+        </div>
+      )}
     </div>
   )
 }

@@ -87,6 +87,9 @@ const GAMES = GAME_CATALOG.map((g) => ({ name: g.short, sub: g.sub, img: g.img, 
 
 // Game Arcade bulan ini (foto badge asli) + status selesai/belum
 export function MonthlyGames({ badges }) {
+  // Tanpa game bulan berjalan kartu ini tidak dirender: judulnya jadi "0/0" dengan grid kosong,
+  // dan itu cuma membingungkan (game bulan lalu sudah pindah ke arsip Game Terdahulu).
+  if (!GAMES.length) return null
   const done = (re) => badges.some((b) => b.cat !== 'skill' && re.test(b.title))
   // Game yang ditarik sementara tetap ikut penyebut: poinnya tetap dihitung lewat sesi susulan.
   const nDone = GAMES.filter((g) => done(g.re)).length
