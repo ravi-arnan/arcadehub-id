@@ -6,7 +6,7 @@ export default function Deadline() {
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 60000); return () => clearInterval(t) }, [])
   const ms = DEADLINE.getTime() - now
-  if (ms <= 0) return <span className="dl closed">Program fasilitator ditutup</span>
+  if (ms <= 0) return null
   const days = Math.floor(ms / 864e5)
   const hours = Math.floor((ms % 864e5) / 36e5)
   // Batasnya 29 Sep 23.59 WIB. Tanpa timeZone eksplisit, browser di WITA/WIT (UTC+8/+9) akan

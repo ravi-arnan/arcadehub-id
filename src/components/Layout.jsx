@@ -5,7 +5,6 @@ import { titleFor } from '../routes.jsx'
 import SpaceFX from '../SpaceFX.jsx'
 import Nav from './Nav.jsx'
 import Footer from './Footer.jsx'
-import Deadline from './Deadline.jsx'
 import RouteSkeleton from './RouteSkeleton.jsx'
 
 // Tombol masukan (pakai Radix Popover) di-defer, tidak kritis untuk render awal.
@@ -46,7 +45,6 @@ export default function Layout() {
 
       <main className="main">
         <div className="app">
-          <div className="deadline"><Deadline /></div>
           <AnimatePresence mode="wait">
             <m.div key={location.pathname} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22, ease: 'easeOut' }}>
