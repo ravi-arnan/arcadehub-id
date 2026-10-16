@@ -9,4 +9,4 @@ Allow: /
 # Endpoint API tidak punya isi untuk diindeks dan sebagian menulis ke database.
 Disallow: /api/
 
-Sitemap: https://arcadehub-id.vercel.app/sitemap.xml
+Sitemap: https://arcadehub.web.id/sitemap.xml

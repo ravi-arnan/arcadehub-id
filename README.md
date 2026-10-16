@@ -4,7 +4,7 @@ Tracker poin **Google Cloud Arcade** untuk komunitas fasilitator. Tempel link
 public profile Cloud Skills Boost, dan poin, milestone, tier hadiah, serta
 leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 
-**Live:** https://arcadehub-id.vercel.app
+**Live:** https://arcadehub.web.id (atau https://arcadehub-id.vercel.app)
 
 > Tool komunitas, tidak berafiliasi resmi dengan Google. Perhitungan poin
 > bersifat best-effort dari badge yang ada di profil publik.

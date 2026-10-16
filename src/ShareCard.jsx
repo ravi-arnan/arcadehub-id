@@ -72,7 +72,7 @@ function drawCard(ctx, score) {
   ctx.strokeStyle = 'rgba(255,255,255,.1)'; ctx.lineWidth = 2
   ctx.beginPath(); ctx.moveTo(120, 975); ctx.lineTo(W - 120, 975); ctx.stroke()
   ctx.fillStyle = INK; ctx.font = "600 30px 'Segoe UI', sans-serif"
-  ctx.fillText('arcadehub-id.vercel.app', W / 2, 1025)
+  ctx.fillText('arcadehub.web.id', W / 2, 1025)
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -116,7 +116,7 @@ export default function ShareCard({ score, onClose }) {
   const share = async () => {
     if (!blob) return
     const file = new File([blob], fileName, { type: 'image/png' })
-    const text = `Progress Google Cloud Arcade 2026 aku: ${score?.total || 0} poin. Cek & hitung punyamu di arcadehub-id.vercel.app`
+    const text = `Progress Google Cloud Arcade 2026 aku: ${score?.total || 0} poin. Cek & hitung punyamu di arcadehub.web.id`
     try {
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({ files: [file], title: 'Arcade Hub', text })
