@@ -1,8 +1,8 @@
 // Arcade Hub service worker, minimal, install-enabling + offline shell.
 // v2: ikon diganti (logo joystick menggantikan inisial AH). Nama cache WAJIB naik, kalau
-// tidak klien lama tetap menyajikan icon-192/512 versi lama dari cache selamanya.
-const CACHE = 'arcadehub-v2'
-const SHELL = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png']
+// v3: precache /PressStart2P.woff2 untuk rendering font instan dan offline shell.
+const CACHE = 'arcadehub-v3'
+const SHELL = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/PressStart2P.woff2']
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()))

@@ -189,8 +189,14 @@ export default function Leaderboard() {
     return [...map.entries()].sort((a, b) => b[1] - a[1])
   }, [members])
 
-  const shown = filter === 'ALL' ? members : members.filter((m) => guildKey(m.guild) === filter)
-  const reached = MS.map((_, i) => shown.filter((p) => p.tier_idx >= i).length)
+  const shown = useMemo(
+    () => (filter === 'ALL' ? members : members.filter((m) => guildKey(m.guild) === filter)),
+    [members, filter],
+  )
+  const reached = useMemo(
+    () => MS.map((_, i) => shown.filter((p) => p.tier_idx >= i).length),
+    [shown],
+  )
   const isMe = (p) => (memberId && p.id === memberId) || (profileUrl && p.profile_url === profileUrl)
 
 

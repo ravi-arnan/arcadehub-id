@@ -9,19 +9,18 @@ export const HALLOWEEN = true
 // `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
 // tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT = {
-  id: '2026-10-01-halloween',
-  date: '1 Oktober 2026',
-  title: 'Game Arcade Oktober + spesial Halloween sudah rilis',
+  id: '2026-10-16-official-domain',
+  date: '16 Oktober 2026',
+  title: 'Arcade Hub resmi pindah ke arcadehub.web.id',
   body: [
-    'Enam game Arcade Oktober 2026 sudah tayang, termasuk game spesial Halloween Trick-or-Metric. Mainkan dulu selagi kuotanya ada: game Arcade bisa kedaluwarsa dan digantikan tiap bulan.',
-    'Buka tab Katalog untuk access code tiap game; klik kartunya dan kode otomatis tersalin. Tiap game bernilai 1 poin dan mengisi hitungan game untuk milestone.',
-    'Badge keahlian tetap menambah poin Season 2026: setiap 2 badge skill = 1 poin. Kejar tier hadiah lebih awal karena slotnya bersifat waterfall dan first-come.',
-    'Ada pertanyaan atau badge yang belum terdeteksi? Tanya di grup WhatsApp atau lewat tombol Masukan.',
+    'Kabar gembira, Arcade Hub sekarang resmi menggunakan domain baru arcadehub.web.id agar lebih mudah diingat dan diakses oleh komunitas fasilitator maupun peserta.',
+    'Domain lama arcadehub-id.vercel.app tetap aktif sebagai alias dan fallback, jadi tautan maupun bookmark yang sudah dibagikan sebelumnya tetap berfungsi normal.',
+    'Seluruh data profil, progres poin tersimpan, leaderboard guild, dan katalog badge tetap aman dan tersinkron otomatis seperti biasa.',
   ],
   links: [
+    { label: 'Buka arcadehub.web.id', href: 'https://arcadehub.web.id' },
     { label: 'Cek poin saya', href: '/points' },
-    { label: 'Lihat katalog badge', href: '/catalog' },
-    { label: 'Halaman Arcade resmi', href: 'https://go.cloudskillsboost.google/arcade' },
+    { label: 'Lihat leaderboard', href: '/leaderboard' },
   ],
   signature: 'R',
 }

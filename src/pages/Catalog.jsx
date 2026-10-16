@@ -283,7 +283,7 @@ function BadgeThumb({ it, onCopy }) {
     ? `Buka ${it.name} di Google Skills` + (it.code ? ' (access code otomatis tersalin)' : '')
     : `Buka ${it.name} di Google Skills`
   const cls = 'bc-badge' + (it.type !== 'game' ? (it.img ? ' bc-badge-skill' : ' bc-skillthumb') : '')
-  const thumb = it.img ? <img src={it.img} alt={it.name} loading="lazy" /> : <IconAward width="34" height="34" />
+  const thumb = it.img ? <img src={it.img} alt={it.name} loading="lazy" decoding="async" /> : <IconAward width="34" height="34" />
   if (!it.url) return <span className={cls}>{thumb}</span>
   return (
     <a className={cls} href={it.url} target="_blank" rel="noreferrer" onClick={onCopy} title={title}>
@@ -469,7 +469,7 @@ function PastGames({ gameBadges }) {
             <div className="bmonth-list">
               {items.map((g) => (
                 <div key={g.name} className={'bi g pg' + (g.done ? ' pg-done' : '')}>
-                  <img className="pg-img" src={pastGameImg(g.name)} alt="" loading="lazy" />
+                  <img className="pg-img" src={pastGameImg(g.name)} alt="" loading="lazy" decoding="async" />
                   <span className="pg-name">{g.done && <span className="pg-ok" aria-hidden>✓</span>}{g.name}</span>
                   <span className="pg-pts">{g.pts} poin</span>
                 </div>
