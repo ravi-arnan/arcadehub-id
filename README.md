@@ -1,12 +1,17 @@
 # Arcade Hub 🕹️
 
+[![CI](https://github.com/ravi-arnan/arcadehub-id/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ravi-arnan/arcadehub-id/actions/workflows/ci.yml)
+[![Live Site](https://img.shields.io/badge/Live-arcadehub.web.id-10b981?style=flat-square&logo=googlechrome&logoColor=white)](https://arcadehub.web.id)
+[![Tests](https://img.shields.io/badge/Tests-180%20passing-brightgreen?style=flat-square&logo=node.js&logoColor=white)](npm%20test)
+[![Lighthouse A11y](https://img.shields.io/badge/Lighthouse%20A11y-100-success?style=flat-square&logo=lighthouse&logoColor=white)](https://arcadehub.web.id)
 [![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/ravi-arnan/badge.svg)](https://hub.xerj.org/contributors/ravi-arnan)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
 Tracker poin **Google Cloud Arcade** untuk komunitas fasilitator. Tempel link
 public profile Cloud Skills Boost, dan poin, milestone, tier hadiah, serta
 leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 
-**Live:** https://arcadehub.web.id (atau https://arcadehub-id.vercel.app)
+**Live:** https://arcadehub.web.id
 
 > Tool komunitas, tidak berafiliasi resmi dengan Google. Perhitungan poin
 > bersifat best-effort dari badge yang ada di profil publik.
@@ -26,7 +31,7 @@ leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 
 ## Stack
 
-Vite + React · React Router v6 · Framer Motion · Radix UI ·
+Vite + React · React Router v7 · Framer Motion · Radix UI ·
 Vercel Serverless Functions · Turso (libSQL) · Vercel Cron.
 
 ## Mulai
