@@ -1163,7 +1163,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
   color:#dbe6fb;background:transparent;border:1px solid var(--line);text-decoration:none;transition:.14s}
 .ghost-btn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.3)}
 
-.ch-ways{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:26px 0 30px}
+.ch-ways{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:26px 0 30px}
 .wayc{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;transition:.14s}
 .wayc:hover{border-color:rgba(var(--gold-rgb),.5);transform:translateY(-2px);background:rgba(var(--gold-rgb),.06)}
 .wayc-h{font-weight:800;font-size:14px;color:#fff;margin-bottom:4px}

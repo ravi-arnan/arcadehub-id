@@ -38,10 +38,6 @@ export default function Contribute() {
           <div className="wayc-h">Good first issue</div>
           <div className="wayc-p">Baru mulai open source? Mulai dari sini.</div>
         </a>
-        <a className="wayc" href={CONFIG.addYourselfUrl} target="_blank" rel="noreferrer">
-          <div className="wayc-h">Tambahkan dirimu</div>
-          <div className="wayc-p">Edit <code>src/contributors.js</code> lewat PR.</div>
-        </a>
       </div>
 
       <div className="ct-grid">
@@ -58,10 +54,10 @@ export default function Contribute() {
             </div>
           </div>
         ))}
-        <a className="ct-card ct-add" href={CONFIG.addYourselfUrl} target="_blank" rel="noreferrer">
+        <a className="ct-card ct-add" href={CONFIG.repoUrl} target="_blank" rel="noreferrer">
           <div className="ct-plus">+</div>
           <div className="ct-name">Kamu berikutnya?</div>
-          <p className="ct-bio">Kontribusi sekecil apa pun dihargai. Tambahkan dirimu lewat PR.</p>
+          <p className="ct-bio">Kontribusi sekecil apa pun dihargai. Cek repo GitHub untuk mulai.</p>
         </a>
       </div>
     </div>
