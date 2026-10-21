@@ -1,5 +1,7 @@
 # Arcade Hub 🕹️
 
+[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/ravi-arnan/badge.svg)](https://hub.xerj.org/contributors/ravi-arnan)
+
 Tracker poin **Google Cloud Arcade** untuk komunitas fasilitator. Tempel link
 public profile Cloud Skills Boost, dan poin, milestone, tier hadiah, serta
 leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
