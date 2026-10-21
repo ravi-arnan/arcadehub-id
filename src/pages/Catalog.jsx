@@ -361,7 +361,7 @@ function SaveButton({ saved, onSave, className }) {
 // tapi tetap tampil supaya yang mau mengerjakannya tahu risikonya lebih dulu.
 function ProblemTag({ why, className }) {
   return (
-    <Tip label={'Badge bermasalah — ' + why}>
+    <Tip label={'Badge bermasalah: ' + why}>
       <span className={className} role="img" aria-label="Badge bermasalah">
         <IconAlert width="13" height="13" />
       </span>
@@ -460,7 +460,7 @@ function PastGames({ gameBadges }) {
       <div className="card-note" style={{ marginTop: 0, marginBottom: open ? 14 : 0 }}>
         Game Arcade Januari–September 2026 yang sudah ditutup. Tidak bisa dikerjakan lagi, tapi kalau kamu
         sempat main, poinnya tetap dihitung di total Season 2026
-        {mine.length > 0 && <> — punyamu <b>{mine.length} game = {minePts} poin</b></>}.
+        {mine.length > 0 && <> (punyamu <b>{mine.length} game = {minePts} poin</b>)</>}.
       </div>
       <Collapse open={open}>
         {months.map(([m, items]) => (

@@ -49,6 +49,13 @@ function IndexRedirect() {
   return <Navigate to={{ pathname: '/points', search }} replace />
 }
 
+// Redirect fallback: alias /swags dialihkan ke /prizes, sisanya ke /points.
+function NotFoundRedirect() {
+  const { pathname, search } = useLocation()
+  if (pathname === '/swags') return <Navigate to={{ pathname: '/prizes', search }} replace />
+  return <Navigate to={{ pathname: '/points', search }} replace />
+}
+
 export default function App() {
   return (
     <Routes>
@@ -62,7 +69,7 @@ export default function App() {
         <Route path="contribute" element={<Contribute />} />
         <Route path="roadmap" element={<Roadmap />} />
         <Route path="guilds" element={<Guilds />} />
-        <Route path="*" element={<Navigate to="/points" replace />} />
+        <Route path="*" element={<NotFoundRedirect />} />
       </Route>
     </Routes>
   )
