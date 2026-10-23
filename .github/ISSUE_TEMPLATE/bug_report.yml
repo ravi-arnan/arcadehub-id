@@ -1,4 +1,4 @@
-name: "🐛 Laporan Bug"
+name: "Laporan Bug"
 description: Laporkan sesuatu yang rusak atau salah hitung
 title: "[Bug]: "
 labels: ["bug"]

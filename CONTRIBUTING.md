@@ -2,10 +2,11 @@
 
 Makasih sudah mampir! Arcade Hub adalah tool komunitas (open source, MIT) untuk
 menghitung poin Google Cloud Arcade otomatis dari profil Cloud Skills Boost.
-Kontribusi sekecil apa pun dihargai. 🙌
+Kontribusi sekecil apa pun dihargai.
 
 ## Cara ikut
 
+- **Tertarik mengambil tugas di roadmap?** Cek issue berlabel [`roadmap: next`](https://github.com/ravi-arnan/arcadehub-id/issues?q=is%3Aissue+is%3Aopen+label%3A%22roadmap%3A+next%22) atau pantau pelacak utama di [Issue #15](https://github.com/ravi-arnan/arcadehub-id/issues/15).
 - **Nemu bug / punya ide?** [Buka issue](https://github.com/ravi-arnan/arcadehub-id/issues/new/choose).
 - **Baru mulai open source?** Lihat label
   [`good first issue`](https://github.com/ravi-arnan/arcadehub-id/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).

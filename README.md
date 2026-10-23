@@ -1,4 +1,4 @@
-# Arcade Hub 🕹️
+# Arcade Hub
 
 [![CI](https://github.com/ravi-arnan/arcadehub-id/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ravi-arnan/arcadehub-id/actions/workflows/ci.yml)
 [![Live Site](https://img.shields.io/badge/Live-arcadehub.web.id-10b981?style=flat-square&logo=googlechrome&logoColor=white)](https://arcadehub.web.id)
@@ -21,6 +21,7 @@ leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 - **Poin Saya**, hitung poin otomatis dari profil (base Arcade + bonus milestone),
   rincian per-badge, tier hadiah, chart aktivitas 7 hari, kategori badge.
 - **Leaderboard**, terbuka & multi-guild, ranking real-time, sinkron otomatis harian.
+- **Guilds**, perbandingan performa guild: total poin, rata-rata, poin tertinggi, dan sebaran milestone.
 - **Katalog**, 96 skill badge (51 dari silabus resmi + tambahan), game bulan berjalan,
   dan arsip game bulan-bulan sebelumnya, tandai selesai/belum.
 - **Hadiah**, tier Arcade Player 2026 (Trooper / Ranger / Champion / Legend).
@@ -54,7 +55,7 @@ project). Lihat daftar env di [`.env.example`](.env.example).
 src/
   App.jsx         definisi rute (react-router, tiap halaman lazy-load)
   routes.jsx      metadata nav (path + label + ikon)
-  pages/          satu file per halaman: Points, Leaderboard, Catalog, Prizes, Info, Contribute, Roadmap
+  pages/          satu file per halaman: Points, Leaderboard, Guilds, Catalog, Prizes, Info, Contribute, Roadmap
   components/     Layout, Nav, Footer, Deadline, Bar
   utils/          util kecil (time)
   contributors.js daftar kontributor, tambahkan dirimu di sini!
@@ -65,7 +66,7 @@ public/img/       aset gambar (hero, badge game, hadiah)
 scripts/          skrip build & migrasi (backup-neon, migrate-to-turso, verify-migration)
 ```
 
-Rute: `/points` (home) `/leaderboard` `/catalog` `/prizes` `/info` `/contribute`,
+Rute: `/points` (home) `/leaderboard` `/guilds` `/catalog` `/prizes` `/info` `/contribute`,
 plus `/roadmap` (tidak di nav, ditautkan dari footer).
 `/` diarahkan ke `/points` (atau `/leaderboard` bila ada `?guild=`).
 
@@ -79,6 +80,8 @@ PR dari luar sangat diterima! Lihat [CONTRIBUTING.md](CONTRIBUTING.md).
 Cara tercepat tampil di halaman **Kontributor**: tambahkan dirimu ke
 [`src/contributors.js`](src/contributors.js) lewat PR.
 
+- [Roadmap & backlog](https://arcadehub.web.id/roadmap) atau pantau di [Issue #15](https://github.com/ravi-arnan/arcadehub-id/issues/15)
+- [Issue roadmap prioritas dekat](https://github.com/ravi-arnan/arcadehub-id/issues?q=is%3Aissue+is%3Aopen+label%3A%22roadmap%3A+next%22)
 - [Buka issue](https://github.com/ravi-arnan/arcadehub-id/issues/new/choose)
 - [Good first issues](https://github.com/ravi-arnan/arcadehub-id/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 

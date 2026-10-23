@@ -106,7 +106,7 @@ export default function Roadmap() {
       <div className="card rm-intro">
         <div className="card-h">Roadmap Arcade Hub</div>
         <p className="rm-lead">Target dan arah pengembangan Arcade Hub. Tools ini open-source dan digerakkan komunitas fasilitator, jadi urutan bisa berubah sesuai kebutuhan dan masukan.</p>
-        <p className="rm-lead" style={{ marginTop: 8 }}>Punya ide atau nemu bug? Kirim lewat tombol <b>Masukan</b> di pojok, atau lihat cara ikut kontribusi di halaman <Link to="/contribute">Kontribusi</Link>.</p>
+        <p className="rm-lead" style={{ marginTop: 8 }}>Punya ide atau nemu bug? Kirim lewat tombol <b>Masukan</b> di pojok, lihat cara ikut kontribusi di halaman <Link to="/contribute">Kontribusi</Link>, atau pantau diskusi backlog di <a href="https://github.com/ravi-arnan/arcadehub-id/issues/15" target="_blank" rel="noreferrer">GitHub Issues #15</a>.</p>
       </div>
       <div className="rm-board">
         {/* "Sudah Rilis" (paling panjang) collapsed default; grup aktif tetap terbuka. */}
