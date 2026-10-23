@@ -45,6 +45,15 @@ jalan tanpa backend. Fitur **Leaderboard** & **feedback** butuh env
   reduced-motion.
 - Jangan commit rahasia. Semua kunci lewat env (lihat `.env.example`).
 
+## Bantuan AI (AI Assistance)
+
+Penggunaan asisten AI (seperti Claude, ChatGPT, Gemini, Cursor, Copilot, dsb.)
+sangat dipersilakan untuk membantu coding, debugging, atau menulis dokumen.
+Beberapa prinsip sederhana:
+- **Pahami kodenya**: pastikan kamu membaca dan mengerti apa yang dikerjakan oleh kode tersebut.
+- **Verifikasi**: selalu jalankan `npm test` dan `npm run build` sebelum membuka PR untuk memastikan tidak ada regresi atau halusinasi kode.
+- **Transparan**: cantumkan penjelasan singkat yang jelas pada PR mengenai perubahan yang dilakukan.
+
 ## Kode Etik
 
 Proyek ini mengikuti [Contributor Covenant](CODE_OF_CONDUCT.md). Dengan ikut

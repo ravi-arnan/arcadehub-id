@@ -76,7 +76,11 @@ Cara poin dihitung, dua window (season vs periode fasilitator), dan hardening
 
 ## Kontribusi
 
-PR dari luar sangat diterima! Lihat [CONTRIBUTING.md](CONTRIBUTING.md).
+PR dari luar sangat diterima! Kontribusi yang dibantu AI (AI assistance seperti
+Claude, Gemini, ChatGPT, Cursor, GitHub Copilot, dsb.) juga diperbolehkan,
+asalkan kamu tetap memahami perubahan yang dibuat dan memastikan verifikasi
+lokal (`npm run build` dan `npm test`) lulus hijau. Lihat [CONTRIBUTING.md](CONTRIBUTING.md).
+
 Cara tercepat tampil di halaman **Kontributor**: tambahkan dirimu ke
 [`src/contributors.js`](src/contributors.js) lewat PR.
 
