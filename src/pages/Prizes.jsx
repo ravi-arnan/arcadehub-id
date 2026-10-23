@@ -17,6 +17,7 @@ const SWAG_TIERS = [
     image: '/img/swags/trooper.webp',
     items: [
       { name: 'The Arcade Travel Bottle', desc: 'Botol stainless steel 5.5 cm ramping, anti-bocor' },
+      { name: 'The Arcade Magic Mug', desc: 'Cangkir keramik bunglon dengan desain arcade saat panas' },
     ],
     hasMore: true,
   },
@@ -29,6 +30,7 @@ const SWAG_TIERS = [
     items: [
       { name: 'The Arcade Backpack', desc: 'Ransel tahan cipratan air dengan slot laptop' },
       { name: 'The Arcade Travel Bottle', desc: 'Botol minum stainless steel ringkas' },
+      { name: 'The Arcade Magic Mug', desc: 'Cangkir keramik bunglon bersuhu panas ramah lingkungan' },
     ],
     hasMore: true,
   },
@@ -59,6 +61,17 @@ const SWAG_TIERS = [
 ]
 
 const SPOTLIGHT_ITEMS = [
+  {
+    name: 'The Arcade Magic Mug',
+    tiers: 'Trooper & Ranger',
+    image: '/img/swags/item-mug.webp',
+    forumUrl: 'https://discuss.google.dev/t/swag-drop-the-arcade-magic-mug/407455',
+    features: [
+      'Desain arcade tersembunyi muncul saat terkena panas',
+      'Warna putih minimalis saat suhu dingin',
+      'Material solid berbobot mantap dan ramah lingkungan',
+    ],
+  },
   {
     name: 'The Arcade Travel Bottle',
     tiers: 'Trooper & Ranger',

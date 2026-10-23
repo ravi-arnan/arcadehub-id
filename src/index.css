@@ -710,13 +710,12 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
   .foot-colgroup .fcol{min-width:120px}
 }
 
-@media(max-width:1100px){
+@media(max-width:980px){
   .topbar-inner{flex-direction:column;align-items:stretch;gap:10px;padding:10px 12px}
   .brand{justify-content:center}
-  .topnav{display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
-  .topnav .navitem{justify-content:center;padding:11px 0}
-  .topnav .navitem>span:not(.navpill){display:none}
-  .topnav svg{width:22px;height:22px}
+  .topnav{justify-content:center;gap:6px}
+  .topnav .navitem{padding:8px 10px;font-size:13px;gap:6px}
+  .topnav svg{width:16px;height:16px}
   /* Di sini isinya jadi dua baris (brand di atas nav), bentuknya blok bukan
      batang — radius pil penuh malah aneh, jadi dilembutkan saja. Padding tetap
      harus menyusut 10px seperti di desktop (10 -> 5) supaya tebusan 5px di
@@ -725,7 +724,11 @@ button.ri-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;bac
   .topbar.stuck .topbar-inner{padding:5px 14px}
 }
 
-@media(max-width:620px){
+@media(max-width:640px){
+  .topnav{display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
+  .topnav .navitem{justify-content:center;padding:11px 0}
+  .topnav .navitem>span:not(.navpill){display:none}
+  .topnav svg{width:22px;height:22px}
   .main{padding:20px 14px 48px}
 }
 button{font-family:inherit;cursor:pointer}
@@ -1431,18 +1434,21 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .tier-btn{margin-top:auto;padding:7px 10px;font-size:11.5px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:7px;color:#dbe6fb;cursor:pointer;text-align:center;transition:background-color .14s,border-color .14s}
 .tier-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:#fff}
 
-/* Spotlight Row (4 columns desktop) */
+/* Spotlight Row (5 columns desktop) */
 .spotlight-row{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(5,minmax(0,1fr));
   gap:12px;
   margin-top:14px;
   width:100%;
 }
-@media(max-width:900px){
+@media(max-width:960px){
+  .spotlight-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:640px){
   .spotlight-row{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media(max-width:520px){
+@media(max-width:480px){
   .spotlight-row{grid-template-columns:1fr}
 }
 
