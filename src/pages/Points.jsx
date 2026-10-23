@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { m } from 'framer-motion'
 import { MS, TIERS, tierForPoints } from '../points.js'
 import { useCountUp } from '../useCountUp.js'
@@ -75,11 +75,11 @@ function MyPoints() {
             onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} />
           <button className="joinbtn" onClick={submit}>Hitung</button>
         </div>
-        <input className="fin guildin" placeholder="Kode guild (opsional, mis. dari fasilitatormu)" value={guildInput}
+        <input className="fin guildin" placeholder="Kode guild (opsional, misal dari fasilitatormu)" value={guildInput}
           onChange={(e) => setGuildInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} />
         {err && <div className="ferr">{err}</div>}
         <p className="jp consent">Dengan menghitung poin, profilmu (nama & badge publik) otomatis tampil di <b>leaderboard komunitas</b>. Kamu bisa <b>keluar kapan saja</b> lewat tombol di halaman ini.</p>
-        <p className="jp" style={{ marginTop: 10, marginBottom: 0 }}>Profil harus di-set <b>PUBLIC</b> dulu di Cloud Skills Boost. Bingung cari link-nya? Lihat tab <b>Info</b>.</p>
+        <p className="jp" style={{ marginTop: 10, marginBottom: 0 }}>Profil harus di-set <b>PUBLIC</b> dulu di Cloud Skills Boost. Bingung cari link-nya? Lihat tab <Link to="/info">Info</Link>.</p>
       </div>
     )
   }
@@ -89,7 +89,7 @@ function MyPoints() {
     <div>
       <div className="total">
         <div>
-          <div className="lab">Total Poin Kamu {loading && <span className="spin">· menyinkron…</span>}</div>
+          <div className="lab">Total Poin Kamu {loading && <span className="spin">· Memutakhirkan data</span>}</div>
           <div className="big">{shownTotal}</div>
         </div>
         <div className="tier">{score?.tierIdx >= 0 ? 'Milestone ' + (score.tierIdx + 1) : 'Belum ada milestone'}</div>

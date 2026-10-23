@@ -38,7 +38,7 @@ export const CONFIG = {
   wcPlayerUrl: 'https://dicoding.id/Arcade26-WCPlayer',
   wcLeaderboardUrl: 'https://dicoding.id/Arcade26-PlayerLeaderboard',
   catalogUrl: 'https://www.cloudskillsboost.google/catalog',
-  profileHelp: 'https://www.cloudskillsboost.google/my_account/profile',
+  profileHelp: 'https://www.cloudskillsboost.google/my_account/profile#public-visibility',
   spamEmail: 'googlecloudedu-noreply@google.com',
   // Bonus Milestone 2026 (+10 poin, bikin AI Agent pertama). Diumumkan 31 Jul 2026.
   bonusForumUrl: 'https://discuss.google.dev/t/arcade-facilitator-2026-bonus-milestone/386412',

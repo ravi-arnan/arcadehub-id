@@ -47,4 +47,11 @@ export const CONTRIBUTORS = [
     bio: 'Peserta Google Cloud Arcade 2026 yang melaporkan 11 game Arcade tidak terbaca di kalkulator, membantu perbaikan deteksi badge game.',
     tags: ['Bug Report'],
   },
+  {
+    name: 'Harfi Alfaraby',
+    github: 'harfialpharaby',
+    web: 'https://hopingharfi.com/',
+    bio: 'Peserta Google Cloud Arcade 2026 yang bantu peningkatan UI/UX Arcade Hub.',
+    tags: ['Frontend Engineer', 'UI/UX'],
+  },
 ]
