@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { m } from 'framer-motion'
 import * as Dialog from '@radix-ui/react-dialog'
 import { ANNOUNCEMENT, type AnnouncementLink } from './config'
+import { IconX, IconExternalLink } from './icons'
 
 // Sekali tutup, tidak muncul lagi, sampai `id` di config.js diganti.
 const seenKey = (id: string): string => `ann-seen:${id}`
@@ -56,7 +57,7 @@ export default function Announcement(): React.JSX.Element | null {
           >
             <Dialog.Close asChild>
               <button className="sc-x" aria-label="Tutup">
-                ✕
+                <IconX style={{ width: 18, height: 18 }} />
               </button>
             </Dialog.Close>
             <Dialog.Title className="sc-title">{a.title}</Dialog.Title>
@@ -70,7 +71,7 @@ export default function Announcement(): React.JSX.Element | null {
               <div className="ann-links">
                 {a.links.map((l: AnnouncementLink) => (
                   <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">
-                    {l.label} <span aria-hidden>↗</span>
+                    {l.label} <IconExternalLink style={{ width: 14, height: 14, display: 'inline-block', verticalAlign: 'middle', marginLeft: 4 }} />
                   </a>
                 ))}
               </div>

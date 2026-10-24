@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import { IconGamepad, IconTent, IconTarget, IconHelp, IconAward } from './icons'
+import { IconGamepad, IconTent, IconTarget, IconHelp, IconAward, IconCheck } from './icons'
 import { GAME_CATALOG, type CatalogGame } from './catalog'
 import { HALLOWEEN } from './config'
 
@@ -143,7 +143,9 @@ export function MonthlyGames({ badges }: { badges: InsightBadge[] }) {
               <img src={g.img + '?v=6'} alt={g.name} loading="lazy" />
               <div className="gc-name">{g.name}</div>
               {g.sub && <div className="gc-sub">{g.sub}</div>}
-              <div className={'gc-status' + (ok ? ' ok' : '')}>{ok ? '✓ Selesai' : g.off ? 'Ditunda' : 'Belum'}</div>
+              <div className={'gc-status' + (ok ? ' ok' : '')}>
+                {ok ? <><IconCheck style={{ width: 14, height: 14, display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} />Selesai</> : g.off ? 'Ditunda' : 'Belum'}
+              </div>
               {g.off && <div className="gc-off">{g.off}</div>}
             </div>
           )

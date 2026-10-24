@@ -3,6 +3,7 @@ import { m } from 'framer-motion'
 import * as Dialog from '@radix-ui/react-dialog'
 import { TIERS, tierForPoints } from './points'
 import type { ProfileScore } from './profile'
+import { IconX } from './icons'
 
 const W = 1080
 const H = 1080
@@ -205,7 +206,7 @@ export default function ShareCard({ score, onClose }: ShareCardProps): React.JSX
           >
             <Dialog.Close asChild>
               <button className="sc-x" aria-label="Tutup">
-                ✕
+                <IconX style={{ width: 18, height: 18 }} />
               </button>
             </Dialog.Close>
             <Dialog.Title className="sc-title">Bagikan progress kamu</Dialog.Title>

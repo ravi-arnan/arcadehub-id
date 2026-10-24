@@ -22,7 +22,7 @@ export default function Layout() {
   // ditandai sentinel yang diparkir 20px dari puncak dokumen (lihat
   // .topbar-sentinel): begitu dia keluar viewport, state flip. Pakai
   // IntersectionObserver, bukan listener scroll, supaya scroll tidak memicu
-  // re-render sama sekali — cuma satu flip saat lewat batas.
+  // re-render sama sekali, cuma satu flip saat lewat batas.
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const [stuck, setStuck] = useState(false)
   useEffect(() => {

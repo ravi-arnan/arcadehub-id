@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { m } from 'framer-motion'
 import * as Popover from '@radix-ui/react-popover'
+import { IconX } from './icons'
 
 function IconMsg(): React.JSX.Element {
   return (
@@ -83,7 +84,7 @@ export default function FeedbackBubble(): React.JSX.Element {
               </span>
               <Popover.Close asChild>
                 <button className="fp-x" aria-label="Tutup">
-                  ✕
+                  <IconX style={{ width: 16, height: 16 }} />
                 </button>
               </Popover.Close>
             </div>

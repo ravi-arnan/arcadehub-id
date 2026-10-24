@@ -17,7 +17,7 @@ import BonusMilestone, { readBonusClaim } from '../components/BonusMilestone'
 import PointBreakdown from '../components/PointBreakdown'
 import { ago } from '../utils/time'
 import { guildKey, guildLabel } from '../../lib/guild.js'
-import { IconTrophy, IconTarget } from '../icons'
+import { IconTrophy, IconTarget, IconExternalLink, IconRefresh, IconChevronRight, IconArrowRight } from '../icons'
 import { projectMilestone } from '../../lib/projection.js'
 import type { Member } from '../types/arcade'
 
@@ -210,7 +210,7 @@ function MyPoints() {
         </span>
         <span className="myacts">
           <a className="miniref" href={profileUrl} target="_blank" rel="noreferrer">
-            Profil ↗
+            Profil <IconExternalLink style={{ width: 12, height: 12, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
           </a>
           <button
             type="button"
@@ -218,7 +218,12 @@ function MyPoints() {
             disabled={loading}
             onClick={() => fetchScore(profileUrl).catch(() => {})}
           >
-            {loading ? '…' : '↻ Refresh'}
+            {loading ? '…' : (
+              <>
+                <IconRefresh style={{ width: 12, height: 12, display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} />
+                Refresh
+              </>
+            )}
           </button>
           <button
             type="button"
@@ -272,7 +277,7 @@ function MyPoints() {
             aria-expanded={showBadges}
           >
             <span className="bt-chev" aria-hidden>
-              ▸
+              <IconChevronRight style={{ width: 14, height: 14, display: 'inline-block', verticalAlign: 'middle' }} />
             </span>{' '}
             Badge Saya ({score.seasonBadges.length})
           </button>
@@ -447,7 +452,7 @@ function HomeStats() {
             className="tw-link"
             onClick={() => navigate('/leaderboard')}
           >
-            Lihat semua →
+            Lihat semua <IconArrowRight style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 4 }} />
           </button>
         </div>
         <div className="top3">

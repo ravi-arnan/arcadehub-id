@@ -10,7 +10,7 @@ import Avatar from '../components/Avatar'
 import Collapse from '../components/Collapse'
 import { ago, dayMonth } from '../utils/time'
 import { guildKey, guildLabel } from '../../lib/guild.js'
-import { IconGamepad } from '../icons'
+import { IconGamepad, IconRefresh, IconExternalLink, IconChevronDown, IconArrowRight } from '../icons'
 
 export interface LeaderboardMember {
   id: string
@@ -118,7 +118,7 @@ function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }: PodiumCardP
             rel="noreferrer"
             aria-label={'Lihat profil ' + p.name}
           >
-            ↗
+            <IconExternalLink style={{ width: 13, height: 13 }} />
           </a>
         </Tip>
         <Tip label="Sinkronkan ulang poin">
@@ -129,7 +129,7 @@ function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }: PodiumCardP
             onClick={onRefresh}
             aria-label={'Sinkronkan ulang ' + p.name}
           >
-            {refreshing ? '…' : '↻'}
+            {refreshing ? '…' : <IconRefresh style={{ width: 13, height: 13 }} />}
           </button>
         </Tip>
       </div>
@@ -188,7 +188,7 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }: MemberRowProps) {
             rel="noreferrer"
             aria-label={'Lihat profil ' + p.name}
           >
-            ↗
+            <IconExternalLink style={{ width: 13, height: 13 }} />
           </a>
         </Tip>
         <Tip label="Sinkronkan ulang poin">
@@ -199,7 +199,7 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }: MemberRowProps) {
             onClick={onRefresh}
             aria-label={'Sinkronkan ulang ' + p.name}
           >
-            {refreshing ? '…' : '↻'}
+            {refreshing ? '…' : <IconRefresh style={{ width: 13, height: 13 }} />}
           </button>
         </Tip>
       </div>
@@ -382,11 +382,11 @@ export default function Leaderboard() {
                 </span>
                 <span className="gf-cnt">{shown.length}</span>
                 <span className="gf-chev" aria-hidden>
-                  ▾
+                  <IconChevronDown style={{ width: 14, height: 14, display: 'inline-block', verticalAlign: 'middle' }} />
                 </span>
               </button>
               <Link className="gf-compare" to="/guilds">
-                Bandingkan guild <span aria-hidden>→</span>
+                Bandingkan guild <IconArrowRight style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 4 }} />
               </Link>
               <Collapse open={filterOpen}>
                 <div className="gfilter gf-panel" id="gf-panel">
@@ -462,7 +462,7 @@ export default function Leaderboard() {
               onClick={() => load(true)}
               aria-label="Muat ulang leaderboard"
             >
-              ↻ Muat ulang
+              <IconRefresh style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} /> Muat ulang
             </button>
           </div>
 
@@ -570,7 +570,7 @@ export default function Leaderboard() {
             </>
           )}
           <div className="foot">
-            Poin dihitung otomatis dari badge di profil (best-effort). Klik ↗ untuk verifikasi. Untuk masuk guild fasilitator, buka link dengan ?guild=KODE.
+            Poin dihitung otomatis dari badge di profil (best-effort). Klik tombol profil untuk verifikasi. Untuk masuk guild fasilitator, buka link dengan ?guild=KODE.
           </div>
         </>
       )}

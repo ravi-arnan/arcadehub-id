@@ -11,7 +11,7 @@ import { GEAR_BADGES, SKILL_CATALOG, courseUrl, skillEarned, norm } from '../cat
 import { CONFIG } from '../config'
 import Collapse from './Collapse'
 import ToggleButton from './ToggleButton'
-import { IconArrowRight, IconTrophy } from '../icons'
+import { IconArrowRight, IconTrophy, IconCheck } from '../icons'
 
 const KEY = 'gcaf2026_bonus_done'
 // Diekspor supaya Rincian Poin bisa memakai nilai awal yang sama tanpa menduplikasi kuncinya.
@@ -79,11 +79,15 @@ export default function BonusMilestone({ score, onClaimChange }: BonusMilestoneP
 
       <div className="bm-req">
         <div className="bm-rrow">
-          <span className={'bm-dot' + (msOk ? ' ok' : '')} aria-hidden>{msOk ? '✓' : ''}</span>
+          <span className={'bm-dot' + (msOk ? ' ok' : '')} aria-hidden>
+            {msOk ? <IconCheck style={{ width: 12, height: 12 }} /> : ''}
+          </span>
           <span>Milestone 1 sudah terbuka {msOk ? '' : '(syarat ikut)'}</span>
         </div>
         <div className="bm-rrow">
-          <span className={'bm-dot' + (gearDone === gear.length ? ' ok' : '')} aria-hidden>{gearDone === gear.length ? '✓' : ''}</span>
+          <span className={'bm-dot' + (gearDone === gear.length ? ' ok' : '')} aria-hidden>
+            {gearDone === gear.length ? <IconCheck style={{ width: 12, height: 12 }} /> : ''}
+          </span>
           <span>4 badge GEAR selesai <b>{gearDone}/{gear.length}</b></span>
         </div>
       </div>

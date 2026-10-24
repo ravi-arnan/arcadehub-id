@@ -15,6 +15,8 @@ const SWAG_TIERS: SwagTier[] = [
     name: 'Trooper',
     minPts: 50,
     spots: 6000,
+    stars: 1,
+    badgeSvg: '/img/arcade/arcade-trooper.svg',
     image: '/img/swags/trooper.webp',
     items: [
       { name: 'The Arcade Travel Bottle', desc: 'Botol stainless steel 5.5 cm ramping, anti-bocor' },
@@ -27,6 +29,8 @@ const SWAG_TIERS: SwagTier[] = [
     name: 'Ranger',
     minPts: 75,
     spots: 4000,
+    stars: 2,
+    badgeSvg: '/img/arcade/arcade-ranger.svg',
     image: '/img/swags/ranger.webp',
     items: [
       { name: 'The Arcade Backpack', desc: 'Ransel tahan cipratan air dengan slot laptop' },
@@ -40,6 +44,8 @@ const SWAG_TIERS: SwagTier[] = [
     name: 'Champion',
     minPts: 95,
     spots: 3000,
+    stars: 3,
+    badgeSvg: '/img/arcade/arcade-champion.svg',
     image: '/img/swags/champion.webp',
     items: [
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready berlogo Google Cloud' },
@@ -52,6 +58,8 @@ const SWAG_TIERS: SwagTier[] = [
     name: 'Legend',
     minPts: 120,
     spots: 2500,
+    stars: 4,
+    badgeSvg: '/img/arcade/arcade-legend.svg',
     image: '/img/swags/legend.webp',
     items: [
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready premium Google Cloud' },
@@ -186,10 +194,7 @@ export default function Prizes() {
 
       {/* Kartu Tier Hadiah */}
       <div className="card">
-        <div className="card-h">
-          Tier Hadiah &amp; Merchandise
-          <span className="card-tag">SEASON 2026</span>
-        </div>
+        <h2 className="card-h arcade-tier-title">ARCADE PRIZE TIERS · MUSIM 2026</h2>
         <div className="card-note" style={{ marginTop: 0, marginBottom: 14 }}>
           Merchandise resmi Google Cloud Arcade musim 2026. Penukaran dibuka serentak pada Prize Counter akhir tahun melalui sistem waterfall.
         </div>
@@ -203,6 +208,23 @@ export default function Prizes() {
                 key={tier.id}
                 className={'tier-card' + (isCurrent ? ' tier-card--current' : '') + (isReached ? ' tier-card--reached' : '')}
               >
+                <div className="tier-badge-header">
+                  <div className="tier-stars" role="img" aria-label={`${tier.stars} bintang`}>
+                    {Array.from({ length: tier.stars }).map((_, i) => (
+                      <img key={i} src="/img/arcade/star-arc-prize.svg" alt="" aria-hidden="true" className="tier-star-ic" width="18" height="18" />
+                    ))}
+                  </div>
+                  <img
+                    src={tier.badgeSvg}
+                    alt={`Arcade ${tier.name}`}
+                    className="tier-official-badge"
+                    width="64"
+                    height="64"
+                    loading="lazy"
+                  />
+                  <img src="/img/arcade/line_img.svg" alt="" className="tier-divider-line" aria-hidden="true" />
+                </div>
+
                 <div
                   className="tier-stage"
                   onClick={() => handleOpenTier(tier)}
@@ -234,7 +256,7 @@ export default function Prizes() {
 
                 <div className="tier-content">
                   <div className="tier-main-row">
-                    <h3 className="tier-name">{tier.name}</h3>
+                    <h3 className="tier-name">Arcade {tier.name}</h3>
                     <div className="tier-pts">
                       {tier.minPts} <small>poin</small>
                     </div>
@@ -270,10 +292,7 @@ export default function Prizes() {
 
       {/* Kartu Spesifikasi Merchandise */}
       <div className="card">
-        <div className="card-h">
-          Spesifikasi Merchandise Resmi
-          <span className="card-tag">OFFICIAL DROP</span>
-        </div>
+        <h2 className="card-h">Spesifikasi Merchandise Resmi</h2>
         <div className="card-note" style={{ marginTop: 0, marginBottom: 14 }}>
           Rincian fitur dikutip langsung dari pengumuman tim Google Skills Arcade di forum resmi. Klik kartu untuk melihat foto lebih dekat.
         </div>
@@ -352,7 +371,7 @@ export default function Prizes() {
           rel="noreferrer"
           className="pc-link"
         >
-          Pelajari ketentuan resmi di Google Developer Forum ↗
+          Pelajari ketentuan resmi di Google Developer Forum <IconExternalLink style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 4 }} />
         </a>
       </div>
 

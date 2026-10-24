@@ -57,8 +57,7 @@ export default function Contribute() {
   return (
     <div className="contrib">
       <section className="ch-hero">
-        <div className="ch-eyebrow">[ KOMUNITAS ]</div>
-        <h2 className="ch-title">Kontributor</h2>
+        <h2 className="ch-title">Kontributor Komunitas</h2>
         <p className="ch-sub">
           Orang-orang yang bikin Arcade Hub makin oke. Proyek ini <b>open source (MIT)</b>, siapa pun boleh ikut ngoding, lapor bug, atau nambah ide.
         </p>
