@@ -564,6 +564,7 @@ function BadgeCard({
         {it.done && (
           <span className="bc-check" title="Selesai">
             <IconCheck style={{ width: 12, height: 12 }} />
+            <span className="sr-only">Selesai</span>
           </span>
         )}
         <SaveButton saved={saved} onSave={onSave} className="bc-save" />

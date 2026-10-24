@@ -209,7 +209,7 @@ export default function Prizes() {
                 className={'tier-card' + (isCurrent ? ' tier-card--current' : '') + (isReached ? ' tier-card--reached' : '')}
               >
                 <div className="tier-badge-header">
-                  <div className="tier-stars" aria-label={`${tier.stars} bintang`}>
+                  <div className="tier-stars" role="img" aria-label={`${tier.stars} bintang`}>
                     {Array.from({ length: tier.stars }).map((_, i) => (
                       <img key={i} src="/img/arcade/star-arc-prize.svg" alt="" aria-hidden="true" className="tier-star-ic" width="18" height="18" />
                     ))}

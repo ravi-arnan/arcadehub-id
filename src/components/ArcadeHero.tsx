@@ -5,7 +5,12 @@ export default function ArcadeHero() {
   return (
     <div className="ahero" role="img" aria-label="Google Cloud Arcade: The Arcade">
       <picture>
-        <source media="(max-width: 640px)" srcSet="/img/arcade/header-mobile.webp" />
+        <source
+          media="(max-width: 640px)"
+          srcSet="/img/arcade/header-mobile.webp"
+          width="1200"
+          height="836"
+        />
         <img
           src="/img/arcade/header-desktop.webp"
           alt="Google Cloud Arcade: The Arcade"
