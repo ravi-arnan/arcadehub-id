@@ -32,17 +32,18 @@ leaderboard dihitung **otomatis** dari badge-mu. Gratis & open source.
 
 ## Stack
 
-Vite + React · React Router v7 · Framer Motion · Radix UI ·
+Vite + React (TypeScript) · React Router v7 · Framer Motion · Radix UI ·
 Vercel Serverless Functions · Turso (libSQL) · Vercel Cron.
 
 ## Mulai
 
 ```bash
 npm install
-npm run dev     # dev server
-npm run build   # build produksi
-npm test        # 180 unit test (poin, parser profil, katalog, dialek SQL/libSQL, proyeksi)
-npm run check:arcade   # bandingkan katalog dengan halaman Arcade resmi
+npm run dev         # dev server
+npm run typecheck   # validasi tipe TypeScript (0 errors)
+npm run build       # build produksi (Vite + prerender)
+npm test            # 180 unit test (poin, parser profil, katalog, dialek SQL/libSQL, proyeksi)
+npm run check:arcade # bandingkan katalog dengan halaman Arcade resmi
 ```
 
 Frontend jalan tanpa backend. Fitur **Leaderboard** & **feedback** butuh env.
@@ -53,17 +54,19 @@ project). Lihat daftar env di [`.env.example`](.env.example).
 
 ```
 src/
-  App.jsx         definisi rute (react-router, tiap halaman lazy-load)
-  routes.jsx      metadata nav (path + label + ikon)
+  main.tsx        entry point aplikasi
+  App.tsx         definisi rute (react-router, tiap halaman lazy-load)
+  routes.tsx      metadata nav (path + label + ikon)
   pages/          satu file per halaman: Points, Leaderboard, Guilds, Catalog, Prizes, Info, Contribute, Roadmap
-  components/     Layout, Nav, Footer, Deadline, Bar
+  components/     Layout, Nav, Footer, Deadline, Bar, BonusMilestone, MyBadges, dll
+  types/          definisi tipe TypeScript (arcade.ts)
   utils/          util kecil (time)
-  contributors.js daftar kontributor, tambahkan dirimu di sini!
+  contributors.ts daftar kontributor, tambahkan dirimu di sini!
   (Insights, ShareCard, Announcement, Medal, icons, Tip, SpaceFX, profile, points, config, catalog)
 lib/              logika poin + parser profil + DB + rate limit (backend)
 api/              serverless functions (join, leave, remove, leaderboard, refresh, refresh-all, feedback)
 public/img/       aset gambar (hero, badge game, hadiah)
-scripts/          skrip build & migrasi (backup-neon, migrate-to-turso, verify-migration)
+scripts/          skrip build & migrasi (prerender, backup-neon, migrate-to-turso, verify-migration)
 ```
 
 Rute: `/points` (home) `/leaderboard` `/guilds` `/catalog` `/prizes` `/info` `/contribute`,
@@ -79,10 +82,10 @@ Cara poin dihitung, dua window (season vs periode fasilitator), dan hardening
 PR dari luar sangat diterima! Kontribusi yang dibantu AI (AI assistance seperti
 Claude, Gemini, ChatGPT, Cursor, GitHub Copilot, dsb.) juga diperbolehkan,
 asalkan kamu tetap memahami perubahan yang dibuat dan memastikan verifikasi
-lokal (`npm run build` dan `npm test`) lulus hijau. Lihat [CONTRIBUTING.md](CONTRIBUTING.md).
+lokal (`npm run typecheck`, `npm run build`, dan `npm test`) lulus hijau. Lihat [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Cara tercepat tampil di halaman **Kontributor**: tambahkan dirimu ke
-[`src/contributors.js`](src/contributors.js) lewat PR.
+[`src/contributors.ts`](src/contributors.ts) lewat PR.
 
 - [Roadmap & backlog](https://arcadehub.web.id/roadmap) atau pantau di [Issue #15](https://github.com/ravi-arnan/arcadehub-id/issues/15)
 - [Issue roadmap prioritas dekat](https://github.com/ravi-arnan/arcadehub-id/issues?q=is%3Aissue+is%3Aopen+label%3A%22roadmap%3A+next%22)
