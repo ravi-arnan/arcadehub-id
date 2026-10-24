@@ -1,0 +1,480 @@
+import { useEffect, useState, lazy, Suspense } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { m } from 'framer-motion'
+import { MS, TIERS, tierForPoints } from '../points'
+import { useCountUp } from '../useCountUp'
+import { useMyProfile } from '../profile'
+import { WeeklyChart, CategoryTable, MonthlyGames } from '../Insights'
+import Medal from '../Medal'
+
+// Modal share (pakai Radix Dialog) hanya di-load saat tombol Bagikan diklik.
+const ShareCard = lazy(() => import('../ShareCard'))
+import Bar from '../components/Bar'
+import MyBadges from '../components/MyBadges'
+import Collapse from '../components/Collapse'
+import ArcadeHero from '../components/ArcadeHero'
+import BonusMilestone, { readBonusClaim } from '../components/BonusMilestone'
+import PointBreakdown from '../components/PointBreakdown'
+import { ago } from '../utils/time'
+import { guildKey, guildLabel } from '../../lib/guild.js'
+import { IconTrophy, IconTarget } from '../icons'
+import { projectMilestone } from '../../lib/projection.js'
+import type { Member } from '../types/arcade'
+
+// Guild tampil/ubah di tampilan tersinkron. Kosongkan lalu simpan tidak menghapus guild lama (backend COALESCE).
+function GuildRow() {
+  const { profileUrl, guild, loading, fetchScore } = useMyProfile()
+  const [edit, setEdit] = useState(false)
+  const [val, setVal] = useState(guild || '')
+  const save = () => {
+    fetchScore(profileUrl, val).catch(() => {})
+    setEdit(false)
+  }
+  if (!edit) {
+    return (
+      <div className="guildrow">
+        <span className="pmeta">
+          Guild: <b>{guild || 'belum diatur'}</b>
+        </span>
+        <button
+          type="button"
+          className="miniref"
+          onClick={() => {
+            setVal(guild || '')
+            setEdit(true)
+          }}
+        >
+          {guild ? 'Ubah' : 'Atur guild'}
+        </button>
+      </div>
+    )
+  }
+  return (
+    <div className="guildrow">
+      <input
+        className="fin guildin"
+        placeholder="Kode guild"
+        value={val}
+        autoFocus
+        onChange={(e) => setVal(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && save()}
+      />
+      <button
+        type="button"
+        className="miniref accent"
+        disabled={loading}
+        onClick={save}
+      >
+        Simpan
+      </button>
+      <button type="button" className="miniref" onClick={() => setEdit(false)}>
+        Batal
+      </button>
+    </div>
+  )
+}
+
+// Poin Saya: otomatis dari public profile Cloud Skills Boost (bukan input manual)
+function MyPoints() {
+  const {
+    profileUrl,
+    score,
+    guild,
+    loading,
+    err,
+    fetchScore,
+    clear,
+    leave,
+    canLeave,
+  } = useMyProfile()
+  const [input, setInput] = useState(profileUrl || '')
+  const [guildInput, setGuildInput] = useState(guild || '')
+  const [showBadges, setShowBadges] = useState(false)
+  const [showShare, setShowShare] = useState(false)
+  // Klaim bonus AI Agent dipegang di sini supaya Rincian Poin ikut berubah saat checkbox
+  // di kartu Bonus Milestone dicentang. Sumber kebenarannya tetap localStorage di kartu itu.
+  const [bonusDone, setBonusDone] = useState<boolean>(readBonusClaim)
+  const submit = () => {
+    if (input.trim()) fetchScore(input.trim(), guildInput).catch(() => {})
+  }
+  const handleLeave = () => {
+    if (
+      !window.confirm(
+        'Keluar dari leaderboard? Entrimu dihapus dari papan peringkat publik. Kamu bisa gabung lagi kapan saja dengan menghitung poin.'
+      )
+    )
+      return
+    leave()
+      .then(() => {
+        setInput('')
+        setGuildInput('')
+      })
+      .catch(() => {})
+  }
+
+  const total = score?.total || 0
+  const shownTotal = useCountUp(total)
+  const myTier = tierForPoints(total)
+
+  if (!score && !loading) {
+    return (
+      <div className="joincard">
+        <ArcadeHero />
+        <div className="jt">Hitung poin otomatis</div>
+        <p className="jp">
+          Tempel link <b>public profile Google Cloud Skills Boost</b> kamu. Poin, milestone, dan tier dihitung otomatis dari badge-mu. Tidak ada input manual.
+        </p>
+        <div className="frow">
+          <input
+            className="fin"
+            placeholder="https://www.cloudskillsboost.google/public_profiles/…"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && submit()}
+          />
+          <button type="button" className="joinbtn" onClick={submit}>
+            Hitung
+          </button>
+        </div>
+        <input
+          className="fin guildin"
+          placeholder="Kode guild (opsional, misal dari fasilitatormu)"
+          value={guildInput}
+          onChange={(e) => setGuildInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && submit()}
+        />
+        {err && <div className="ferr">{err}</div>}
+        <p className="jp consent">
+          Dengan menghitung poin, profilmu (nama &amp; badge publik) otomatis tampil di <b>leaderboard komunitas</b>. Kamu bisa <b>keluar kapan saja</b> lewat tombol di halaman ini.
+        </p>
+        <p className="jp" style={{ marginTop: 10, marginBottom: 0 }}>
+          Profil harus di-set <b>PUBLIC</b> dulu di Cloud Skills Boost. Bingung cari link-nya? Lihat tab <Link to="/info">Info</Link>.
+        </p>
+      </div>
+    )
+  }
+
+  const fg = score?.facilGames || 0
+  const fs = score?.facilSkills || 0
+  return (
+    <div>
+      <div className="total">
+        <div>
+          <div className="lab">
+            Total Poin Kamu {loading && <span className="spin">· Memutakhirkan data</span>}
+          </div>
+          <div className="big">{shownTotal}</div>
+        </div>
+        <div className="tier">
+          {(score?.tierIdx ?? -1) >= 0
+            ? 'Milestone ' + ((score?.tierIdx ?? 0) + 1)
+            : 'Belum ada milestone'}
+        </div>
+      </div>
+      <div className="breakdown">
+        <span className="chip">
+          Tier: <b>{myTier >= 0 ? TIERS[myTier].n : '-'}</b>
+        </span>
+      </div>
+
+      <PointBreakdown score={score} bonusDone={bonusDone} />
+
+      <div className="grid2">
+        <div className="icard">
+          <h3>Arcade Games</h3>
+          <div className="hint">total 2026</div>
+          <div className="statnum">{score?.games || 0}</div>
+        </div>
+        <div className="icard">
+          <h3>Skill Badges</h3>
+          <div className="hint">total 2026</div>
+          <div className="statnum">{score?.skills || 0}</div>
+        </div>
+      </div>
+
+      {/* Tanpa ini, peserta yang punya banyak completion badge melihat angka Skill Badges jauh
+          lebih kecil dari jumlah badge di profilnya dan tidak punya cara menebak sebabnya.
+          Ditampilkan sebagai catatan, bukan peringatan: tidak ada yang salah dengan profilnya. */}
+      {score?.seasonUnknown && score.seasonUnknown > 0 ? (
+        <div className="unknownnote">
+          <b>{score.seasonUnknown} badge</b> lain di profilmu tidak menambah poin. Program ini hanya
+          menghitung <b>Arcade Game</b> dan <b>badge keahlian resmi</b>; badge dari course biasa
+          (completion badge) tidak termasuk. Kalau menurutmu ada badge keahlian resmi yang terlewat,
+          kabari lewat tombol Masukan supaya katalognya kami perbarui.
+        </div>
+      ) : null}
+
+      <div className="myprofrow">
+        <span className="pmeta">
+          {score?.name ? score.name + ' · ' : ''}sync {score ? ago(score.syncedAt || '') : '-'}
+        </span>
+        <span className="myacts">
+          <a className="miniref" href={profileUrl} target="_blank" rel="noreferrer">
+            Profil ↗
+          </a>
+          <button
+            type="button"
+            className="miniref"
+            disabled={loading}
+            onClick={() => fetchScore(profileUrl).catch(() => {})}
+          >
+            {loading ? '…' : '↻ Refresh'}
+          </button>
+          <button
+            type="button"
+            className="miniref accent"
+            onClick={() => setShowShare(true)}
+          >
+            Bagikan
+          </button>
+          <button
+            type="button"
+            className="miniref"
+            onClick={() => {
+              clear()
+              setInput('')
+              setGuildInput('')
+            }}
+          >
+            Ganti
+          </button>
+        </span>
+      </div>
+      <GuildRow />
+      {canLeave && (
+        <div className="leaverow">
+          <span className="pmeta">Tampil di leaderboard komunitas.</span>
+          <button
+            type="button"
+            className="leavebtn"
+            disabled={loading}
+            onClick={handleLeave}
+          >
+            Keluar dari leaderboard
+          </button>
+        </div>
+      )}
+      {err && <div className="ferr">{err}</div>}
+      {showShare && (
+        <Suspense fallback={null}>
+          <ShareCard score={score} onClose={() => setShowShare(false)} />
+        </Suspense>
+      )}
+
+      <BonusMilestone score={score} onClaimChange={setBonusDone} />
+
+      {score?.seasonBadges && score.seasonBadges.length > 0 ? (
+        <div className="badgebox">
+          <button
+            type="button"
+            className={'badgetoggle' + (showBadges ? ' open' : '')}
+            onClick={() => setShowBadges(!showBadges)}
+            aria-expanded={showBadges}
+          >
+            <span className="bt-chev" aria-hidden>
+              ▸
+            </span>{' '}
+            Badge Saya ({score.seasonBadges.length})
+          </button>
+          <Collapse open={showBadges}>
+            <MyBadges badges={score.seasonBadges} />
+          </Collapse>
+        </div>
+      ) : null}
+
+      <div className="ladder">
+        <div className="hd">Milestone Fasilitator</div>
+        <div className="mnote">
+          Hanya menghitung badge sejak program fasilitator dibuka (13 Jul 2026). Badge sebelum itu tetap masuk total poin, tapi tidak mengisi milestone.
+        </div>
+        <MilestoneGap fg={fg} fs={fs} />
+        <m.div
+          className="msgrid"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={{ show: { transition: { staggerChildren: 0.08 } } }}
+        >
+          {MS.map((ms) => {
+            const done = fg >= ms.g && fs >= ms.s
+            const tierTotal = ms.g + Math.floor(ms.s / 2) + ms.bonus
+            return (
+              <m.div
+                key={ms.n}
+                className={'ms' + (done ? ' done' : '')}
+                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
+              >
+                <div className="mstop">
+                  <span className="name">
+                    <span className="mtrophy" aria-hidden="true">
+                      <IconTrophy />
+                    </span>
+                    {ms.n}
+                  </span>
+                  <span className="pts">
+                    +{ms.bonus} bonus
+                    <span className="ptot">{tierTotal} pts total</span>
+                  </span>
+                </div>
+                <div className="bars">
+                  <Bar label="Games" cur={fg} req={ms.g} />
+                  <Bar label="Badges" cur={fs} req={ms.s} />
+                </div>
+              </m.div>
+            )
+          })}
+        </m.div>
+      </div>
+
+      {score?.seasonBadges && score.seasonBadges.length > 0 && (
+        <>
+          <div className="dash-row">
+            <WeeklyChart badges={score.seasonBadges} />
+            <CategoryTable badges={score.seasonBadges} />
+          </div>
+          <MonthlyGames badges={score.seasonBadges} />
+        </>
+      )}
+    </div>
+  )
+}
+
+interface MilestoneGapProps {
+  fg: number
+  fs: number
+}
+
+function MilestoneGap({ fg, fs }: MilestoneGapProps) {
+  const proj = projectMilestone({ facilGames: fg, facilSkills: fs })
+  if (proj.done) {
+    return (
+      <div className="msgap done">
+        <span className="mg-ic" aria-hidden>
+          <IconTarget width="16" height="16" />
+        </span>
+        <div>Semua milestone tercapai. Badge berikutnya tetap menambah poin dasar.</div>
+      </div>
+    )
+  }
+  const parts: string[] = []
+  if (proj.needGames > 0) parts.push(`${proj.needGames} game`)
+  if (proj.needSkills > 0) parts.push(`${proj.needSkills} skill badge`)
+  return (
+    <div className="msgap">
+      <span className="mg-ic" aria-hidden>
+        <IconTarget width="16" height="16" />
+      </span>
+      <div>
+        <b>{proj.target?.n || ''}</b> tinggal {parts.join(' dan ')} lagi.
+        <div className="mg-sub">Sisa {proj.daysLeft} hari sampai penutupan.</div>
+      </div>
+    </div>
+  )
+}
+
+// Statistik komunitas + preview leaderboard top-3
+function HomeStats() {
+  const navigate = useNavigate()
+  const [members, setMembers] = useState<Member[] | null>(null)
+  useEffect(() => {
+    fetch('/api/leaderboard')
+      .then((r) => r.json())
+      .then((j) => setMembers(j.members || []))
+      .catch(() => setMembers([]))
+  }, [])
+  if (members === null) {
+    return (
+      <section className="home-extra">
+        <div className="stats3">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="stat skel">
+              <div className="s-n">·</div>
+              <div className="s-l">memuat…</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  if (members.length === 0) {
+    return (
+      <section className="home-extra">
+        <div className="lb-invite">
+          <div>
+            <div className="li-t">Leaderboard masih kosong</div>
+            <div className="li-p">
+              Jadilah peserta pertama. Poinmu langsung tampil dan bisa dilihat komunitas.
+            </div>
+          </div>
+          <button
+            type="button"
+            className="joinbtn"
+            onClick={() => navigate('/leaderboard')}
+          >
+            Masuk Leaderboard
+          </button>
+        </div>
+      </section>
+    )
+  }
+
+  const total = members.reduce((a, mem) => a + (mem.total || 0), 0)
+  const guilds = new Set(members.map((mem) => guildKey(mem.guild))).size
+  const top = members.slice(0, 3)
+  return (
+    <section className="home-extra">
+      <div className="stats3">
+        <div className="stat">
+          <div className="s-n">{members.length}</div>
+          <div className="s-l">Peserta terlacak</div>
+        </div>
+        <div className="stat">
+          <div className="s-n">{total.toLocaleString('id-ID')}</div>
+          <div className="s-l">Total poin komunitas</div>
+        </div>
+        <div className="stat">
+          <div className="s-n">{guilds}</div>
+          <div className="s-l">Guild</div>
+        </div>
+      </div>
+
+      <div className="topwrap">
+        <div className="tw-head">
+          <span>Peringkat teratas</span>
+          <button
+            type="button"
+            className="tw-link"
+            onClick={() => navigate('/leaderboard')}
+          >
+            Lihat semua →
+          </button>
+        </div>
+        <div className="top3">
+          {top.map((mem, i) => (
+            <div key={mem.id} className={'topcard r' + i}>
+              <div className="tc-medal">
+                <Medal i={i} />
+              </div>
+              <div className="tc-name">{mem.name}</div>
+              <div className="tc-guild">{guildLabel(mem.guild)}</div>
+              <div className="tc-pts">
+                {mem.total}
+                <span>poin</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default function Points() {
+  return (
+    <>
+      <MyPoints />
+      <HomeStats />
+    </>
+  )
+}

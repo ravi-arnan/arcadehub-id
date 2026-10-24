@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "typecheck": "tsc --noEmit",
     "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "test": "node --test",
@@ -26,7 +27,11 @@
   },
   "devDependencies": {
     "@neondatabase/serverless": "^1.1.0",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^7.0.2",
     "vite": "^6.0.7"
   }
 }
