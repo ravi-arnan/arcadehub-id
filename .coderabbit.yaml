@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 language: "en-US"
-tone_instructions: "Please write all review comments and summaries in Indonesian (Bahasa Indonesia) mixed with English technical terms. Keep it concise, direct, without emojis, and without fluff. Focus on TypeScript type safety, boundary checks, and React rendering efficiency."
+tone_instructions: "Concise, direct technical review without fluff or emojis. Focus on TypeScript type safety, boundary checks, and React rendering efficiency."
 reviews:
   profile: "chill"
   request_changes_workflow: false
