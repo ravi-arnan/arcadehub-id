@@ -2,6 +2,8 @@
 // chevron sh-chev yang berputar, aria-expanded) ditulis ulang di StartHere, PastGames, dan
 // BonusMilestone, jadi aria-expanded gampang tertinggal saat menambah bagian baru.
 
+import { IconChevronDown } from '../icons'
+
 export interface ToggleButtonProps {
   open: boolean
   onToggle: () => void
@@ -24,7 +26,10 @@ export default function ToggleButton({
       onClick={onToggle}
       aria-expanded={open}
     >
-      {open ? hideLabel : showLabel} <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>▾</span>
+      {open ? hideLabel : showLabel}{' '}
+      <span className={'sh-chev' + (open ? ' up' : '')} aria-hidden>
+        <IconChevronDown style={{ width: 14, height: 14, display: 'inline-block', verticalAlign: 'middle' }} />
+      </span>
     </button>
   )
 }

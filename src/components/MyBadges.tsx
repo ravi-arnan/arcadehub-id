@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { badgeUrl } from '../catalog'
+import { IconExternalLink } from '../icons'
 
 export interface MyBadgeItem {
   title: string
@@ -123,7 +124,7 @@ export default function MyBadges({ badges }: MyBadgesProps) {
                 >
                   {b.title}
                   <span className="bi-x" aria-hidden>
-                    ↗
+                    <IconExternalLink style={{ width: 12, height: 12, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
                   </span>
                 </a>
               ) : (

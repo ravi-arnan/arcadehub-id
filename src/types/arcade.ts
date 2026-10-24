@@ -58,6 +58,8 @@ export interface SwagTier {
   name: string
   minPts: number
   spots: number
+  stars: number
+  badgeSvg: string
   image: string
   items: SwagItemDetail[]
   hasMore?: boolean

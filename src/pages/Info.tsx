@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CONFIG, ANNOUNCEMENT } from '../config'
 import Collapse from '../components/Collapse'
 import PointsSystem from '../components/PointsSystem'
+import { IconExternalLink } from '../icons'
 
 // FAQ terkontrol (bukan <details> native) agar buka/tutupnya beranimasi seperti collapsible lain.
 function FaqItem({ q, a }: { q: string; a: string }) {
@@ -19,7 +20,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 const STEPS = [
-  ['Set profil jadi Public', 'Buka Cloud Skills Boost → menu profil → Edit profile → aktifkan "Make profile public".'],
+  ['Set profil jadi Public', 'Buka Cloud Skills Boost, lalu ke menu profil, klik Edit profile, dan aktifkan "Make profile public".'],
   ['Buka halaman profil publikmu', 'Di menu profil, klik "View public profile".'],
   ['Salin URL-nya', 'Copy alamat di address bar (formatnya cloudskillsboost.google/public_profiles/…), lalu tempel di tab Poin Saya.'],
 ]
@@ -61,7 +62,7 @@ export default function Info() {
             <div className="ann-links">
               {ANNOUNCEMENT.links.map((l) => (
                 <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-                  {l.label} <span aria-hidden>↗</span>
+                  {l.label} <IconExternalLink style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
                 </a>
               ))}
             </div>
@@ -88,7 +89,7 @@ export default function Info() {
           ))}
         </ol>
         <a className="ic-link" href={CONFIG.profileHelp} target="_blank" rel="noreferrer">
-          Buka pengaturan profil ↗
+          Buka pengaturan profil <IconExternalLink style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
         </a>
       </div>
 
@@ -97,7 +98,7 @@ export default function Info() {
         <div className="reslist">
           {RESOURCES.map(([label, url]) => (
             <a key={url} className="resitem" href={url} target="_blank" rel="noreferrer">
-              {label} <span>↗</span>
+              {label} <IconExternalLink style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
             </a>
           ))}
         </div>

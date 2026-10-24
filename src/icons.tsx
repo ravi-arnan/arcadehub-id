@@ -167,3 +167,36 @@ export const IconX: React.FC<IconProps> = (p) => (
     <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
 )
+
+export const IconCheck: React.FC<IconProps> = (p) => (
+  <svg {...S} {...p}>
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+)
+
+export const IconRefresh: React.FC<IconProps> = (p) => (
+  <svg {...S} {...p}>
+    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+    <path d="M3 3v5h5" />
+    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+    <path d="M16 21h5v-5" />
+  </svg>
+)
+
+export const IconChevronDown: React.FC<IconProps> = (p) => (
+  <svg {...S} {...p}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+)
+
+export const IconChevronRight: React.FC<IconProps> = (p) => (
+  <svg {...S} {...p}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+)
+
+export const IconStar: React.FC<IconProps> = (p) => (
+  <svg {...S} {...p}>
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+)

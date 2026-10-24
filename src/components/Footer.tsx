@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { CONFIG } from '../config'
 import { NAV } from '../routes'
 import { shortDate } from '../utils/time'
+import { IconExternalLink } from '../icons'
 
 declare const __BUILD_TIME__: string | undefined
 
@@ -18,13 +19,13 @@ const DWELL_BEFORE_REBOUND = 900
 
 // Wordmark penutup sengaja berada di luar batas scroll "wajar": halaman terasa
 // mentok di baris copyright, dan wordmark cuma tersingkap kalau pengguna
-// meneruskan scroll — lalu memantul balik sendiri.
+// meneruskan scroll, lalu memantul balik sendiri.
 //
 // Wordmark-nya tetap di alur dokumen (jadi benar-benar bisa di-scroll ke sana);
 // hook ini cuma (1) menerbitkan --reveal 0..1 sesuai sedalam apa pengguna
 // menarik, dan (2) menarik posisi scroll kembali ke batas setelah gerakan
-// berhenti. Tidak perlu transform di elemen induk — itu bakal merusak posisi
-// sticky topbar dan fixed FAB yang ada di dalamnya.
+// berhenti. Tidak perlu transform di elemen induk (itu bakal merusak posisi
+// sticky topbar dan fixed FAB yang ada di dalamnya).
 function useFooterReveal(
   footerRef: RefObject<HTMLElement | null>,
   markRef: RefObject<HTMLDivElement | null>
@@ -66,7 +67,7 @@ function useFooterReveal(
       // Pantulan dilewati kalau reduced-motion, tapi --reveal tetap jalan:
       // di sana pengguna boleh berhenti di bawah dan glow-nya harus ikut ada.
       if (reduced) return
-      // Menunggu scroll benar-benar berhenti, termasuk momentum trackpad —
+      // Menunggu scroll benar-benar berhenti, termasuk momentum trackpad:
       // menarik balik di tengah gerakan bikin scroll terasa dilawan.
       if (timer) clearTimeout(timer)
       timer = setTimeout(settle, DWELL_BEFORE_REBOUND)
@@ -126,16 +127,16 @@ export default function Footer() {
           <div className="fcol">
             <h4>Program</h4>
             <a className="flink" href={CONFIG.arcadeUrl} target="_blank" rel="noreferrer">
-              Halaman Arcade resmi ↗
+              Halaman Arcade resmi <IconExternalLink style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
             </a>
             <a className="flink" href={CONFIG.catalogUrl} target="_blank" rel="noreferrer">
-              Katalog badge ↗
+              Katalog badge <IconExternalLink style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
             </a>
           </div>
           <div className="fcol">
             <h4>Komunitas</h4>
             <a className="flink" href={CONFIG.whatsappUrl} target="_blank" rel="noreferrer">
-              Grup WhatsApp ↗
+              Grup WhatsApp <IconExternalLink style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginLeft: 3 }} />
             </a>
           </div>
         </div>
@@ -154,7 +155,7 @@ export default function Footer() {
       </div>
 
       {/* Wordmark raksasa. aria-hidden: murni dekorasi, namanya sudah diumumkan
-          oleh .brand-title di atas — tanpa ini screen reader membacanya dua kali. */}
+          oleh .brand-title di atas (tanpa ini screen reader membacanya dua kali). */}
       <div className="foot-markwrap" ref={markRef} aria-hidden="true">
         <div className="foot-mark">ARCADE HUB</div>
       </div>

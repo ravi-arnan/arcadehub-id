@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Collapse from '../components/Collapse'
+import { IconChevronDown } from '../icons'
 
 export interface RoadmapItem {
   title: string
@@ -174,7 +175,7 @@ function RmItem({ item, tone }: { item: RoadmapItem; tone: string }) {
       <button type="button" className="ri-head" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
         <div className="ri-title">{item.title}</div>
         <span className="ri-chev" aria-hidden>
-          ▾
+          <IconChevronDown style={{ width: 14, height: 14, display: 'inline-block', verticalAlign: 'middle' }} />
         </span>
       </button>
       <Collapse open={open}>
@@ -193,7 +194,7 @@ function Group({ group, defaultOpen }: { group: RoadmapGroup; defaultOpen: boole
         <span className="rm-count">{group.items.length}</span>
         <span className="rm-note">{group.note}</span>
         <span className="rm-chev" aria-hidden>
-          ▾
+          <IconChevronDown style={{ width: 14, height: 14, display: 'inline-block', verticalAlign: 'middle' }} />
         </span>
       </button>
       <Collapse open={open}>

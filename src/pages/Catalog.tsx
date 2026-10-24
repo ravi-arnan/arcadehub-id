@@ -37,6 +37,7 @@ import {
   IconZap,
   IconGithub,
   IconAlert,
+  IconCheck,
 } from '../icons'
 import type { BadgeItem, ScoreData } from '../types/arcade'
 
@@ -396,7 +397,7 @@ function StartHere({
                   >
                     <div className="sh-rtop">
                       <span className="sh-dot" aria-hidden>
-                        {done ? '✓' : m.short}
+                        {done ? <IconCheck style={{ width: 12, height: 12 }} /> : m.short}
                       </span>
                       <span className="sh-rlabel">{m.n}</span>
                     </div>
@@ -560,7 +561,11 @@ function BadgeCard({
       <div className="bc-top">
         <span className={'bc-tag ' + it.type}>{TYPE_LABEL[it.type]}</span>
         {it.isNew && <span className="bc-new" title="Badge unggulan batch terbaru">BARU</span>}
-        {it.done && <span className="bc-check" title="Selesai">✓</span>}
+        {it.done && (
+          <span className="bc-check" title="Selesai">
+            <IconCheck style={{ width: 12, height: 12 }} />
+          </span>
+        )}
         <SaveButton saved={saved} onSave={onSave} className="bc-save" />
         <BadgeThumb it={it} onCopy={copy} />
       </div>
@@ -623,7 +628,16 @@ function BadgeRow({
       <SolutionButton it={it} className="br-gh" />
       <span className="br-pts">{fmtPts(it.points)} Poin</span>
       <span className={'br-status' + (it.done ? ' ok' : '')}>
-        {it.done ? '✓ Selesai' : it.off ? 'Ditunda' : 'Belum'}
+        {it.done ? (
+          <>
+            <IconCheck style={{ width: 13, height: 13, display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} />
+            Selesai
+          </>
+        ) : it.off ? (
+          'Ditunda'
+        ) : (
+          'Belum'
+        )}
       </span>
     </div>
   )
@@ -700,7 +714,7 @@ function PastGames({ gameBadges }: { gameBadges: (BadgeItem & { title?: string }
                   <span className="pg-name">
                     {g.done && (
                       <span className="pg-ok" aria-hidden>
-                        ✓
+                        <IconCheck style={{ width: 12, height: 12 }} />
                       </span>
                     )}
                     {g.name}
