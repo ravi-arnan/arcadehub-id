@@ -12,6 +12,7 @@ export default function Medal({ i, className = '' }: MedalProps): React.JSX.Elem
   return (
     <svg
       className={'medal ' + className}
+      role="img"
       viewBox="0 0 24 24"
       fill="none"
       stroke={MEDAL_COLORS[i] || MEDAL_COLORS[0]}
