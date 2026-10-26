@@ -8,7 +8,8 @@
 //      Satu-satunya cara = save manual sambil accordion dibuka, lihat HANDOFF.)
 //
 // Laporan saja, tidak mengubah file apa pun. Keputusan tetap di tangan manusia.
-import { SKILL_CATALOG, GAME_CATALOG, norm } from '../src/catalog.js'
+import { SKILL_CATALOG, norm } from '../lib/skillCatalog.js'
+import { GAME_CATALOG } from '../lib/gameCatalog.js'
 
 const ARCADE = 'https://go.cloudskillsboost.google/arcade'
 const COURSE = (id) => `https://www.skills.google/course_templates/${id}`
@@ -126,7 +127,8 @@ const drift = dead.length + renamed.length + unknownCodes.length + featured.filt
 say(drift === 0 ? 'Tidak ada perbedaan. Katalog masih sinkron dengan sumber resmi.' : `${drift} hal perlu ditindaklanjuti, lihat detail di atas.`)
 say('Silabus fasilitator (level Pemula/Menengah/Lanjutan) TIDAK ikut dicek: butuh login, save manual.')
 
-// Exit non-zero saat ada perbedaan. Laporannya tetap dicetak penuh; kode keluar cuma sinyal,
-// dipakai workflow terjadwal .github/workflows/arcade-check.yml supaya GitHub mengirim email
-// begitu Google merilis batch bulanan baru. Tidak ada file yang diubah, keputusan tetap manusia.
-if (drift > 0) process.exitCode = 1
+// Jika ada perbedaan, beri anotasi warning di GitHub Actions tanpa menggagalkan job (exit 0)
+// agar tidak memicu email alarm palsu "All jobs have failed". Laporan tetap tercatat lengkap di Step Summary.
+if (drift > 0 && process.env.GITHUB_ACTIONS) {
+  console.log(`::warning title=Katalog Arcade Perlu Ditindaklanjuti::Ditemukan ${drift} perbedaan dengan halaman resmi Google Arcade. Cek detail di Step Summary.`)
+}

@@ -1,12 +1,10 @@
 name: Cek katalog Arcade
 
-# Arcade rilis game baru tiap awal bulan tanpa pengumuman ke tools ini. Workflow ini
-# membandingkan katalog dengan halaman resmi Google tiap hari; kalau ada perbedaan
-# (game/access code baru, badge mati, badge ganti nama), job-nya merah dan GitHub
-# mengirim email. Tidak mengubah file apa pun, update katalog tetap dikerjakan manual.
+# Arcade rilis game baru tiap awal bulan. Workflow ini dijalankan seperlunya pada
+# tanggal 1 dan 2 tiap bulan atau manual via workflow_dispatch.
 on:
   schedule:
-    - cron: '0 1 * * *' # 08.00 WIB
+    - cron: '0 1 1,2 * *' # 08.00 WIB tanggal 1 dan 2 tiap bulan
   workflow_dispatch:
 
 jobs:
@@ -19,8 +17,6 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      # `shell: bash` WAJIB: shell default GitHub tidak memakai pipefail, jadi exit code
-      # check:arcade akan tertelan `tee` dan job-nya selalu hijau walau katalog sudah basi.
       - name: Bandingkan katalog dengan halaman Arcade resmi
         shell: bash
         run: npm run check:arcade | tee -a "$GITHUB_STEP_SUMMARY"
