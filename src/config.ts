@@ -33,7 +33,7 @@ export const ANNOUNCEMENT: AnnouncementConfig = {
   ],
   links: [
     { label: 'Buka arcadehub.web.id', href: 'https://arcadehub.web.id' },
-    { label: 'Cek poin saya', href: '/points' },
+    { label: 'Cek poin saya', href: '/' },
     { label: 'Lihat leaderboard', href: '/leaderboard' },
   ],
   signature: 'R',

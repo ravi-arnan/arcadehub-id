@@ -65,7 +65,7 @@ export default function Guilds() {
   if (guilds.length === 0) {
     return (
       <div className="empty">
-        Belum ada peserta sama sekali. <Link to="/points">Hitung poinmu di Poin Saya</Link> untuk jadi yang pertama.
+        Belum ada peserta sama sekali. <Link to="/">Hitung poinmu di Poin Saya</Link> untuk jadi yang pertama.
       </div>
     )
   }

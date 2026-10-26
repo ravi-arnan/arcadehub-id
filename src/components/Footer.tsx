@@ -113,7 +113,7 @@ export default function Footer() {
           <div className="fcol">
             <h4>Menu</h4>
             {NAV.map(({ path, label }) => (
-              <NavLink key={path} to={path} className="flink">
+              <NavLink key={path} to={path} end={path === '/'} className="flink">
                 {label}
               </NavLink>
             ))}

@@ -2,6 +2,10 @@
   "crons": [
     { "path": "/api/refresh-all", "schedule": "0 22 * * *" }
   ],
+  "redirects": [
+    { "source": "/points", "destination": "/", "permanent": true },
+    { "source": "/swags", "destination": "/prizes", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],

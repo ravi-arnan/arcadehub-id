@@ -186,7 +186,7 @@ export default function Prizes() {
             <div className="li-t">Belum ada poin kamu</div>
             <div className="li-p">Hitung poinmu dulu untuk melihat tier yang kamu capai.</div>
           </div>
-          <button type="button" className="joinbtn" onClick={() => navigate('/points')}>
+          <button type="button" className="joinbtn" onClick={() => navigate('/')}>
             Hitung Poin Saya
           </button>
         </div>

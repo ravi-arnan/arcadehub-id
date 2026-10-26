@@ -8,7 +8,7 @@ export interface NavItem {
 
 // Definisi rute + metadata navigasi (dipakai Nav dan Footer).
 export const NAV: NavItem[] = [
-  { path: '/points', label: 'Poin Saya', icon: <path d="M3 12h4l3 8 4-16 3 8h4" /> },
+  { path: '/', label: 'Poin Saya', icon: <path d="M3 12h4l3 8 4-16 3 8h4" /> },
   { path: '/leaderboard', label: 'Leaderboard', icon: <path d="M8 21h8M12 17v4M6 4h12v4a6 6 0 0 1-12 0V4zM6 5H3v1a3 3 0 0 0 3 3M18 5h3v1a3 3 0 0 1-3 3" /> },
   { path: '/catalog', label: 'Katalog', icon: <g><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></g> },
   { path: '/prizes', label: 'Hadiah', icon: <path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" /> },

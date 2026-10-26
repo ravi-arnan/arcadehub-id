@@ -40,7 +40,7 @@ export default function Layout() {
 
       <header className={'topbar' + (stuck ? ' stuck' : '')}>
         <div className="topbar-inner">
-          <Link to="/points" className="brand">
+          <Link to="/" className="brand">
             <span className="brand-title">ARCADE HUB</span>
           </Link>
           <Nav />

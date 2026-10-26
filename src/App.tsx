@@ -43,25 +43,18 @@ const Contribute = lazyRoute(() => import('./pages/Contribute'))
 const Roadmap = lazyRoute(() => import('./pages/Roadmap'))
 const Guilds = lazyRoute(() => import('./pages/Guilds'))
 
-// "/" -> /points, meneruskan ?guild= supaya guild ikut terpakai saat auto-join dari Poin Saya.
-function IndexRedirect() {
-  const { search } = useLocation()
-  return <Navigate to={{ pathname: '/points', search }} replace />
-}
-
-// Redirect fallback: alias /swags dialihkan ke /prizes, sisanya ke /points.
+// Redirect fallback: alias /swags dialihkan ke /prizes, sisanya (termasuk /points) ke "/".
 function NotFoundRedirect() {
   const { pathname, search } = useLocation()
   if (pathname === '/swags') return <Navigate to={{ pathname: '/prizes', search }} replace />
-  return <Navigate to={{ pathname: '/points', search }} replace />
+  return <Navigate to={{ pathname: '/', search }} replace />
 }
 
 export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<IndexRedirect />} />
-        <Route path="points" element={<Points />} />
+        <Route index element={<Points />} />
         <Route path="leaderboard" element={<Leaderboard />} />
         <Route path="catalog" element={<Catalog />} />
         <Route path="prizes" element={<Prizes />} />

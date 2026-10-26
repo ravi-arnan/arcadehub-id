@@ -339,7 +339,7 @@ export default function Leaderboard() {
           Poin otomatis tersinkron dari tab <b>Poin Saya</b>. Masukkan link profil di sana, kamu langsung muncul di sini.
         </span>
         {!profileUrl && (
-          <Link className="joinbtn lb-note-btn" to="/points">
+          <Link className="joinbtn lb-note-btn" to="/">
             Masuk lewat Poin Saya
           </Link>
         )}
@@ -363,7 +363,7 @@ export default function Leaderboard() {
         </div>
       ) : members.length === 0 ? (
         <div className="empty">
-          Belum ada peserta. <Link to="/points">Hitung poinmu di Poin Saya</Link> untuk jadi yang pertama.
+          Belum ada peserta. <Link to="/">Hitung poinmu di Poin Saya</Link> untuk jadi yang pertama.
         </div>
       ) : (
         <>

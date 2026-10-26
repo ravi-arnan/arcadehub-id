@@ -54,6 +54,7 @@ export default function Nav() {
         <NavLink
           key={path}
           to={path}
+          end={path === '/'}
           aria-label={label}
           className={({ isActive }) => 'navitem' + (isActive ? ' on' : '')}
         >

@@ -857,7 +857,7 @@ export default function Catalog() {
               Hitung poin dulu di tab Poin Saya agar katalog menandai badge yang sudah kamu selesaikan.
             </div>
           </div>
-          <button type="button" className="joinbtn" onClick={() => navigate('/points')}>
+          <button type="button" className="joinbtn" onClick={() => navigate('/')}>
             Hitung Poin Saya
           </button>
         </div>
