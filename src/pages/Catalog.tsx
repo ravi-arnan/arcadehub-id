@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   SKILL_CATALOG,
@@ -222,7 +222,7 @@ interface StartHereProps {
   onShowSaved: () => void
 }
 
-function StartHere({
+const StartHere = memo(function StartHere({
   score,
   gamesDone,
   gamesTotal,
@@ -426,7 +426,7 @@ function StartHere({
       </Collapse>
     </div>
   )
-}
+})
 
 function useCopyCode(code?: string | null): [boolean, () => Promise<void>] {
   const [copied, setCopied] = useState(false)
@@ -539,16 +539,19 @@ function ProblemTag({ why, className }: { why: string; className: string }) {
   )
 }
 
-function BadgeCard({
-  it,
-  saved,
-  onSave,
-}: {
+interface BadgeCardProps {
   it: CatalogItem
   saved: boolean
-  onSave: () => void
-}) {
+  onToggle: (key: string) => void
+}
+
+const BadgeCard = memo(function BadgeCard({
+  it,
+  saved,
+  onToggle,
+}: BadgeCardProps) {
   const [copied, copy] = useCopyCode(it.code)
+  const handleSave = useCallback(() => onToggle(it.key), [onToggle, it.key])
   return (
     <div
       className={
@@ -567,7 +570,7 @@ function BadgeCard({
             <span className="sr-only">Selesai</span>
           </span>
         )}
-        <SaveButton saved={saved} onSave={onSave} className="bc-save" />
+        <SaveButton saved={saved} onSave={handleSave} className="bc-save" />
         <BadgeThumb it={it} onCopy={copy} />
       </div>
       <div className="bc-body">
@@ -600,21 +603,24 @@ function BadgeCard({
       </div>
     </div>
   )
-}
+})
 
-function BadgeRow({
-  it,
-  saved,
-  onSave,
-}: {
+interface BadgeRowProps {
   it: CatalogItem
   saved: boolean
-  onSave: () => void
-}) {
+  onToggle: (key: string) => void
+}
+
+const BadgeRow = memo(function BadgeRow({
+  it,
+  saved,
+  onToggle,
+}: BadgeRowProps) {
   const [copied, copy] = useCopyCode(it.code)
+  const handleSave = useCallback(() => onToggle(it.key), [onToggle, it.key])
   return (
     <div className={'badgerow' + (it.done ? ' done' : '') + (saved ? ' saved' : '')}>
-      <SaveButton saved={saved} onSave={onSave} className="br-save" />
+      <SaveButton saved={saved} onSave={handleSave} className="br-save" />
       <span className={'br-tag ' + it.type}>{TYPE_LABEL[it.type]}</span>
       {it.isNew && <span className="bc-new">BARU</span>}
       {it.problem && <ProblemTag why={it.problem} className="br-problem" />}
@@ -642,7 +648,7 @@ function BadgeRow({
       </span>
     </div>
   )
-}
+})
 
 const PG_MONTHS = [
   '',
@@ -668,7 +674,7 @@ interface PastGameWithDone {
   done: boolean
 }
 
-function PastGames({ gameBadges }: { gameBadges: (BadgeItem & { title?: string })[] }) {
+const PastGames = memo(function PastGames({ gameBadges }: { gameBadges: (BadgeItem & { title?: string })[] }) {
   const [open, setOpen] = useState(false)
   const done = useMemo(
     () => new Set(gameBadges.map((b) => norm(b.title || b.name || ''))),
@@ -734,7 +740,7 @@ function PastGames({ gameBadges }: { gameBadges: (BadgeItem & { title?: string }
       </Collapse>
     </div>
   )
-}
+})
 
 export default function Catalog() {
   const navigate = useNavigate()
@@ -805,26 +811,28 @@ export default function Catalog() {
   )
   const savedTodo = savedItems.filter((it) => !it.done)
 
-  const scrollToCatalog = () =>
-    document.getElementById('katalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  const showGames = () => {
+  const scrollToCatalog = useCallback(
+    () => document.getElementById('katalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+    []
+  )
+  const showGames = useCallback(() => {
     setType('game')
     setStatus('all')
     setQ('')
     scrollToCatalog()
-  }
-  const showSkills = () => {
+  }, [scrollToCatalog])
+  const showSkills = useCallback(() => {
     setType('skill')
     setStatus('todo')
     setQ('')
     scrollToCatalog()
-  }
-  const showSaved = () => {
+  }, [scrollToCatalog])
+  const showSaved = useCallback(() => {
     setType('all')
     setStatus('saved')
     setQ('')
     scrollToCatalog()
-  }
+  }, [scrollToCatalog])
 
   const shown = items.filter((it) => {
     if (type !== 'all' && it.type !== type) return false
@@ -957,7 +965,7 @@ export default function Catalog() {
                 key={it.key}
                 it={it}
                 saved={saved.has(it.key)}
-                onSave={() => toggleSaved(it.key)}
+                onToggle={toggleSaved}
               />
             ))}
           </div>
@@ -968,7 +976,7 @@ export default function Catalog() {
                 key={it.key}
                 it={it}
                 saved={saved.has(it.key)}
-                onSave={() => toggleSaved(it.key)}
+                onToggle={toggleSaved}
               />
             ))}
           </div>

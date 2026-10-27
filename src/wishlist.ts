@@ -9,7 +9,7 @@
 // karena GAME_CATALOG berganti tiap bulan. Itu dibiarkan: pemakainya selalu menurunkan daftar
 // target dari `items` yang sedang tampil, jadi kunci basi tidak pernah terhitung, cuma menumpang
 // di storage. Jangan menghitung target dari isi Set ini langsung.
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const KEY = 'gcaf2026_wishlist'
 
@@ -30,11 +30,12 @@ export function useWishlist(): [Set<string>, (key: string) => void] {
       /* private mode: target tidak persisten, bukan error */
     }
   }, [saved])
-  const toggle = (key: string) =>
+  const toggle = useCallback((key: string) => {
     setSaved((prev) => {
       const next = new Set(prev)
       next.has(key) ? next.delete(key) : next.add(key)
       return next
     })
+  }, [])
   return [saved, toggle]
 }
