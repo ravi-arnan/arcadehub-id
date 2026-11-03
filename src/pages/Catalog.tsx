@@ -766,7 +766,7 @@ export default function Catalog() {
       type: 'game',
       name: g.name,
       title: g.sub ? `${g.name}: ${g.sub}` : g.name,
-      img: g.img + '?v=6',
+      img: g.img + '?v=7',
       code: g.code || null,
       url: g.off || !g.game ? null : gameUrl(g.game),
       off: g.off || null,

@@ -1,7 +1,9 @@
-// Tema Halloween (Oktober 2026): menghidupkan hiasan hantu + labu di background dan hero,
-// mengikuti halaman Arcade resmi Google yang bulan ini bertema Halloween.
-// Setel `false` begitu bulan berganti supaya hiasannya tidak nyangkut.
-export const HALLOWEEN: boolean = true
+// Tema Halloween (Oktober 2026): nonaktif setelah Oktober selesai.
+export const HALLOWEEN: boolean = false
+
+// Tema Diwali (November 2026): menghidupkan dekorasi Pixel Diya dan Sky Lantern
+// mengikuti halaman Arcade resmi Google yang bulan ini merayakan Diwali.
+export const DIWALI: boolean = true
 
 export interface AnnouncementLink {
   label: string
@@ -23,18 +25,18 @@ export interface AnnouncementConfig {
 // `links` opsional: URL ditulis lengkap di sini (bukan ambil dari CONFIG) karena
 // tiap pengumuman bisa menunjuk dokumen yang berbeda.
 export const ANNOUNCEMENT: AnnouncementConfig = {
-  id: '2026-10-16-official-domain',
-  date: '16 Oktober 2026',
-  title: 'Arcade Hub resmi pindah ke arcadehub.web.id',
+  id: '2026-11-02-november-arcade',
+  date: '2 November 2026',
+  title: 'Game Arcade November 2026 sudah rilis',
   body: [
-    'Kabar gembira, Arcade Hub sekarang resmi menggunakan domain baru arcadehub.web.id agar lebih mudah diingat dan diakses oleh komunitas fasilitator maupun peserta.',
-    'Domain lama arcadehub-id.vercel.app tetap aktif sebagai alias dan fallback, jadi tautan maupun bookmark yang sudah dibagikan sebelumnya tetap berfungsi normal.',
-    'Seluruh data profil, progres poin tersimpan, leaderboard guild, dan katalog badge tetap aman dan tersinkron otomatis seperti biasa.',
+    'Enam game Arcade November 2026 sudah tayang di Google Skills Boost, termasuk Arcade Simulator: Cloud Infrastructure Engineer dan game perayaan Diwali in the Cloud.',
+    'Buka tab Katalog untuk access code tiap game. Klik kartu game untuk menyalin kode secara instan. Tiap game bernilai 1 poin dan mengisi syarat game milestone.',
+    'Periode tema Halloween telah selesai dan tampilan telah kembali ke tema default Arcade. Seluruh data progres poin dan status badge tersimpan tetap aman dan tersinkron otomatis.',
   ],
   links: [
-    { label: 'Buka arcadehub.web.id', href: 'https://arcadehub.web.id' },
     { label: 'Cek poin saya', href: '/' },
-    { label: 'Lihat leaderboard', href: '/leaderboard' },
+    { label: 'Buka katalog game', href: '/catalog' },
+    { label: 'Halaman Arcade resmi', href: 'https://go.cloudskillsboost.google/arcade' },
   ],
   signature: 'R',
 }

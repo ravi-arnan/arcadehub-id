@@ -13,7 +13,11 @@ import './index.css'
 
 // Tema Halloween mengganti palet lewat class di <html> (lihat blok html.halloween di index.css).
 // Dipasang sebelum render supaya tidak ada kedipan warna lama.
-if (HALLOWEEN) document.documentElement.classList.add('halloween')
+if (HALLOWEEN) {
+  document.documentElement.classList.add('halloween')
+} else {
+  document.documentElement.classList.remove('halloween')
+}
 
 const rootEl = document.getElementById('root')
 if (rootEl) {

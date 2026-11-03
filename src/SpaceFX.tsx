@@ -1,20 +1,19 @@
 import React from 'react'
 // Dekorasi background bertema arcade: starfield.
-// Selama HALLOWEEN (Oktober 2026) ditambah hantu pixel yang berkelana, labu berkedip, dan
-// glow oranye, mengikuti halaman Arcade resmi Google yang bulan ini bertema Halloween.
-// Murni CSS/SVG (tanpa aset gambar), hanya animasi transform/opacity, hormati reduced-motion.
-import { HALLOWEEN } from './config'
+// Selama DIWALI (November 2026), ditambah lampion langit (sky lantern) mengambang dan glow hangat,
+// mengikuti halaman Arcade resmi Google global.
+import { HALLOWEEN, DIWALI } from './config'
 import { Ghost, Pumpkin } from './halloween'
+import { DiwaliSkyLanterns } from './diwali'
 
 export default function SpaceFX(): React.JSX.Element {
   return (
     <div className="spacefx" aria-hidden="true">
       {HALLOWEEN && <div className="hw-glow" />}
+      {DIWALI && <div className="diwali-glow" />}
       <div className="stars stars-a" />
       <div className="stars stars-b" />
-      {/* Hantu yang terbang melintas diletakkan di luar layar oleh keyframes-nya; hantu
-          yang mengambang (hwg3) dan labu punya posisi tetap, jadi tetap tampil saat
-          reduced-motion (animasinya dimatikan, posisinya tidak). */}
+      {DIWALI && <DiwaliSkyLanterns />}
       {HALLOWEEN && (
         <>
           <Ghost className="hw-ghost hwg1" />
