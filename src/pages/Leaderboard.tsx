@@ -267,7 +267,16 @@ export default function Leaderboard() {
       const r = await fetch('/api/leaderboard' + (bust ? '?t=' + Date.now() : ''))
       const j = await r.json()
       if (!r.ok) throw new Error(j.error || 'Gagal memuat')
-      setMembers(j.members || [])
+      const raw: LeaderboardMember[] = j.members || []
+      const seen = new Set<string>()
+      const unique = raw.filter((m) => {
+        const match = m.profile_url?.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)
+        const key = match ? match[0].toLowerCase() : m.id
+        if (seen.has(key)) return false
+        seen.add(key)
+        return true
+      })
+      setMembers(unique)
     } catch (e: unknown) {
       setErr((e as Error).message)
     } finally {
