@@ -229,7 +229,7 @@ export const DiwaliFloatingLights: React.FC = () => {
       if (!isHidden) {
         ctx.clearRect(0, 0, width, height)
 
-        // Draw magic floating dust
+        // Draw magic floating dust (dioptimalkan tanpa shadowBlur agar bebas beban CPU/GPU)
         for (let i = 0; i < dustParticles.length; i++) {
           const p = dustParticles[i]
           p.y += p.vy
@@ -244,15 +244,18 @@ export const DiwaliFloatingLights: React.FC = () => {
           if (p.x < -10) p.x = width + 10
           else if (p.x > width + 10) p.x = -10
 
-          ctx.save()
-          ctx.globalAlpha = p.alpha
+          // Pendaran lembut luar
+          ctx.globalAlpha = p.alpha * 0.35
           ctx.fillStyle = p.color
-          ctx.shadowBlur = 8
-          ctx.shadowColor = p.color
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.size * 2.2, 0, Math.PI * 2)
+          ctx.fill()
+
+          // Inti cahaya terang
+          ctx.globalAlpha = p.alpha
           ctx.beginPath()
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
           ctx.fill()
-          ctx.restore()
         }
 
         // Draw click fireworks
@@ -270,18 +273,25 @@ export const DiwaliFloatingLights: React.FC = () => {
             continue
           }
 
-          ctx.save()
-          ctx.globalAlpha = Math.max(0, f.alpha)
+          const baseAlpha = Math.max(0, f.alpha)
           ctx.strokeStyle = f.color
-          ctx.lineWidth = f.size
           ctx.lineCap = 'round'
-          ctx.shadowBlur = 10
-          ctx.shadowColor = f.color
+
+          // Lapisan glow luar
+          ctx.globalAlpha = baseAlpha * 0.35
+          ctx.lineWidth = f.size * 2
           ctx.beginPath()
           ctx.moveTo(f.x, f.y)
           ctx.lineTo(f.x - f.vx * 2.2, f.y - f.vy * 2.2)
           ctx.stroke()
-          ctx.restore()
+
+          // Garis inti kembang api
+          ctx.globalAlpha = baseAlpha
+          ctx.lineWidth = f.size
+          ctx.beginPath()
+          ctx.moveTo(f.x, f.y)
+          ctx.lineTo(f.x - f.vx * 2.2, f.y - f.vy * 2.2)
+          ctx.stroke()
         }
       }
       animId = requestAnimationFrame(animate)

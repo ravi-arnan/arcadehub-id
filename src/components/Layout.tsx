@@ -49,7 +49,7 @@ export default function Layout() {
 
       <main className="main">
         <div className="app">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <m.div
               key={location.pathname}
               initial={{ opacity: 0, y: 6 }}

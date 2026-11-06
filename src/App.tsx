@@ -6,10 +6,11 @@ import {
   shouldReloadForChunkError,
 } from '../lib/chunkReload.js'
 
-// Tiap halaman di-lazy load (code-splitting per rute), lewat satu pembungkus
-// supaya chunk basi sesudah deploy sembuh sendiri. Tanpa ini, tab yang kebuka
-// waktu deploy jalan akan gagal import chunk lama (hilang dari server dan dari
-// cache service worker) dan mendarat di layar error, padahal cukup refresh.
+import Points from './pages/Points'
+
+// Tiap halaman sekunder di-lazy load (code-splitting per rute), lewat satu pembungkus
+// supaya chunk basi sesudah deploy sembuh sendiri. Halaman utama (Points / "/") sengaja
+// diimpor statis langsung supaya LCP awal tidak kena penalti roundtrip lazy-load & Suspense skeleton.
 function lazyRoute<T extends ComponentType<any>>(load: () => Promise<{ default: T }>) {
   return lazy(() =>
     load().catch((err) => {
@@ -34,7 +35,6 @@ function lazyRoute<T extends ComponentType<any>>(load: () => Promise<{ default: 
   )
 }
 
-const Points = lazyRoute(() => import('./pages/Points'))
 const Leaderboard = lazyRoute(() => import('./pages/Leaderboard'))
 const Catalog = lazyRoute(() => import('./pages/Catalog'))
 const Prizes = lazyRoute(() => import('./pages/Prizes'))
