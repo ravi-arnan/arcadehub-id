@@ -333,10 +333,8 @@ function MyPoints() {
 
       {score?.seasonBadges && score.seasonBadges.length > 0 && (
         <>
-          <div className="dash-row">
-            <WeeklyChart badges={score.seasonBadges} />
-            <CategoryTable badges={score.seasonBadges} />
-          </div>
+          <WeeklyChart badges={score.seasonBadges} />
+          <CategoryTable badges={score.seasonBadges} />
           <MonthlyGames badges={score.seasonBadges} />
         </>
       )}

@@ -475,10 +475,40 @@ body{
   object-fit:cover;
 }
 
-/* weekly line chart */
+/* weekly line chart & github activity calendar */
 .lchart{width:100%;height:auto;display:block}
 .ldays{display:flex;justify-content:space-between;margin-top:4px;padding:0 6px}
 .ldays span{flex:1;text-align:center;font-size:11px;color:var(--muted)}
+
+/* GitHub-style Contribution Heatmap */
+.gh-card{position:relative}
+.gh-wrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 0 10px 0;scrollbar-width:thin}
+.gh-svg{display:block;min-width:710px;width:100%;height:auto;user-select:none}
+.gh-cell{transition:transform .1s ease,stroke .1s ease;transform-box:fill-box;transform-origin:center;cursor:pointer}
+.gh-cell:hover{stroke:rgba(255,255,255,.6);stroke-width:1.5;transform:scale(1.15)}
+.gh-cell-future{opacity:.15;pointer-events:none;cursor:default}
+.gh-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+.gh-footer-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gh-dot{opacity:.4}
+.gh-streak{color:var(--gold);font-weight:600}
+.gh-legend{display:flex;align-items:center;gap:4px}
+.gh-legend-label{font-size:10.5px;color:var(--muted);margin:0 3px}
+.gh-box{width:11px;height:11px;border-radius:2.5px;display:inline-block;box-sizing:border-box}
+.gh-box-0{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.gh-box-1{background:#0e4429;border:1px solid rgba(0,0,0,.25)}
+.gh-box-2{background:#006d32;border:1px solid rgba(0,0,0,.25)}
+.gh-box-3{background:#26a641;border:1px solid rgba(0,0,0,.25)}
+.gh-box-4{background:#39d353;border:1px solid rgba(0,0,0,.25)}
+
+/* Tooltip floating style */
+.gh-tooltip{position:absolute;pointer-events:none;z-index:50;background:#1c2128;color:#f0f6fc;border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11.5px;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:fadeInTooltip .12s ease-out}
+.gh-tooltip-arrow{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#1c2128;border-right:1px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(255,255,255,.15)}
+@keyframes fadeInTooltip{from{opacity:0;transform:translate(-50%,-90%)}to{opacity:1;transform:translate(-50%,-100%)}}
+
+html.halloween .gh-box-1{background:#451a03}
+html.halloween .gh-box-2{background:#78350f}
+html.halloween .gh-box-3{background:#d97706}
+html.halloween .gh-box-4{background:#ffa726}
 
 /* category table */
 .cattable{display:flex;flex-direction:column}
