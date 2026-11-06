@@ -37,7 +37,7 @@ export const CONTRIBUTORS: Contributor[] = [
   },
   {
     name: 'Edi Pamungkas',
-    github: 'arcadetracker',
+    github: 'edhipamungkas',
     web: '',
     bio: 'Mahasiswa FMIPA Universitas Negeri Makassar & Peserta Google Cloud Arcade 2026.',
     tags: ['Programming', 'Teacher'],

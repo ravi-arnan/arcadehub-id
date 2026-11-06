@@ -1,4 +1,4 @@
-import type { SVGProps } from 'react'
+import { useState, type SVGProps } from 'react'
 import { CONFIG } from '../config'
 import { CONTRIBUTORS, type Contributor } from '../contributors'
 
@@ -30,7 +30,9 @@ const hue = (s: string): number => {
 }
 
 function Avatar({ c }: { c: Contributor }) {
-  if (c.github) {
+  const [hasError, setHasError] = useState(false)
+
+  if (c.github && !hasError) {
     return (
       <img
         className="ct-av"
@@ -39,6 +41,7 @@ function Avatar({ c }: { c: Contributor }) {
         loading="lazy"
         width="72"
         height="72"
+        onError={() => setHasError(true)}
       />
     )
   }
