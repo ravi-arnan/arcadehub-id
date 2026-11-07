@@ -1618,18 +1618,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .tier-btn{margin-top:auto;padding:7px 10px;font-size:11.5px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:7px;color:#dbe6fb;cursor:pointer;text-align:center;transition:background-color .14s,border-color .14s}
 .tier-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:#fff}
 
-/* Spotlight Row (5 columns desktop) */
+/* Spotlight Row (3 columns desktop, 2 tablet, 1 mobile) */
 .spotlight-row{
   display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:12px;
   margin-top:14px;
   width:100%;
 }
-@media(max-width:960px){
-  .spotlight-row{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-@media(max-width:640px){
+@media(max-width:768px){
   .spotlight-row{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:480px){

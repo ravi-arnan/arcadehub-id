@@ -50,6 +50,7 @@ const SWAG_TIERS: SwagTier[] = [
     items: [
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready berlogo Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku USB-C multifungsi dan phone stand' },
+      { name: 'The Arcade LumiSnap Magnetic Fill Light', desc: 'Lampu fill light MagSafe dengan 3 temperatur warna' },
     ],
     hasMore: true,
   },
@@ -64,6 +65,7 @@ const SWAG_TIERS: SwagTier[] = [
     items: [
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready premium Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku serbaguna edisi terbatas' },
+      { name: 'The Arcade LumiSnap Magnetic Fill Light', desc: 'Lampu fill light MagSafe dengan 3 temperatur warna' },
     ],
     hasMore: true,
   },
@@ -123,6 +125,18 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
       'Material tahan angin dan hujan',
       'Kerah protektif risleting halus',
       'Bordir logo resmi Google Cloud',
+    ],
+  },
+  {
+    name: 'The Arcade LumiSnap Magnetic Fill Light',
+    tiers: 'Champion & Legend',
+    image: '/img/swags/item-lumisnap.webp',
+    forumUrl: 'https://discuss.google.dev/t/swag-drop-the-arcade-lumisnap-magnetic-fill-light/410531',
+    features: [
+      '3 temperatur warna (warm, neutral, cool) dengan precision dial',
+      'Mount magnetik MagSafe langsung plus adhesive magnetic ring',
+      'Artikulasi 360°, lengan lipat 45 mm, dan cermin framing bawaan',
+      'Kickstand meja lipat dan baterai 800 mAh USB-C',
     ],
   },
 ]
