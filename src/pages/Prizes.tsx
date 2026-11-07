@@ -17,7 +17,7 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 6000,
     stars: 1,
     badgeSvg: '/img/arcade/arcade-trooper.svg',
-    image: '/img/swags/trooper.webp',
+    image: '/img/swags/trooper.webp?v=nov3',
     items: [
       { name: 'The Arcade Travel Bottle', desc: 'Botol stainless steel 5.5 cm ramping, anti-bocor' },
       { name: 'The Arcade Magic Mug', desc: 'Cangkir keramik bunglon dengan desain arcade saat panas' },
@@ -31,7 +31,7 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 4000,
     stars: 2,
     badgeSvg: '/img/arcade/arcade-ranger.svg',
-    image: '/img/swags/ranger.webp',
+    image: '/img/swags/ranger.webp?v=nov3',
     items: [
       { name: 'The Arcade Backpack', desc: 'Ransel tahan cipratan air dengan slot laptop' },
       { name: 'The Arcade Travel Bottle', desc: 'Botol minum stainless steel ringkas' },
@@ -46,7 +46,7 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 3000,
     stars: 3,
     badgeSvg: '/img/arcade/arcade-champion.svg',
-    image: '/img/swags/champion.webp',
+    image: '/img/swags/champion.webp?v=nov3',
     items: [
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready berlogo Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku USB-C multifungsi dan phone stand' },
@@ -61,7 +61,7 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 2500,
     stars: 4,
     badgeSvg: '/img/arcade/arcade-legend.svg',
-    image: '/img/swags/legend.webp',
+    image: '/img/swags/legend.webp?v=nov3',
     items: [
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready premium Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku serbaguna edisi terbatas' },
@@ -130,7 +130,7 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   {
     name: 'The Arcade LumiSnap Magnetic Fill Light',
     tiers: 'Champion & Legend',
-    image: '/img/swags/item-lumisnap.webp',
+    image: '/img/swags/item-lumisnap.webp?v=nov3',
     forumUrl: 'https://discuss.google.dev/t/swag-drop-the-arcade-lumisnap-magnetic-fill-light/410531',
     features: [
       '3 temperatur warna (warm, neutral, cool) dengan precision dial',
