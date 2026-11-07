@@ -482,8 +482,9 @@ body{
 
 /* GitHub-style Contribution Heatmap */
 .gh-card{position:relative}
-.gh-wrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 0 10px 0;scrollbar-width:thin}
-.gh-svg{display:block;min-width:710px;width:100%;height:auto;user-select:none}
+.gh-wrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 0 6px 0;scrollbar-width:none;-ms-overflow-style:none}
+.gh-wrap::-webkit-scrollbar{display:none}
+.gh-svg{display:block;min-width:600px;width:100%;height:auto;user-select:none}
 .gh-cell{transition:transform .1s ease,stroke .1s ease;transform-box:fill-box;transform-origin:center;cursor:pointer}
 .gh-cell:hover{stroke:rgba(255,255,255,.6);stroke-width:1.5;transform:scale(1.15)}
 .gh-cell-future{opacity:.15;pointer-events:none;cursor:default}
