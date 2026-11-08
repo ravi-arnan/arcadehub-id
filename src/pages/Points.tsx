@@ -379,11 +379,19 @@ function MilestoneGap({ fg, fs }: MilestoneGapProps) {
 function HomeStats() {
   const navigate = useNavigate()
   const [members, setMembers] = useState<Member[] | null>(null)
+  const [err, setErr] = useState('')
   useEffect(() => {
     fetch('/api/leaderboard')
-      .then((r) => r.json())
+      .then(async (r) => {
+        const j = await r.json()
+        if (!r.ok) throw new Error(j.error || 'Gagal memuat leaderboard')
+        return j
+      })
       .then((j) => setMembers(j.members || []))
-      .catch(() => setMembers([]))
+      .catch((e: Error) => {
+        setErr(e.message)
+        setMembers([])
+      })
   }, [])
   if (members === null) {
     return (
@@ -396,6 +404,14 @@ function HomeStats() {
             </div>
           ))}
         </div>
+      </section>
+    )
+  }
+
+  if (err) {
+    return (
+      <section className="home-extra">
+        <div className="ferr">{err}</div>
       </section>
     )
   }

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, type ComponentType } from 'react'
 import { IconGamepad, IconTent, IconTarget, IconHelp, IconAward, IconCheck } from './icons'
-import { GAME_CATALOG, type CatalogGame } from './catalog'
+import { GAME_CATALOG, gamePoints, type CatalogGame } from './catalog'
 import { HALLOWEEN } from './config'
 
 const fmtPts = (n: number): string => (Number.isInteger(n) ? String(n) : n.toFixed(1))
@@ -18,10 +18,11 @@ const DAY_LABELS = [
 
 export interface InsightBadge {
   title: string
-  earned?: string
+  earned?: string | null
   cat?: string
   name?: string
   date?: string
+  counts?: boolean
 }
 
 interface TooltipState {
@@ -321,10 +322,14 @@ const CATS: CatItem[] = [
 ]
 
 export function CategoryTable({ badges }: { badges: InsightBadge[] }) {
-  // skill = 2 badge -> 1 poin (floor), sama seperti perhitungan total poin. Lainnya 1 poin/badge.
+  // skill = 2 badge -> 1 poin (floor), hanya badge resmi (counts !== false). Game menghitung bobot gamePoints.
   const rows = CATS.map((c) => {
-    const n = badges.filter((b) => b.cat === c.key).length
-    return { ...c, n, pts: c.key === 'skill' ? Math.floor(n / 2) : n }
+    const matching = (badges || []).filter((b) => b.cat === c.key && b.counts !== false)
+    const n = matching.length
+    const pts = c.key === 'skill'
+      ? Math.floor(n / 2)
+      : matching.reduce((sum, b) => sum + gamePoints(b.title || b.name || ''), 0)
+    return { ...c, n, pts }
   })
   return (
     <div className="card">
@@ -339,7 +344,7 @@ export function CategoryTable({ badges }: { badges: InsightBadge[] }) {
           </div>
         ))}
       </div>
-      <div className="card-note">2 skill badge = 1 poin (dibulatkan ke bawah). Game/Trivia/Level = 1 poin per badge.</div>
+      <div className="card-note">Game lama tertentu bernilai 2-3 poin. 2 skill badge resmi = 1 poin (dibulatkan ke bawah).</div>
     </div>
   )
 }

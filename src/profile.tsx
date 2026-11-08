@@ -1,5 +1,13 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
 
+export interface SeasonBadgeItem {
+  title: string
+  earned?: string | null
+  cat?: string
+  name?: string
+  counts?: boolean
+}
+
 export interface ProfileScore {
   name?: string
   total: number
@@ -11,10 +19,10 @@ export interface ProfileScore {
   mbonus?: number
   tierIdx?: number
   seasonUnknown?: number
-  unknownList?: any[]
-  gameList?: any[]
-  skillList?: any[]
-  seasonBadges?: any[]
+  unknownList?: string[]
+  gameList?: string[]
+  skillList?: string[]
+  seasonBadges?: SeasonBadgeItem[]
   syncedAt?: number
 }
 
@@ -72,8 +80,16 @@ export function ProfileProvider({ children }: ProfileProviderProps): React.JSX.E
   const [memberId, setMemberId] = useLocal<string | null>('gcaf2026_member_id', null)
   const [guild, setGuild] = useLocal<string>('gcaf2026_my_guild', '')
   const [removeToken, setRemoveToken] = useLocal<string | null>('gcaf2026_remove_token', null)
+  const [tokensByUrl, setTokensByUrl] = useLocal<Record<string, string>>('gcaf2026_profile_tokens', {})
   const [loading, setLoading] = useState<boolean>(false)
   const [err, setErr] = useState<string>('')
+
+  // Migrasi token lama ke map per-profil
+  useEffect(() => {
+    if (profileUrl && removeToken && !tokensByUrl[profileUrl.trim()]) {
+      setTokensByUrl((prev) => ({ ...prev, [profileUrl.trim()]: removeToken }))
+    }
+  }, [profileUrl, removeToken, tokensByUrl, setTokensByUrl])
 
   // Hitung poin + otomatis daftarkan/perbarui ke leaderboard (via /api/join).
   // Satu langkah: masuk profil di Poin Saya = otomatis tampil di Leaderboard.
@@ -90,10 +106,11 @@ export function ProfileProvider({ children }: ProfileProviderProps): React.JSX.E
           /* ignore */
         }
         const code = (guildArg ?? '').trim() || urlGuild || guild || ''
+        const clientToken = removeToken || tokensByUrl[url.trim()] || undefined
         const r = await fetch('/api/join', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ profileUrl: url, name: '', code }),
+          body: JSON.stringify({ profileUrl: url, name: '', code, token: clientToken }),
         })
         const j = await r.json()
         if (!r.ok) throw new Error(j.error || 'Gagal menghitung')
@@ -117,7 +134,12 @@ export function ProfileProvider({ children }: ProfileProviderProps): React.JSX.E
         })
         setProfileUrl(m.profileUrl || url)
         if (j.id) setMemberId(j.id)
-        if (j.removeToken) setRemoveToken(j.removeToken) // hanya ada saat join pertama
+        if (j.removeToken) {
+          setRemoveToken(j.removeToken)
+          setTokensByUrl((prev) => ({ ...prev, [url.trim()]: j.removeToken }))
+        } else if (clientToken) {
+          setRemoveToken(clientToken)
+        }
         if (code) setGuild(code)
         return j
       } catch (e: any) {
@@ -127,7 +149,7 @@ export function ProfileProvider({ children }: ProfileProviderProps): React.JSX.E
         setLoading(false)
       }
     },
-    [setScore, setProfileUrl, setMemberId, setGuild, setRemoveToken, guild],
+    [setScore, setProfileUrl, setMemberId, setGuild, setRemoveToken, setTokensByUrl, tokensByUrl, removeToken, guild],
   )
 
   const clear = useCallback(() => {
@@ -143,14 +165,22 @@ export function ProfileProvider({ children }: ProfileProviderProps): React.JSX.E
     setLoading(true)
     setErr('')
     try {
-      if (memberId && removeToken) {
+      const activeToken = removeToken || (profileUrl ? tokensByUrl[profileUrl.trim()] : null)
+      if (memberId && activeToken) {
         const r = await fetch('/api/leave', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: memberId, token: removeToken }),
+          body: JSON.stringify({ id: memberId, token: activeToken }),
         })
         const j = await r.json().catch(() => ({}))
         if (!r.ok) throw new Error(j.error || 'Gagal keluar dari leaderboard.')
+      }
+      if (profileUrl) {
+        setTokensByUrl((prev) => {
+          const next = { ...prev }
+          delete next[profileUrl.trim()]
+          return next
+        })
       }
       clear()
     } catch (e: any) {
@@ -159,7 +189,7 @@ export function ProfileProvider({ children }: ProfileProviderProps): React.JSX.E
     } finally {
       setLoading(false)
     }
-  }, [memberId, removeToken, clear])
+  }, [memberId, removeToken, profileUrl, tokensByUrl, setTokensByUrl, clear])
 
   // auto-refresh sekali saat load kalau profil sudah tersimpan
   useEffect(() => {
@@ -179,7 +209,7 @@ export function ProfileProvider({ children }: ProfileProviderProps): React.JSX.E
         fetchScore,
         clear,
         leave,
-        canLeave: Boolean(memberId && removeToken),
+        canLeave: Boolean(memberId && (removeToken || (profileUrl && tokensByUrl[profileUrl.trim()]))),
       }}
     >
       {children}

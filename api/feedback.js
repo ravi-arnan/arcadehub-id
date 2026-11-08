@@ -32,7 +32,9 @@ export default async function handler(req, res) {
     // GET (admin): baca semua masukan
     if (req.method === 'GET') {
       const key = req.query?.adminKey
-      if (!ADMIN || key !== ADMIN) return res.status(403).json({ error: 'Butuh kunci admin.' })
+      const authHeader = req.headers.authorization
+      const bearerKey = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
+      if (!ADMIN || (key !== ADMIN && bearerKey !== ADMIN)) return res.status(403).json({ error: 'Butuh kunci admin.' })
       const rows = await sql`SELECT id, message, name, page, created_at FROM feedback ORDER BY created_at DESC LIMIT 500`
       return res.status(200).json({ feedback: rows })
     }
