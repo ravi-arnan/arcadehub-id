@@ -46,8 +46,9 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 3000,
     stars: 3,
     badgeSvg: '/img/arcade/arcade-champion.svg',
-    image: '/img/swags/champion.webp?v=nov3',
+    image: '/img/swags/champion.webp?v=nov8b',
     items: [
+      { name: 'The Arcade TechPack', desc: 'Ransel 21L weather-resistant dengan laptop vault 15.6"' },
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready berlogo Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku USB-C multifungsi dan phone stand' },
       { name: 'The Arcade LumiSnap Magnetic Fill Light', desc: 'Lampu fill light MagSafe dengan 3 temperatur warna' },
@@ -61,8 +62,9 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 2500,
     stars: 4,
     badgeSvg: '/img/arcade/arcade-legend.svg',
-    image: '/img/swags/legend.webp?v=nov3',
+    image: '/img/swags/legend.webp?v=nov8b',
     items: [
+      { name: 'The Arcade TechPack', desc: 'Ransel 21L weather-resistant dengan laptop vault 15.6"' },
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready premium Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku serbaguna edisi terbatas' },
       { name: 'The Arcade LumiSnap Magnetic Fill Light', desc: 'Lampu fill light MagSafe dengan 3 temperatur warna' },
@@ -137,6 +139,18 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
       'Mount magnetik MagSafe langsung plus adhesive magnetic ring',
       'Artikulasi 360°, lengan lipat 45 mm, dan cermin framing bawaan',
       'Kickstand meja lipat dan baterai 800 mAh USB-C',
+    ],
+  },
+  {
+    name: 'The Arcade TechPack',
+    tiers: 'Champion & Legend',
+    image: '/img/swags/item-techpack.webp?v=nov8b',
+    forumUrl: 'https://discuss.google.dev/t/swag-drop-the-arcade-techpack/411969',
+    features: [
+      'Padded 15.6" Laptop Vault microfiber dengan dual elastic straps',
+      'Bukaan clamshell 180° flat packing dan magnetic flap quick-release',
+      'Material matte shell 21 liter weather-resistant tahan air',
+      'Ergonomis 3D honeycomb air-mesh dan luggage trolley pass-through',
     ],
   },
 ]
