@@ -144,7 +144,7 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   {
     name: 'The Arcade TechPack',
     tiers: 'Champion & Legend',
-    image: '/img/swags/item-techpack.webp?v=nov8',
+    image: '/img/swags/item-techpack.webp?v=nov8b',
     forumUrl: 'https://discuss.google.dev/t/swag-drop-the-arcade-techpack/411969',
     features: [
       'Padded 15.6" Laptop Vault microfiber dengan dual elastic straps',
