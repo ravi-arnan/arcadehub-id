@@ -46,7 +46,7 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 3000,
     stars: 3,
     badgeSvg: '/img/arcade/arcade-champion.svg',
-    image: '/img/swags/champion.webp?v=nov3',
+    image: '/img/swags/champion.webp?v=nov8b',
     items: [
       { name: 'The Arcade TechPack', desc: 'Ransel 21L weather-resistant dengan laptop vault 15.6"' },
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready berlogo Google Cloud' },
@@ -62,7 +62,7 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 2500,
     stars: 4,
     badgeSvg: '/img/arcade/arcade-legend.svg',
-    image: '/img/swags/legend.webp?v=nov3',
+    image: '/img/swags/legend.webp?v=nov8b',
     items: [
       { name: 'The Arcade TechPack', desc: 'Ransel 21L weather-resistant dengan laptop vault 15.6"' },
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready premium Google Cloud' },
