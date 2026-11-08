@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react'
+import { useEffect, useState, useCallback, lazy, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { m } from 'framer-motion'
 import { MS, TIERS, tierForPoints } from '../points'
@@ -379,8 +379,12 @@ function MilestoneGap({ fg, fs }: MilestoneGapProps) {
 function HomeStats() {
   const navigate = useNavigate()
   const [members, setMembers] = useState<Member[] | null>(null)
+  const [loading, setLoading] = useState(false)
   const [err, setErr] = useState('')
-  useEffect(() => {
+
+  const loadLeaderboard = useCallback(() => {
+    setLoading(true)
+    setErr('')
     fetch('/api/leaderboard')
       .then(async (r) => {
         const j = await r.json()
@@ -392,8 +396,16 @@ function HomeStats() {
         setErr(e.message)
         setMembers([])
       })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [])
-  if (members === null) {
+
+  useEffect(() => {
+    loadLeaderboard()
+  }, [loadLeaderboard])
+
+  if (members === null || loading) {
     return (
       <section className="home-extra">
         <div className="stats3">
@@ -411,7 +423,12 @@ function HomeStats() {
   if (err) {
     return (
       <section className="home-extra">
-        <div className="ferr">{err}</div>
+        <div className="ferr" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+          <span>{err}</span>
+          <button type="button" className="miniref" onClick={loadLeaderboard} disabled={loading}>
+            {loading ? '…' : 'Coba lagi'}
+          </button>
+        </div>
       </section>
     )
   }
