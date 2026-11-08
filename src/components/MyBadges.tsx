@@ -6,7 +6,7 @@ export interface MyBadgeItem {
   title: string
   cat?: string
   counts?: boolean
-  earned?: string
+  earned?: string | null
   name?: string
   url?: string | null
 }

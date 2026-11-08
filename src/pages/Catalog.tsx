@@ -674,7 +674,7 @@ interface PastGameWithDone {
   done: boolean
 }
 
-const PastGames = memo(function PastGames({ gameBadges }: { gameBadges: (BadgeItem & { title?: string })[] }) {
+const PastGames = memo(function PastGames({ gameBadges }: { gameBadges: { title?: string; name?: string }[] }) {
   const [open, setOpen] = useState(false)
   const done = useMemo(
     () => new Set(gameBadges.map((b) => norm(b.title || b.name || ''))),
@@ -756,7 +756,7 @@ export default function Catalog() {
     [score]
   )
   const gameBadges = useMemo(
-    () => (score?.seasonBadges || []).filter((b: BadgeItem & { cat?: string }) => b.cat !== 'skill'),
+    () => (score?.seasonBadges || []).filter((b) => b.cat !== 'skill'),
     [score]
   )
 
@@ -771,7 +771,7 @@ export default function Catalog() {
       url: g.off || !g.game ? null : gameUrl(g.game),
       off: g.off || null,
       points: 1,
-      done: gameBadges.some((b: BadgeItem & { title?: string }) => g.re.test(b.title || b.name || '')),
+      done: gameBadges.some((b) => g.re.test(b.title || b.name || '')),
     }))
     const skills: CatalogItem[] = (SKILL_CATALOG as any[]).map((s) => ({
       key: 's-' + s.id,

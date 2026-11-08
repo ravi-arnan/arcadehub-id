@@ -10,7 +10,14 @@ export default async function handler(req, res) {
   try {
     if (!(await rateLimit(clientIp(req), 12))) return res.status(429).json({ error: 'Terlalu banyak permintaan. Tunggu sebentar.' })
     const { id, token } = req.body || {}
-    if (!id || !token) return res.status(400).json({ error: 'id dan token wajib.' })
+    if (!id || (typeof id !== 'string' && typeof id !== 'number')) {
+      return res.status(400).json({ error: 'id tidak valid.' })
+    }
+    if (!token || typeof token !== 'string' || !token.trim()) {
+      return res.status(400).json({ error: 'token tidak valid.' })
+    }
+    const cleanId = String(id).trim()
+    const cleanToken = token.trim()
     const sql = await ensureSchema()
     // Urutannya penting: verifikasi kepemilikan DULU, baru hapus.
     //
@@ -18,13 +25,13 @@ export default async function handler(req, res) {
     // yang sekaligus jadi penjaga otorisasinya. Karena point_history sekarang dihapus manual
     // (bukan lewat ON DELETE CASCADE, lihat catatan di lib/schema.js), menghapus histori lebih
     // dulu akan membuang data peserta lain yang tokennya salah.
-    const own = await sql`SELECT id FROM members WHERE id = ${id} AND remove_token = ${token}`
+    const own = await sql`SELECT id FROM members WHERE id = ${cleanId} AND remove_token = ${cleanToken}`
     if (!own.length) return res.status(403).json({ error: 'Tidak bisa memverifikasi kepemilikan entri ini.' })
     // Satu transaksi, supaya syarat privasi (histori orang yang menarik diri tidak boleh
     // tertinggal) tetap terpenuhi tanpa bergantung pada PRAGMA foreign_keys.
     await batch(
-      stmt`DELETE FROM point_history WHERE member_id = ${id}`,
-      stmt`DELETE FROM members WHERE id = ${id} AND remove_token = ${token}`,
+      stmt`DELETE FROM point_history WHERE member_id = ${cleanId}`,
+      stmt`DELETE FROM members WHERE id = ${cleanId} AND remove_token = ${cleanToken}`,
     )
     res.status(200).json({ ok: true })
   } catch (e) {

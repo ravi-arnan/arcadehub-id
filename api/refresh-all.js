@@ -15,7 +15,7 @@ function authorized(req) {
   const secret = process.env.CRON_SECRET
   if (secret && req.headers.authorization === `Bearer ${secret}`) return true // Vercel Cron
   const admin = process.env.ADMIN_KEY
-  if (admin && req.query?.adminKey === admin) return true                     // manual
+  if (admin && (req.query?.adminKey === admin || req.headers.authorization === `Bearer ${admin}`)) return true // manual
   return false
 }
 
@@ -40,7 +40,12 @@ export default async function handler(req, res) {
               tier_idx = ${s.tierIdx}, last_earned = ${s.lastEarned}, avatar = ${s.avatar}, last_synced = ${NOW}
             WHERE id = ${m.id}`
           ok++
-        } catch { failed++ } // profil privat/tak terjangkau, biarkan data lama, lanjut
+        } catch {
+          failed++
+          try {
+            await sql`UPDATE members SET last_synced = ${NOW} WHERE id = ${m.id}`
+          } catch {}
+        }
       }
     }
     await Promise.all(Array.from({ length: Math.min(CONCURRENCY, rows.length) }, worker))
