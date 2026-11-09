@@ -1,10 +1,11 @@
 // Banner resmi Google Cloud Arcade global (go.cloudskillsboost.google/arcade)
 // Menggunakan banner resmi responsif November 2026: header-desktop.webp di desktop dan header-mobile.webp di mobile.
 // Dilengkapi dekorasi Pixel Diya resmi selama festival Diwali (DIWALI = true).
+import { memo } from 'react'
 import { DIWALI } from '../config'
 import { PixelDiya } from '../diwali'
 
-export default function ArcadeHero() {
+export default memo(function ArcadeHero() {
   return (
     <div className="ahero" role="img" aria-label="Google Cloud Arcade: The Arcade">
       <picture>
@@ -36,4 +37,4 @@ export default function ArcadeHero() {
       )}
     </div>
   )
-}
+})

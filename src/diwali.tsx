@@ -166,14 +166,14 @@ export const DiwaliFloatingLights: React.FC = () => {
     let height = (canvas.height = window.innerHeight)
 
     const isMobile = width < 768
-    const numDust = isMobile ? 32 : 65
+    const numDust = isMobile ? 12 : 24
 
     const dustParticles: DustParticle[] = []
     for (let i = 0; i < numDust; i++) {
       dustParticles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: Math.random() * 2 + 1,
+        size: Math.random() * 1.6 + 1.2,
         vy: -(Math.random() * 0.45 + 0.2),
         vx: (Math.random() - 0.5) * 0.3,
         baseAlpha: Math.random() * 0.45 + 0.15,
@@ -187,10 +187,10 @@ export const DiwaliFloatingLights: React.FC = () => {
 
     const triggerFirework = (x: number, y: number) => {
       const color = FIREWORK_COLORS[Math.floor(Math.random() * FIREWORK_COLORS.length)]
-      const count = isMobile ? 22 : 36
+      const count = isMobile ? 10 : 16
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2
-        const speed = Math.random() * 6 + 2.5
+        const speed = Math.random() * 5 + 2
         fireworks.push({
           x,
           y,
@@ -198,8 +198,8 @@ export const DiwaliFloatingLights: React.FC = () => {
           vy: Math.sin(angle) * speed,
           color,
           alpha: 1,
-          decay: Math.random() * 0.018 + 0.012,
-          size: Math.random() * 1.5 + 2,
+          decay: Math.random() * 0.02 + 0.015,
+          size: Math.random() * 1.2 + 1.6,
         })
       }
     }
@@ -211,6 +211,16 @@ export const DiwaliFloatingLights: React.FC = () => {
     }
 
     const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null
+      // Jangan spawn kembang api saat mengklik tombol, input, link, atau kartu interaktif
+      if (
+        target &&
+        target.closest(
+          'button, a, input, select, textarea, [role="button"], [tabindex], .card, .fin, .lbrow, .tip'
+        )
+      ) {
+        return
+      }
       triggerFirework(e.clientX, e.clientY)
     }
 
@@ -225,47 +235,50 @@ export const DiwaliFloatingLights: React.FC = () => {
     }
     document.addEventListener('visibilitychange', handleVisibility)
 
-    const animate = () => {
-      if (!isHidden) {
-        ctx.clearRect(0, 0, width, height)
+    let lastTime = 0
+    const FPS_INTERVAL = 1000 / 30 // ~30 fps cap untuk ambient background, hemat CPU & baterai
 
-        // Draw magic floating dust (dioptimalkan tanpa shadowBlur agar bebas beban CPU/GPU)
-        for (let i = 0; i < dustParticles.length; i++) {
-          const p = dustParticles[i]
-          p.y += p.vy
-          p.x += p.vx
-          p.phase += 0.02
-          p.alpha = Math.max(0.1, Math.min(0.7, p.baseAlpha + Math.sin(p.phase) * 0.18))
+    const animate = (time: number) => {
+      animId = requestAnimationFrame(animate)
+      if (isHidden) return
 
-          if (p.y < -10) {
-            p.y = height + 10
-            p.x = Math.random() * width
-          }
-          if (p.x < -10) p.x = width + 10
-          else if (p.x > width + 10) p.x = -10
+      const delta = time - lastTime
+      if (delta < FPS_INTERVAL) return
+      lastTime = time - (delta % FPS_INTERVAL)
 
-          // Pendaran lembut luar
-          ctx.globalAlpha = p.alpha * 0.35
-          ctx.fillStyle = p.color
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size * 2.2, 0, Math.PI * 2)
-          ctx.fill()
+      ctx.clearRect(0, 0, width, height)
 
-          // Inti cahaya terang
-          ctx.globalAlpha = p.alpha
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          ctx.fill()
+      // Draw magic floating dust (1 path per particle, cepat & ringan)
+      for (let i = 0; i < dustParticles.length; i++) {
+        const p = dustParticles[i]
+        p.y += p.vy
+        p.x += p.vx
+        p.phase += 0.03
+        p.alpha = Math.max(0.1, Math.min(0.7, p.baseAlpha + Math.sin(p.phase) * 0.18))
+
+        if (p.y < -10) {
+          p.y = height + 10
+          p.x = Math.random() * width
         }
+        if (p.x < -10) p.x = width + 10
+        else if (p.x > width + 10) p.x = -10
 
-        // Draw click fireworks
+        ctx.globalAlpha = p.alpha
+        ctx.fillStyle = p.color
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size * 1.5, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      // Draw click fireworks
+      if (fireworks.length > 0) {
         for (let i = fireworks.length - 1; i >= 0; i--) {
           const f = fireworks[i]
           f.x += f.vx
           f.y += f.vy
-          f.vy += 0.05
-          f.vx *= 0.98
-          f.vy *= 0.98
+          f.vy += 0.06
+          f.vx *= 0.97
+          f.vy *= 0.97
           f.alpha -= f.decay
 
           if (f.alpha <= 0) {
@@ -273,28 +286,16 @@ export const DiwaliFloatingLights: React.FC = () => {
             continue
           }
 
-          const baseAlpha = Math.max(0, f.alpha)
+          ctx.globalAlpha = Math.max(0, f.alpha)
           ctx.strokeStyle = f.color
-          ctx.lineCap = 'round'
-
-          // Lapisan glow luar
-          ctx.globalAlpha = baseAlpha * 0.35
-          ctx.lineWidth = f.size * 2
-          ctx.beginPath()
-          ctx.moveTo(f.x, f.y)
-          ctx.lineTo(f.x - f.vx * 2.2, f.y - f.vy * 2.2)
-          ctx.stroke()
-
-          // Garis inti kembang api
-          ctx.globalAlpha = baseAlpha
           ctx.lineWidth = f.size
+          ctx.lineCap = 'round'
           ctx.beginPath()
           ctx.moveTo(f.x, f.y)
-          ctx.lineTo(f.x - f.vx * 2.2, f.y - f.vy * 2.2)
+          ctx.lineTo(f.x - f.vx * 2, f.y - f.vy * 2)
           ctx.stroke()
         }
       }
-      animId = requestAnimationFrame(animate)
     }
 
     animId = requestAnimationFrame(animate)

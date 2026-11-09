@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback, useMemo, useDeferredValue, memo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { MS } from '../points'
 import { searchMembers } from '../../lib/searchMembers.js'
@@ -79,10 +79,14 @@ interface PodiumCardProps {
   rank: number
   isMe: boolean
   refreshing: boolean
-  onRefresh: () => void
+  onRefresh: (id: string) => void
 }
 
-function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }: PodiumCardProps) {
+const PodiumCard = memo(function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }: PodiumCardProps) {
+  const handleRefresh = useCallback(() => {
+    onRefresh(p.id)
+  }, [onRefresh, p.id])
+
   return (
     <div className={`pod pod-${place}${isMe ? ' me' : ''}`}>
       <div className="pod-face">
@@ -126,7 +130,7 @@ function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }: PodiumCardP
             type="button"
             className="miniref"
             disabled={refreshing}
-            onClick={onRefresh}
+            onClick={handleRefresh}
             aria-label={'Sinkronkan ulang ' + p.name}
           >
             {refreshing ? '…' : <IconRefresh style={{ width: 13, height: 13 }} />}
@@ -136,17 +140,21 @@ function PodiumCard({ p, place, rank, isMe, refreshing, onRefresh }: PodiumCardP
       <div className="pod-plinth">{rank + 1}</div>
     </div>
   )
-}
+})
 
 interface MemberRowProps {
   p: LeaderboardMember
   rank: number
   isMe: boolean
   refreshing: boolean
-  onRefresh: () => void
+  onRefresh: (id: string) => void
 }
 
-function MemberRow({ p, rank, isMe, refreshing, onRefresh }: MemberRowProps) {
+const MemberRow = memo(function MemberRow({ p, rank, isMe, refreshing, onRefresh }: MemberRowProps) {
+  const handleRefresh = useCallback(() => {
+    onRefresh(p.id)
+  }, [onRefresh, p.id])
+
   return (
     <div
       className={
@@ -196,7 +204,7 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }: MemberRowProps) {
             type="button"
             className="miniref"
             disabled={refreshing}
-            onClick={onRefresh}
+            onClick={handleRefresh}
             aria-label={'Sinkronkan ulang ' + p.name}
           >
             {refreshing ? '…' : <IconRefresh style={{ width: 13, height: 13 }} />}
@@ -205,9 +213,10 @@ function MemberRow({ p, rank, isMe, refreshing, onRefresh }: MemberRowProps) {
       </div>
     </div>
   )
-}
+})
 
 const TOP_N = 50
+const SEARCH_LIMIT = 50
 
 interface MyStandingProps {
   shown: LeaderboardMember[]
@@ -258,6 +267,7 @@ export default function Leaderboard() {
   const [filter, setFilter] = useState<string>(urlGuild || 'ALL')
   const [filterOpen, setFilterOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const deferredQuery = useDeferredValue(query)
   const [showAll, setShowAll] = useState(false)
 
   const load = useCallback(async (bust?: boolean) => {
@@ -292,7 +302,7 @@ export default function Leaderboard() {
     setShowAll(false)
   }, [filter])
 
-  const refresh = async (id: string) => {
+  const refresh = useCallback(async (id: string) => {
     setRefreshingId(id)
     setErr('')
     try {
@@ -309,7 +319,7 @@ export default function Leaderboard() {
     } finally {
       setRefreshingId(null)
     }
-  }
+  }, [load])
 
   const guilds = useMemo(() => {
     const map = new Map<string, number>()
@@ -331,8 +341,8 @@ export default function Leaderboard() {
   const isMe = (p: LeaderboardMember) =>
     Boolean((memberId && p.id === memberId) || (profileUrl && p.profile_url === profileUrl))
 
-  const searching = query.trim() !== ''
-  const results = useMemo<LeaderboardMember[]>(() => searchMembers(shown, query), [shown, query])
+  const searching = deferredQuery.trim() !== ''
+  const results = useMemo<LeaderboardMember[]>(() => searchMembers(shown, deferredQuery), [shown, deferredQuery])
   const rankOf = useMemo(() => new Map<string, number>(shown.map((p, i) => [p.id, i])), [shown])
 
   const rest = shown.slice(3)
@@ -437,7 +447,7 @@ export default function Leaderboard() {
               placeholder="Cari nama peserta…"
               aria-label="Cari nama peserta"
             />
-            {searching && (
+            {query.trim() !== '' && (
               <>
                 <span className="lbs-cnt" aria-live="polite">
                   {results.length} hasil
@@ -485,19 +495,24 @@ export default function Leaderboard() {
 
           {searching ? (
             results.length === 0 ? (
-              <div className="empty">Tidak ada peserta bernama “{query.trim()}”.</div>
+              <div className="empty">Tidak ada peserta bernama “{deferredQuery.trim()}”.</div>
             ) : (
               <div className="lblist">
-                {results.map((p) => (
+                {results.slice(0, SEARCH_LIMIT).map((p) => (
                   <MemberRow
                     key={p.id}
                     p={p}
                     rank={rankOf.get(p.id) ?? 0}
                     isMe={isMe(p)}
                     refreshing={refreshingId === p.id}
-                    onRefresh={() => refresh(p.id)}
+                    onRefresh={refresh}
                   />
                 ))}
+                {results.length > SEARCH_LIMIT && (
+                  <div className="card-note" style={{ textAlign: 'center', padding: '12px 0' }}>
+                    Menampilkan 50 dari {results.length} hasil. Ketik nama lebih spesifik untuk mempersempit.
+                  </div>
+                )}
               </div>
             )
           ) : (
@@ -512,7 +527,7 @@ export default function Leaderboard() {
                       rank={rankOf.get(p.id) ?? i}
                       isMe={isMe(p)}
                       refreshing={refreshingId === p.id}
-                      onRefresh={() => refresh(p.id)}
+                      onRefresh={refresh}
                     />
                   ))}
                 </div>
@@ -527,7 +542,7 @@ export default function Leaderboard() {
                       rank={rankOf.get(p.id) ?? 0}
                       isMe={isMe(p)}
                       refreshing={refreshingId === p.id}
-                      onRefresh={() => refresh(p.id)}
+                      onRefresh={refresh}
                     />
                   ))}
 
@@ -541,7 +556,7 @@ export default function Leaderboard() {
                         rank={rankOf.get(shown[myIdx].id) ?? myIdx}
                         isMe
                         refreshing={refreshingId === shown[myIdx].id}
-                        onRefresh={() => refresh(shown[myIdx].id)}
+                        onRefresh={refresh}
                       />
                     </>
                   )}

@@ -145,19 +145,21 @@ body{
   shape-rendering: crispEdges;
   animation: diyaBob 2.5s infinite alternate ease-in-out;
   filter: drop-shadow(0 0 10px rgba(255, 167, 38, 0.7));
+  will-change: transform;
 }
 .svg-flame {
   transform-origin: 8px 10px;
   animation: flameFlicker 0.8s infinite alternate ease-in-out;
+  will-change: transform, opacity;
 }
 @keyframes flameFlicker {
   0% { transform: scale(1) skewX(-2deg); opacity: 0.9; }
-  50% { transform: scale(1.05, 1.1) skewX(2deg); opacity: 1; filter: brightness(1.2); }
-  100% { transform: scale(0.95, 0.9) skewX(-1deg); opacity: 0.85; filter: brightness(0.9); }
+  50% { transform: scale(1.05, 1.1) skewX(2deg); opacity: 1; }
+  100% { transform: scale(0.95, 0.9) skewX(-1deg); opacity: 0.85; }
 }
 @keyframes diyaBob {
-  0% { transform: translateY(0); filter: drop-shadow(0 0 8px rgba(255, 167, 38, 0.6)); }
-  100% { transform: translateY(-4px); filter: drop-shadow(0 0 16px rgba(255, 167, 38, 1)); }
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
 }
 
 /* Penempatan Diya pada Hero banner */
@@ -219,24 +221,28 @@ body{
 }
 .floating-lantern-wrap {
   position: fixed;
-  bottom: -150px;
+  top: 100vh;
   pointer-events: none;
   animation: floatSky linear infinite;
   opacity: 0;
   image-rendering: pixelated;
+  will-change: transform, opacity;
 }
 .floating-lantern-inner {
   animation: floatSway ease-in-out infinite alternate;
+  will-change: transform;
 }
 .floating-lantern-svg {
   width: 52px;
   height: auto;
   shape-rendering: crispEdges;
-  animation: lanternPulse 2s infinite alternate ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(255, 167, 38, 0.75));
+  animation: lanternPulse 2.5s infinite alternate ease-in-out;
+  will-change: opacity, transform;
 }
 .sl-1 {
   left: 8%;
-  transform: scale(0.48);
+  --sl-scale: 0.48;
   animation-duration: 26s;
   animation-delay: -6s;
 }
@@ -245,7 +251,7 @@ body{
 }
 .sl-2 {
   left: 84%;
-  transform: scale(0.56);
+  --sl-scale: 0.56;
   animation-duration: 30s;
   animation-delay: -14s;
 }
@@ -254,7 +260,7 @@ body{
 }
 .sl-3 {
   left: 22%;
-  transform: scale(0.38);
+  --sl-scale: 0.38;
   animation-duration: 34s;
   animation-delay: -21s;
 }
@@ -263,7 +269,7 @@ body{
 }
 .sl-4 {
   left: 68%;
-  transform: scale(0.44);
+  --sl-scale: 0.44;
   animation-duration: 28s;
   animation-delay: -11s;
 }
@@ -272,7 +278,7 @@ body{
 }
 .sl-5 {
   left: 48%;
-  transform: scale(0.5);
+  --sl-scale: 0.5;
   animation-duration: 32s;
   animation-delay: -27s;
 }
@@ -280,26 +286,27 @@ body{
   animation-duration: 4.5s;
 }
 @keyframes floatSky {
-  0% { bottom: -150px; opacity: 0; }
+  0% { transform: translateY(120px) scale(var(--sl-scale, 0.5)); opacity: 0; }
   10% { opacity: 0.85; }
   90% { opacity: 0.85; }
-  100% { bottom: 105vh; opacity: 0; }
+  100% { transform: translateY(calc(-100vh - 160px)) scale(var(--sl-scale, 0.5)); opacity: 0; }
 }
 @keyframes floatSway {
   0% { transform: translateX(-18px) rotate(-6deg); }
   100% { transform: translateX(18px) rotate(6deg); }
 }
 @keyframes lanternPulse {
-  0% { filter: drop-shadow(0 0 6px rgba(255, 167, 38, 0.5)) brightness(1); }
-  100% { filter: drop-shadow(0 0 16px rgba(255, 167, 38, 0.95)) brightness(1.15); }
+  0% { opacity: 0.85; transform: scale(0.97); }
+  100% { opacity: 1; transform: scale(1.03); }
 }
 .sky-lantern-flame {
   transform-origin: 13px 25px;
-  animation: skyFlameFlicker 0.25s infinite alternate ease-in-out;
+  animation: skyFlameFlicker 0.4s infinite alternate ease-in-out;
+  will-change: transform, opacity;
 }
 @keyframes skyFlameFlicker {
-  0% { opacity: 0.8; transform: scale(0.92); filter: brightness(0.9) drop-shadow(0 0 2px rgba(255, 167, 38, 0.5)); }
-  100% { opacity: 1; transform: scale(1.08); filter: brightness(1.3) drop-shadow(0 0 6px rgba(255, 235, 59, 0.9)); }
+  0% { opacity: 0.8; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1.08); }
 }
 @media (max-width: 640px) {
   .sl-3, .sl-4 { display: none; }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 // Dekorasi background bertema arcade: starfield.
 // Selama DIWALI (November 2026), ditambah lampion langit (sky lantern) mengambang,
 // partikel cahaya melayang (floating magic lights), dan glow hangat,
@@ -7,7 +7,7 @@ import { HALLOWEEN, DIWALI } from './config'
 import { Ghost, Pumpkin } from './halloween'
 import { DiwaliSkyLanterns, DiwaliFloatingLights } from './diwali'
 
-export default function SpaceFX(): React.JSX.Element {
+export default memo(function SpaceFX(): React.JSX.Element {
   return (
     <>
       <div className="spacefx spacefx-bg" aria-hidden="true">
@@ -33,4 +33,4 @@ export default function SpaceFX(): React.JSX.Element {
       )}
     </>
   )
-}
+})
