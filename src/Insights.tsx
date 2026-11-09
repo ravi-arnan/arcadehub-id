@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, type ComponentType } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, useMemo, type ComponentType } from 'react'
 import { IconGamepad, IconTent, IconTarget, IconHelp, IconAward, IconCheck } from './icons'
 import { GAME_CATALOG, gamePoints, type CatalogGame } from './catalog'
 import { HALLOWEEN } from './config'
@@ -36,8 +36,11 @@ interface TooltipState {
  * Heatmap aktivitas badge bergaya GitHub contribution graph (52 minggu terakhir)
  */
 export function ActivityCalendar({ badges }: { badges: InsightBadge[] }) {
+  const cardRef = useRef<HTMLDivElement | null>(null)
   const wrapRef = useRef<HTMLDivElement | null>(null)
+  const tooltipRef = useRef<HTMLDivElement | null>(null)
   const [hovered, setHovered] = useState<TooltipState | null>(null)
+  const [tooltipPos, setTooltipPos] = useState<{ left: number; arrowLeft: number } | null>(null)
 
   // Auto-scroll ke paling kanan (aktivitas terbaru) saat render di layar kecil
   useEffect(() => {
@@ -45,6 +48,32 @@ export function ActivityCalendar({ badges }: { badges: InsightBadge[] }) {
       wrapRef.current.scrollLeft = wrapRef.current.scrollWidth
     }
   }, [])
+
+  useEffect(() => {
+    const handleResize = () => setHovered(null)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useLayoutEffect(() => {
+    if (!hovered || !cardRef.current) {
+      setTooltipPos(null)
+      return
+    }
+    const cardRect = cardRef.current.getBoundingClientRect()
+    const tooltipWidth = tooltipRef.current?.offsetWidth || 200
+    const halfW = tooltipWidth / 2
+    const minX = halfW + 8
+    const maxX = Math.max(minX, cardRect.width - halfW - 8)
+    const clampedX = Math.max(minX, Math.min(hovered.x, maxX))
+    const rawArrow = halfW + (hovered.x - clampedX)
+    const arrowLeft = Math.max(12, Math.min(rawArrow, tooltipWidth - 12))
+
+    setTooltipPos({
+      left: clampedX,
+      arrowLeft,
+    })
+  }, [hovered])
 
   const { weeks, monthLabels, totalEarned, currentStreak, longestStreak } = useMemo(() => {
     const countMap = new Map<string, number>()
@@ -170,31 +199,32 @@ export function ActivityCalendar({ badges }: { badges: InsightBadge[] }) {
 
   const handleCellHover = (e: React.MouseEvent<SVGRectElement>, day: any) => {
     if (day.isFuture) return
-    const wrap = wrapRef.current
-    if (!wrap) return
+    const card = cardRef.current
+    if (!card) return
     const rect = e.currentTarget.getBoundingClientRect()
-    const wrapRect = wrap.getBoundingClientRect()
+    const cardRect = card.getBoundingClientRect()
     setHovered({
-      x: rect.left - wrapRect.left + wrap.scrollLeft + rect.width / 2,
-      y: rect.top - wrapRect.top,
+      x: rect.left - cardRect.left + rect.width / 2,
+      y: rect.top - cardRect.top,
       dateStr: day.formattedDate,
       count: day.count,
     })
   }
 
   return (
-    <div className="card gh-card">
+    <div className="card gh-card" ref={cardRef}>
       <div className="card-h">
         <span>Aktivitas Badge</span>
         <span className="card-tag">{totalEarned} badge</span>
       </div>
 
-      <div className="gh-wrap" ref={wrapRef}>
+      <div className="gh-wrap" ref={wrapRef} onScroll={() => setHovered(null)}>
         <svg
           className="gh-svg"
           viewBox="0 0 710 117"
           role="img"
           aria-label="Kalender aktivitas kontribusi badge mirip GitHub"
+          onMouseLeave={() => setHovered(null)}
         >
           {/* Label Bulan di bagian atas */}
           {monthLabels.map((m) => (
@@ -240,38 +270,42 @@ export function ActivityCalendar({ badges }: { badges: InsightBadge[] }) {
                   fill={LEVEL_COLORS[day.level]}
                   stroke={day.count === 0 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.25)'}
                   strokeWidth="1"
-                  onMouseEnter={(e) => handleCellHover(e, day)}
-                  onMouseLeave={() => setHovered(null)}
-                >
-                  <title>
-                    {day.isFuture
-                      ? ''
+                  aria-label={
+                    day.isFuture
+                      ? undefined
                       : day.count > 0
                         ? `${day.count} badge pada ${day.formattedDate}`
-                        : `Tidak ada badge pada ${day.formattedDate}`}
-                  </title>
-                </rect>
+                        : `Tidak ada badge pada ${day.formattedDate}`
+                  }
+                  onMouseEnter={(e) => handleCellHover(e, day)}
+                  onMouseLeave={() => setHovered(null)}
+                />
               ))}
             </g>
           ))}
         </svg>
-
-        {/* Floating tooltip */}
-        {hovered && (
-          <div
-            className="gh-tooltip"
-            style={{
-              left: hovered.x,
-              top: hovered.y - 7,
-              transform: 'translate(-50%, -100%)',
-            }}
-          >
-            <strong>{hovered.count > 0 ? `${hovered.count} badge` : 'Tidak ada badge'}</strong> pada{' '}
-            {hovered.dateStr}
-            <div className="gh-tooltip-arrow" />
-          </div>
-        )}
       </div>
+
+      {/* Floating tooltip ditempatkan di luar .gh-wrap agar tidak terpotong overflow-x */}
+      {hovered && (
+        <div
+          ref={tooltipRef}
+          className="gh-tooltip"
+          style={{
+            left: tooltipPos ? tooltipPos.left : hovered.x,
+            top: hovered.y - 7,
+            transform: 'translate(-50%, -100%)',
+            visibility: tooltipPos ? 'visible' : 'hidden',
+          }}
+        >
+          <strong>{hovered.count > 0 ? `${hovered.count} badge` : 'Tidak ada badge'}</strong> pada{' '}
+          {hovered.dateStr}
+          <div
+            className="gh-tooltip-arrow"
+            style={{ left: tooltipPos ? `${tooltipPos.arrowLeft}px` : '50%' }}
+          />
+        </div>
+      )}
 
       <div className="gh-footer">
         <div className="gh-footer-left">
