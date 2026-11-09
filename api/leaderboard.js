@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     // Cache di edge: load ulang cepat (LCP). Stale-while-revalidate menyajikan cache lama
     // instan sambil refresh di background. Bust via ?t= (tombol Muat ulang) untuk data terbaru.
-    res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate=60')
+    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600')
     res.status(200).json({ members })
   } catch (e) {
     const { status, message } = dbApiError(e, 500)
