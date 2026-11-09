@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, memo } from 'react'
+import { useState, useMemo, useCallback, useDeferredValue, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   SKILL_CATALOG,
@@ -747,6 +747,7 @@ export default function Catalog() {
   const { score } = useMyProfile()
   const [saved, toggleSaved] = useWishlist()
   const [q, setQ] = useState('')
+  const deferredQ = useDeferredValue(q)
   const [type, setType] = useState<'all' | 'game' | 'skill'>('all')
   const [status, setStatus] = useState<'all' | 'todo' | 'saved' | 'done'>('all')
   const [view, setView] = useState<'grid' | 'list'>('grid')
@@ -834,14 +835,17 @@ export default function Catalog() {
     scrollToCatalog()
   }, [scrollToCatalog])
 
-  const shown = items.filter((it) => {
-    if (type !== 'all' && it.type !== type) return false
-    if (status === 'done' && !it.done) return false
-    if (status === 'todo' && it.done) return false
-    if (status === 'saved' && !saved.has(it.key)) return false
-    if (q && !it.title.toLowerCase().includes(q.toLowerCase())) return false
-    return true
-  })
+  const shown = useMemo(() => {
+    const query = deferredQ.trim().toLowerCase()
+    return items.filter((it) => {
+      if (type !== 'all' && it.type !== type) return false
+      if (status === 'done' && !it.done) return false
+      if (status === 'todo' && it.done) return false
+      if (status === 'saved' && !saved.has(it.key)) return false
+      if (query && !it.title.toLowerCase().includes(query)) return false
+      return true
+    })
+  }, [items, type, status, saved, deferredQ])
 
   return (
     <div>
