@@ -87,6 +87,7 @@ lokal (`npm run typecheck`, `npm run build`, dan `npm test`) lulus hijau. Lihat 
 Cara tercepat tampil di halaman **Kontributor**: tambahkan dirimu ke
 [`src/contributors.ts`](src/contributors.ts) lewat PR.
 
+- [Pengumuman & GitHub Discussions](https://github.com/ravi-arnan/arcadehub-id/discussions) (lihat [Pengumuman Terbaru #22](https://github.com/ravi-arnan/arcadehub-id/discussions/22))
 - [Roadmap & backlog](https://arcadehub.web.id/roadmap) atau pantau di [Issue #15](https://github.com/ravi-arnan/arcadehub-id/issues/15)
 - [Issue roadmap prioritas dekat](https://github.com/ravi-arnan/arcadehub-id/issues?q=is%3Aissue+is%3Aopen+label%3A%22roadmap%3A+next%22)
 - [Buka issue](https://github.com/ravi-arnan/arcadehub-id/issues/new/choose)

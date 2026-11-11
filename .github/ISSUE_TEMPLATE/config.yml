@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Pengumuman & GitHub Discussions
+    url: https://github.com/ravi-arnan/arcadehub-id/discussions
+    about: Pengumuman rilis terbaru, tanya jawab (Q&A), dan diskusi ide fitur bersama komunitas.
   - name: Pelacak Roadmap & Backlog
     url: https://github.com/ravi-arnan/arcadehub-id/issues/15
     about: Pelacakan fitur yang sedang dikerjakan dan direncanakan.
@@ -7,5 +10,5 @@ contact_links:
     url: https://chat.whatsapp.com/F2nCFAiffFgCjHAVvOXr0d
     about: Tanya cepat, diskusi, dan bantuan seputar Arcade Fasilitator 2026.
   - name: Tambahkan dirimu sebagai kontributor
-    url: https://github.com/ravi-arnan/arcadehub-id/edit/main/src/contributors.js
-    about: Edit src/contributors.js lewat PR untuk muncul di halaman Kontributor.
+    url: https://github.com/ravi-arnan/arcadehub-id/edit/main/src/contributors.ts
+    about: Edit src/contributors.ts lewat PR untuk muncul di halaman Kontributor.
