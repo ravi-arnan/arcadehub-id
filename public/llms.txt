@@ -1,0 +1,43 @@
+# Arcade Hub
+
+> Web application open source untuk pelacakan poin dan pencapaian peserta Google Cloud Arcade Fasilitator (GCAF) 2026 di Indonesia.
+
+Arcade Hub (https://arcadehub.web.id) membantu peserta komunitas memantau progres lencana dari profil publik Google Cloud Skills Boost, menghitung poin Arcade secara otomatis, memantau milestone fasilitator, mengecek tier hadiah merchandise, dan melihat peringkat komunitas.
+
+## Fitur Utama dan Direktori Halaman
+
+- Beranda & Cek Poin (https://arcadehub.web.id/): Masukkan tautan profil publik Google Cloud Skills Boost untuk menghitung poin secara instan, melihat rincian badge keahlian (skill badge), arcade game, milestone, serta estimasi tier hadiah.
+- Papan Peringkat (https://arcadehub.web.id/leaderboard): Papan peringkat nasional peserta dan filter guild komunitas dengan pencarian instan.
+- Katalog Badge & Game (https://arcadehub.web.id/catalog): Menyajikan daftar game aktif bulan berjalan lengkap dengan access code, game terdahulu, dan seluruh skill badge resmi Google Cloud yang valid untuk Arcade Season 2026.
+- Informasi Hadiah (https://arcadehub.web.id/prizes): Rincian kuota dan poin untuk tier Trooper, Ranger, Champion, dan Legend, beserta bocoran merchandise resmi dan sistem penukaran waterfall.
+- Panduan & FAQ (https://arcadehub.web.id/info): Aturan program, batasan kuota harian lab, panduan pengaturan profil publik, dan bonus milestone AI Agent.
+- Statistik Guild (https://arcadehub.web.id/guilds): Statistik performa dan rata-rata poin antar guild peserta.
+- Roadmap Pengembangan (https://arcadehub.web.id/roadmap): Rencana rilis dan status fitur Arcade Hub.
+- Panduan Kontribusi (https://arcadehub.web.id/contribute): Panduan bagi pengembang open source yang ingin berkontribusi.
+
+## Aturan Perhitungan Poin (Arcade Season 2026)
+
+- Arcade Game: 1 Game bernilai 1 Poin Arcade (beberapa game spesial semester 1 bernilai 2 sampai 3 poin).
+- Skill Badge: Setiap 2 Skill Badge resmi bernilai 1 Poin Arcade (1 skill badge = 0.5 poin, dihitung per kelipatan 2).
+- Course Completion Badge: Tidak bernilai poin Arcade. Hanya skill badge resmi (yang memiliki challenge lab) yang menghasilkan poin.
+- Bonus Milestone: Dihitung dari milestone tertinggi yang dicapai peserta:
+  - Milestone 1: bonus +2 poin
+  - Milestone 2: bonus +6 poin
+  - Milestone 3: bonus +10 poin
+  - Ultimate Milestone: bonus +15 poin
+- Bonus Milestone AI Agent: Tambahan +10 poin untuk proyek pembangunan AI Agent pertama (syarat: terdaftar di kohort, Milestone 1 terbuka, dan 4 badge GEAR selesai).
+- Batas Lab Harian: Maksimum 15 lab dalam rentang 24 jam (kebijakan Google Cloud Skills Boost).
+- Masa Berlaku Badge: Hanya badge yang diselesaikan pada rentang periode Arcade Season 2026 (Januari sampai Desember 2026).
+
+## Tautan Resmi Program
+
+- Halaman Arcade Resmi: https://go.cloudskillsboost.google/arcade
+- Katalog Cloud Skills Boost: https://www.cloudskillsboost.google/catalog
+- Pengaturan Profil Publik: https://www.cloudskillsboost.google/my_account/profile#public-visibility
+
+## Metadata Proyek
+
+- Lisensi: MIT License
+- Kode Sumber: https://github.com/ravi-arnan/arcadehub-id
+- Bahasa: TypeScript, React, Vite
+- Komunitas: Google Cloud Arcade Fasilitator Indonesia 2026

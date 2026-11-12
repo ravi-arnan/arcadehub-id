@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CONFIG, ANNOUNCEMENT } from '../config'
+import { INFO_FAQ } from '../../lib/seoRoutes.js'
 import Collapse from '../components/Collapse'
 import PointsSystem from '../components/PointsSystem'
 import { IconExternalLink } from '../icons'
@@ -35,15 +36,7 @@ const RESOURCES = [
   ['Bonus Milestone: dokumen instruksi', CONFIG.bonusDocUrl],
 ]
 
-const FAQ = [
-  ['Apa itu program ini?', 'Google Cloud Arcade Fasilitator 2026: program beasiswa coding gamifikasi dari Google Cloud (Cloud, AI, ML, Data Engineering). Gratis untuk semua WNI. Selesaikan game & skill badge, kumpulkan poin, tukar hadiah.'],
-  ['Bagaimana poin dihitung?', '1 Arcade Game = 1 poin (beberapa game spesial Januari–Juni 2026 bernilai 2–3 poin, lihat "Game Terdahulu" di Katalog). Setiap 2 Skill Badge = 1 poin. Milestone memberi bonus poin (hanya milestone tertinggi yang dihitung).'],
-  ['Apa itu Bonus Milestone (+10 poin)?', 'Proyek tambahan dari Google: bangun AI Agent pertamamu, dapat 10 Poin Arcade bonus. Syaratnya sudah terdaftar di kohort, Milestone 1 terbuka, dan 4 badge GEAR selesai. Panduan langkah demi langkah plus link dokumen instruksi dan form verifikasinya ada di tab Poin Saya, di kartu Bonus Milestone AI Agent.'],
-  ['Kenapa poin saya 0 padahal punya badge?', 'Pastikan profil di-set PUBLIC. Yang dihitung hanya badge Arcade Season 2026 (earned Jan–Des 2026); badge dari tahun sebelumnya tidak masuk hitungan.'],
-  ['Berapa lab yang bisa saya kerjakan per hari?', 'Maksimum 15 lab dalam 24 jam. Batas ini tidak bisa dinaikkan.'],
-  ['Email pendaftaran tidak masuk?', `Tambahkan ${CONFIG.spamEmail} ke kontak/allowlist emailmu agar tidak masuk folder Spam/Promosi, lalu daftar ulang bila perlu.`],
-  ['Kapan hadiah dikirim?', 'Setelah kamu mencapai tier Arcade Player (mengumpulkan cukup poin) dan program selesai. Slot per tier terbatas (first-come), jadi kunci poin secepatnya.'],
-]
+const FAQ: [string, string][] = INFO_FAQ.map((item) => [item.q, item.a])
 
 export default function Info() {
   return (

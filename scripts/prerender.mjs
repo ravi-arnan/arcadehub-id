@@ -19,7 +19,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { SEO_ROUTES, SITE_URL, canonicalFor } from '../lib/seoRoutes.js'
+import { SEO_ROUTES, SITE_URL, canonicalFor, breadcrumbSchemaFor } from '../lib/seoRoutes.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'dist')
@@ -52,7 +52,7 @@ function ganti(html, pola, penggantiBaru, label, path) {
   return html.replace(pola, penggantiBaru)
 }
 
-function halaman({ path, title, description }) {
+function halaman({ path, title, description, schema, breadcrumb }) {
   const canonical = canonicalFor(path)
   let html = shell
   html = ganti(html, /<title>[\s\S]*?<\/title>/, `<title>${attr(title)}</title>`, 'title', path)
@@ -70,6 +70,21 @@ function halaman({ path, title, description }) {
     `<meta name="twitter:title" content="${attr(title)}" />`, 'twitter:title', path)
   html = ganti(html, /<meta name="twitter:description" content="[^"]*"\s*\/>/,
     `<meta name="twitter:description" content="${attr(description)}" />`, 'twitter:description', path)
+
+  const schemas = []
+  if (schema) schemas.push(schema)
+  const bc = breadcrumbSchemaFor(path, breadcrumb)
+  if (bc) schemas.push(bc)
+
+  if (schemas.length > 0) {
+    const scripts = schemas
+      .map((s) => {
+        const rawJson = JSON.stringify(s, null, 2).replace(/<\/script/gi, '<\\/script')
+        return `  <script type="application/ld+json">\n  ${rawJson.replace(/\n/g, '\n  ')}\n  </script>`
+      })
+      .join('\n')
+    html = ganti(html, /<\/head>/, `${scripts}\n</head>`, 'schema', path)
+  }
   return html
 }
 
