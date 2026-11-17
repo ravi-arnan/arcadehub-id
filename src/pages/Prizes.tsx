@@ -46,8 +46,9 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 3000,
     stars: 3,
     badgeSvg: '/img/arcade/arcade-champion.svg',
-    image: '/img/swags/champion.webp?v=nov8b',
+    image: '/img/swags/champion.webp?v=nov17b',
     items: [
+      { name: 'The Arcade Vacuum Tumbler', desc: 'Tumbler vacuum 680ml 304 stainless steel, tahan dingin 24 jam' },
       { name: 'The Arcade TechPack', desc: 'Ransel 21L weather-resistant dengan laptop vault 15.6"' },
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready berlogo Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku USB-C multifungsi dan phone stand' },
@@ -62,8 +63,9 @@ const SWAG_TIERS: SwagTier[] = [
     spots: 2500,
     stars: 4,
     badgeSvg: '/img/arcade/arcade-legend.svg',
-    image: '/img/swags/legend.webp?v=nov8b',
+    image: '/img/swags/legend.webp?v=nov17b',
     items: [
+      { name: 'The Arcade Vacuum Tumbler', desc: 'Tumbler vacuum 680ml 304 stainless steel, tahan dingin 24 jam' },
       { name: 'The Arcade TechPack', desc: 'Ransel 21L weather-resistant dengan laptop vault 15.6"' },
       { name: 'The Arcade Weather-Shield Jacket', desc: 'Jaket storm-ready premium Google Cloud' },
       { name: 'The Arcade PopUp Pro', desc: 'Toolkit saku serbaguna edisi terbatas' },
@@ -151,6 +153,19 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
       'Bukaan clamshell 180° flat packing dan magnetic flap quick-release',
       'Material matte shell 21 liter weather-resistant tahan air',
       'Ergonomis 3D honeycomb air-mesh dan luggage trolley pass-through',
+    ],
+  },
+  {
+    name: 'The Arcade Vacuum Tumbler',
+    tiers: 'Champion & Legend',
+    image: '/img/swags/item-tumbler.webp?v=nov17b',
+    forumUrl: 'https://discuss.google.dev/t/swag-drop-the-arcade-vacuum-tumbler/413540',
+    features: [
+      'Kapasitas 680 ml (23 oz) finishing black matte powder-coated berlogo Google Cloud',
+      'Material food-grade 304 stainless steel dan 100% BPA-free',
+      'Advanced double-wall vacuum insulation tahan dingin hingga 24 jam',
+      'Leak-resistant seal dengan straw lid praktis untuk mobilitas',
+      'Protective rubber boot anti-slip yang dapat dilepas untuk cup holder mobil',
     ],
   },
 ]
